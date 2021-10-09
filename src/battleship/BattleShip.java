@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package battleship;
 
 import javafx.application.Application;
@@ -13,11 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author unusa
- */
 public class BattleShip extends Application {
+    
+    public static boolean quit = false;
     
     @Override
     public void start(Stage primaryStage) {
@@ -41,11 +34,14 @@ public class BattleShip extends Application {
         primaryStage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    public static void main(String[] args) {  
+        //DEBUG
+        NetworkBridge nwBridge = new NetworkBridge();  
+        nwBridge.CreateServer();
+        //DEBUG
+        
         launch(args);
+        quit = true;
     }
     
 }
