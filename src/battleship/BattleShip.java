@@ -2,7 +2,6 @@ package battleship;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -16,12 +15,8 @@ public class BattleShip extends Application {
     public void start(Stage primaryStage) {
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
+        btn.setOnAction((ActionEvent event) -> {
+            System.out.println("Hello World!");
         });
         
         StackPane root = new StackPane();
@@ -38,7 +33,7 @@ public class BattleShip extends Application {
         Settings settings = new Settings();
         //DEBUG
         NetworkBridge nwBridge = new NetworkBridge();
-        nwBridge.CreateServer();    
+        nwBridge.CreateServer();
         
         NetworkBridge nwBridge2 = new NetworkBridge();
         nwBridge2.ConnectServer(settings.ip + ":" + settings.port);
@@ -48,6 +43,5 @@ public class BattleShip extends Application {
         
         launch(args);
         BattleShip.quit = true;
-        
     } 
 }
