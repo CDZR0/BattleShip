@@ -34,14 +34,20 @@ public class BattleShip extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {  
+    public static void main(String[] args){
+        Settings settings = new Settings();
         //DEBUG
-        NetworkBridge nwBridge = new NetworkBridge();  
-        nwBridge.CreateServer();
+        NetworkBridge nwBridge = new NetworkBridge();
+        nwBridge.CreateServer();    
+        
+        NetworkBridge nwBridge2 = new NetworkBridge();
+        nwBridge2.ConnectServer(settings.ip + ":" + settings.port);
+        NetworkBridge nwBridge3 = new NetworkBridge();
+        nwBridge3.ConnectServer(settings.ip + ":" + settings.port);
         //DEBUG
         
         launch(args);
-        quit = true;
-    }
-    
+        BattleShip.quit = true;
+        
+    } 
 }

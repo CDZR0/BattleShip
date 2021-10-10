@@ -1,14 +1,14 @@
 package battleship;
 
-public class Server extends Thread {
+public class Server implements Runnable {
     public Data serverData;
     public GameLogic gameLogic;
     
     public static byte clientID;
     
-    Server(NetworkBridge client){
+    Server(NetworkBridge host){
         gameLogic = new GameLogic();
-        client.ID = clientID++;
+        host.ID = clientID++;
     }
     
     public void SendDataToClient(Data serverData){
@@ -23,6 +23,9 @@ public class Server extends Thread {
     public void run(){
         while(!BattleShip.quit){
             //Server logic goes here
+            System.out.print("");
         }
+        System.out.println("Thread finished");
+        
     }
 }

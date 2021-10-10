@@ -3,18 +3,37 @@ package battleship;
 import java.net.*;
 import java.io.*;
 
-public class NetworkBridge {
+public class NetworkBridge{
     public Server server;
     public byte ID;
+    public Thread serverThread;
     
     void ConnectServer(String IP){
-        //Connect to the server of the host
+        if (Server.clientID < 2){
+            //Connect to the server of the host
+            ID = Server.clientID++;
+        }
+        else {
+            System.out.println("Server full " + IP);
+        }
     }
     
     void CreateServer(){
         server = new Server(this);
-        server.start();
+        serverThread = new Thread(server);
+        serverThread.start();
         //Create TCP/IP server
+    }
+    
+    void CloseServer(){
+        if (ID == 0) {
+            try{
+                serverThread.join();
+            }
+            catch(InterruptedException ex){
+                System.out.println(ex.getMessage());
+            }
+        }
     }
     
     void SendData(){
