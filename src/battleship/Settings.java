@@ -1,3 +1,5 @@
+//Vilmos 
+
 package battleship;
 
 import java.io.File;
@@ -6,8 +8,8 @@ import java.lang.reflect.Field;
 import java.util.Scanner;
 
 public class Settings {
-    public String ip;
-    public String port;   
+    public static String ip;
+    public static String port;   
     
     Settings(){
         Init();
@@ -39,6 +41,7 @@ public class Settings {
         }
         catch(FileNotFoundException ex){
             System.out.println(ex.getMessage());
+            port = "65420";
         }
     }
 }
