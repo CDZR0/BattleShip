@@ -4,8 +4,6 @@ package battleship;
 
 import java.net.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Server implements Runnable {
     public Data serverData;
