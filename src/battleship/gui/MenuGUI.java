@@ -1,11 +1,8 @@
 //Csaba
 package battleship.gui;
 
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -14,41 +11,56 @@ import javax.swing.JFrame;
  */
 public class MenuGUI extends JFrame
 {
-    public MenuGUI(Stage primaryStage){
-        Button newGame = new Button();
+    public MenuGUI(){
+        JButton newGame = new JButton(); 
         newGame.setText("New game");
-        newGame.setOnAction((ActionEvent event) -> {
-            //
+        newGame.setBounds(50,100,95,30); 
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                System.out.println("new");
+            }
         });
+        this.add(newGame);
         
-        Button joinGame = new Button();
+        JButton joinGame = new JButton(); 
         joinGame.setText("Join game");
-        joinGame.setOnAction((ActionEvent event) -> {
-            //
+        joinGame.setBounds(10,20,100,30); 
+        joinGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                System.out.println("join");
+            }
         });
+        this.add(joinGame);
         
-        Button settingsButton = new Button();
+        JButton settingsButton = new JButton(); 
         settingsButton.setText("Settings");
-        settingsButton.setOnAction((ActionEvent event) -> {
-            //
+        settingsButton.setBounds(50,100,95,30); 
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                System.out.println("settingsButton");
+            }
         });
+        this.add(settingsButton);
         
-        Button exitButton = new Button();
+        JButton exitButton = new JButton(); 
         exitButton.setText("Exit");
-        exitButton.setOnAction((ActionEvent event) -> {
-            //
-        });      
-
-        StackPane root = new StackPane();
-        root.getChildren().add(newGame);
-        root.getChildren().add(joinGame);
-        root.getChildren().add(settingsButton);
-        root.getChildren().add(exitButton);
+        exitButton.setBounds(50,100,95,30); 
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                System.out.println("exitButton");
+            }
+        });
+        this.add(exitButton);
         
-        Scene scene = new Scene(root, 500, 250);
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        this.setSize(300,400);
+        this.setTitle("BattleShip");
+        this.setLayout(null);    
+        this.setVisible(true);    
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
     }
     
 }
