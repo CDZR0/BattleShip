@@ -4,10 +4,6 @@ package battleship;
 import java.io.IOException;
 import battleship.gui.MenuGUI;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class BattleShip extends Application {
@@ -16,7 +12,7 @@ public class BattleShip extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        MenuGUI menuGUI = new MenuGUI(primaryStage);      
+        MenuGUI menuGUI = new MenuGUI();      
     }
 
     public static void main(String[] args) throws IOException{
