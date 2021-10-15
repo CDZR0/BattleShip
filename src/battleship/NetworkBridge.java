@@ -16,9 +16,8 @@ public class NetworkBridge implements Runnable{
     
     public void ConnectServer(String IP, int port) throws IOException{
         if (Server.clientID < 2){
-            socket = new Socket("localhost", Integer.parseInt(Settings.port));
+            socket = new Socket(Settings.ip, Integer.parseInt(Settings.port));
             ID = Server.clientID++;
-            System.out.println("client " + ID + " Connected");
         }
         else {
             System.out.println("Server full at " + IP + ":" + Settings.port);
