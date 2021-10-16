@@ -44,6 +44,10 @@ public class NetworkBridge implements Runnable{
         thread.start();
     }
     
+    public void DisconnectServer() throws IOException{
+        socket.close();
+    }
+    
     public void CreateServer() throws IOException{
         server = new Server(this);
         serverThread = new Thread(server);
