@@ -11,15 +11,7 @@ public class Settings {
     public static String ip;
     public static String port;   
     
-    Settings(){
-        Init();
-    }
-    
-    public void Save(){
-        
-    }
-    
-    private void Init(){
+    public static void Init(){
         try{
             File file = new File("settings.cfg");
             Scanner reader = new Scanner(file);
@@ -30,7 +22,7 @@ public class Settings {
                     if (data.contains(fields[i].getName())){
                         try{
                             String value = data.substring(data.indexOf(" ")+1);
-                            fields[i].set(this, value);
+                            fields[i].set(Settings.class.getClass(), value);
                         }
                         catch(IllegalAccessException ex){
                             System.out.println(ex.getMessage());
@@ -41,6 +33,7 @@ public class Settings {
         }
         catch(FileNotFoundException ex){
             System.out.println(ex.getMessage());
+            ip = "127.0.0.1";
             port = "65420";
         }
     }

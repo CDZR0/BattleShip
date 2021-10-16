@@ -16,19 +16,17 @@ public class BattleShip extends Application {
     }
 
     public static void main(String[] args) throws IOException{
-        Settings settings = new Settings();
+        Settings.Init();
         //DEBUG
         NetworkBridge nwBridge = new NetworkBridge();
-        nwBridge.CreateServer();
-        //Thread t1 = new Thread(nwBridge);
-        //t1.start();
-        //DEBUG
+        nwBridge.CreateServer();      
         
         NetworkBridge partner = new NetworkBridge();
         partner.ConnectServer(Settings.ip, Integer.parseInt(Settings.port));
         
         NetworkBridge partner2 = new NetworkBridge();
-        partner2.ConnectServer(Settings.ip, Integer.parseInt(Settings.port));
+        partner2.ConnectServer("192.128.0.2", Integer.parseInt(Settings.port));
+        //DEBUG
         
         launch(args);
         BattleShip.quit = true;
