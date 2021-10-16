@@ -33,6 +33,7 @@ public class Server implements Runnable {
         Thread thread = new Thread(() -> {
             try {
                 Socket client = sSocket.accept();
+                System.out.println("client Connected");
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -54,6 +55,7 @@ public class Server implements Runnable {
             System.out.println(ex.getMessage());
         }
         
+        ServeClient();
         ServeClient();
         
         while(!BattleShip.quit){
