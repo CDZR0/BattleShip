@@ -4,6 +4,8 @@ package battleship;
 
 import java.net.*;
 import java.io.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NetworkBridge implements Runnable{
     public Server server;
@@ -14,14 +16,32 @@ public class NetworkBridge implements Runnable{
     private PrintWriter out;
     private BufferedReader in;
     
-    public void ConnectServer(String IP, int port) throws IOException{
-        if (Server.clientID < 2){
-            socket = new Socket(Settings.ip, Integer.parseInt(Settings.port));
-            ID = Server.clientID++;
-        }
-        else {
-            System.out.println("Server full at " + IP + ":" + Settings.port);
-        }
+    public void ConnectServer(String IP, int port){
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Connection timed out at " + IP + ":" + port);
+                Thread.currentThread().interrupt();
+            }
+        };
+        
+        Timer timer = new Timer("Timer");
+        timer.schedule(task, 5000);
+        
+        
+        Thread thread = new Thread(() -> {
+            if (Server.clientID < 2){
+                try { socket = new Socket(IP, port); } 
+                catch (IOException ex) { System.out.println(ex.getMessage()); }
+                ID = Server.clientID++;
+                timer.cancel();
+            }
+            else {
+                System.out.println("Server is full at " + IP + ":" + port);
+                timer.cancel();
+            }           
+        });
+        thread.start();
     }
     
     public void CreateServer() throws IOException{
