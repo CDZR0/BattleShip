@@ -4,6 +4,8 @@ package battleship;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Scanner;
 
@@ -35,6 +37,26 @@ public class Settings {
             System.out.println(ex.getMessage());
             ip = "127.0.0.1";
             port = "65420";
+            
+            WriteFile();
+        }
+    }
+    
+    public static void WriteFile(){
+        try{
+            File file = new File("settings.cfg");
+            file.createNewFile();
+            
+            try (FileWriter fw = new FileWriter("settings.cfg")) {
+                Field[] fields = Settings.class.getFields();
+                for (Field field : fields) {
+                    fw.write(field.getName() + " " + field.get(Settings.class.getClass()) + "\n");
+                    System.out.println(field.getName());
+                }
+            }
+        }
+        catch(IOException | IllegalAccessException ex){
+            System.out.println(ex.getMessage());
         }
     }
 }
