@@ -21,11 +21,9 @@ public class BattleShip extends Application {
         NetworkBridge nwBridge = new NetworkBridge();
         nwBridge.CreateServer();      
         
-        NetworkBridge partner = new NetworkBridge();
-        partner.ConnectServer(Settings.ip, Integer.parseInt(Settings.port));
+        //NetworkBridge partner = new NetworkBridge();
+        //partner.ConnectServer(Settings.ip, Integer.parseInt(Settings.port));
         
-        NetworkBridge partner2 = new NetworkBridge();
-        partner2.ConnectServer("192.128.0.2", Integer.parseInt(Settings.port));
         //DEBUG
         
         launch(args);

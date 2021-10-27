@@ -4,16 +4,17 @@ package battleship;
 
 import java.net.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server implements Runnable {
     public Data serverData;
     public GameLogic gameLogic;
     
     public ServerSocket sSocket;
-    public Socket cSocket1, cSocket2;
     private String msgBuffer;
     private PrintWriter out;
-    private BufferedReader in;
+    private BufferedReader bf;
     
     public static byte clientID;
     
@@ -31,10 +32,29 @@ public class Server implements Runnable {
     
     public void ServeClient(){
         Thread thread = new Thread(() -> {
+            Socket socket;
             try {
-                Socket client = sSocket.accept();
+                socket = sSocket.accept();
                 System.out.println("client Connected");
             } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+                socket = new Socket();
+            }
+            
+            try{
+                bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                
+                System.out.println("Reading socket");
+                while ((msgBuffer = bf.readLine()) != null){
+                    System.out.println(msgBuffer);
+                }
+                
+                out = new PrintWriter(socket.getOutputStream());
+                out.write("ServerToClient");
+                out.flush();
+                out.close();
+                
+            } catch (IOException ex){
                 System.out.println(ex.getMessage());
             }
             

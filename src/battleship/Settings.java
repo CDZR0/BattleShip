@@ -33,7 +33,7 @@ public class Settings {
                 }
             }
         }
-        catch(FileNotFoundException ex){
+        catch(FileNotFoundException | IllegalArgumentException | SecurityException  ex){
             System.out.println(ex.getMessage());
             ip = "127.0.0.1";
             port = "65420";
@@ -45,7 +45,11 @@ public class Settings {
     public static void WriteFile(){
         try{
             File file = new File("settings.cfg");
-            file.createNewFile();
+            if(!file.createNewFile()){
+                
+                file.delete();
+                file.createNewFile();
+            }
             
             try (FileWriter fw = new FileWriter("settings.cfg")) {
                 Field[] fields = Settings.class.getFields();

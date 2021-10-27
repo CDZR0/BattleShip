@@ -12,9 +12,10 @@ public class NetworkBridge implements Runnable{
     public byte ID;
     
     private Thread serverThread;   
-    private Socket socket;   
+    private Socket socket;
+    private String msgBuffer;
     private PrintWriter out;
-    private BufferedReader in;
+    private BufferedReader bf;
     
     public void ConnectServer(String IP, int port){
         TimerTask task = new TimerTask() {
@@ -39,9 +40,33 @@ public class NetworkBridge implements Runnable{
             else {
                 System.out.println("Server is full at " + IP + ":" + port);
                 timer.cancel();
-            }           
+            }
+            
+            
+            
+            try {                        
+                out = new PrintWriter(socket.getOutputStream());
+                
+                out.write("ClientToServer");
+                out.flush();
+                
+                
+                bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));                 
+                while ((msgBuffer = bf.readLine()) != null){
+                    System.out.println(msgBuffer);
+                }
+                out.close();
+                //NOT FINISHED
+                
+            }
+            catch (IOException ex){
+                System.out.println(ex.getMessage());
+                System.out.println("fa");
+            }
         });
         thread.start();
+        
+        
     }
     
     public void DisconnectServer() throws IOException{
