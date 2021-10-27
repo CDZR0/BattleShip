@@ -50,7 +50,7 @@ public class Settings {
             try (FileWriter fw = new FileWriter("settings.cfg")) {
                 Field[] fields = Settings.class.getFields();
                 for (Field field : fields) {
-                    fw.write(field.getName() + " " + field.get(Settings.class.getClass()) + "\n");
+                    fw.write(field.getName() + " " + field.get(Settings.class.getClass()) + System.lineSeparator());
                     System.out.println(field.getName());
                 }
             }
