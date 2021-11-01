@@ -114,7 +114,7 @@ public class MenuGUI extends JFrame {
             }
         });
         menu.add(exitButton);
-
+        repaint();
     }
 
     private void setVisibleMenu(boolean value) {
