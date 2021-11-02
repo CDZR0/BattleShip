@@ -45,14 +45,21 @@ public class Server implements Runnable {
                 bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 
                 System.out.println("Reading socket");
-                while ((msgBuffer = bf.readLine()) != null){
+                
+                while (/*(msgBuffer = bf.readLine()) != null*/true){
+                    out = new PrintWriter(socket.getOutputStream());
+                    msgBuffer = bf.readLine();
+                    msgBuffer = "fasz";
                     System.out.println(msgBuffer);
+                    out.write("ServerToClient");
+                    out.flush();
+                    out.close();
                 }
                 
-                out = new PrintWriter(socket.getOutputStream());
-                out.write("ServerToClient");
-                out.flush();
-                out.close();
+//                out = new PrintWriter(socket.getOutputStream());
+//                out.write("ServerToClient");
+//                out.flush();
+                //out.close();
                 
             } catch (IOException ex){
                 System.out.println(ex.getMessage());

@@ -32,30 +32,34 @@ public class NetworkBridge implements Runnable{
         
         Thread thread = new Thread(() -> {
             if (Server.clientID < 2){
+                ID = Server.clientID++;
                 try { socket = new Socket(IP, port); } 
                 catch (IOException ex) { System.out.println(ex.getMessage()); }
-                ID = Server.clientID++;
                 timer.cancel();
             }
             else {
                 System.out.println("Server is full at " + IP + ":" + port);
                 timer.cancel();
             }
+                    
             
-            
-            
-            try {                        
-                out = new PrintWriter(socket.getOutputStream());
-                
-                out.write("ClientToServer");
-                out.flush();
-                
-                
-                bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));                 
-                while ((msgBuffer = bf.readLine()) != null){
+            try {                                    
+//                out.write("ClientToServer");
+//                out.flush();
+//                out.close();
+                bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));    
+                               
+                while (/*(msgBuffer = bf.readLine()) != null*/true){
+                    out = new PrintWriter(socket.getOutputStream());
+                    out.write("ClientToServer");
+                    out.flush();
+                    out.close();
+                    
+                    msgBuffer = bf.readLine();
                     System.out.println(msgBuffer);
                 }
-                out.close();
+                //out.close();
+                
                 //NOT FINISHED
                 
             }
