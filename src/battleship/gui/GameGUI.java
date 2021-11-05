@@ -62,17 +62,34 @@ public class GameGUI extends JPanel {
 
         selecter.setLocation(50, 100);
         selecter.addShipSelectorListener(new ShipSelectorEvent() {
-            @Override
-            public void onSelect(int shipSize, boolean shipPlaceHorizontal) {
-                System.out.println("szam: " + shipSize);
-                ownBoardGUI.selectedShipSize = shipSize;
-                System.out.println("::" + shipPlaceHorizontal);
-                ownBoardGUI.shipPlaceHorizontal = shipPlaceHorizontal;
-            }
 
             @Override
             public void onRanOutOfShips(boolean ranOutOf) {
                 ownBoardGUI.canPlace = !ranOutOf;
+            }
+
+            @Override
+            public void onSelectShip(int shipSize) {
+                System.out.println("szam: " + shipSize);
+                ownBoardGUI.selectedShipSize = shipSize;
+            }
+
+            @Override
+            public void onSelectDirection(boolean shipPlaceHorizontal) {
+                System.out.println("Horizontal: " + shipPlaceHorizontal);
+                ownBoardGUI.shipPlaceHorizontal = shipPlaceHorizontal;
+            }
+
+            @Override
+            public void onClearBoard() {
+                ownBoardGUI.ClearBoard();
+                ownBoardGUI.canPlace = true;
+            }
+
+            @Override
+            public void onPlaceRandomShips() {
+                ownBoardGUI.canPlace = false;
+                ownBoardGUI.RandomPlace();
             }
         });
         this.add(selecter);

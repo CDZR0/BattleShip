@@ -328,4 +328,17 @@ public class PlayerBoardGUI extends BoardGUI {
 //        }
     }
 
+    public void ClearBoard() {
+        System.out.println("Clearing board");
+        for (CellGUI[] cell : cells) {
+            for (CellGUI cellGUI : cell) {
+                cellGUI.setCell(CellStatus.Empty);
+            }
+        }
+    }
+
+    public void RandomPlace() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
  */
 public class ShipSelecterGUI extends JPanel {
 
+    private final int shipTypeNumbers = 4;
     int selectedShipSize;
     boolean shipPlaceHorizontal;
     //int[] shipDB;
@@ -28,7 +29,6 @@ public class ShipSelecterGUI extends JPanel {
     public ShipSelecterGUI() {
         setLayout(null);
         setSize(700, 135);
-        setBackground(Color.CYAN);
 
         JPanel felso = new JPanel();
         felso.setBounds(0, 0, size().width, 35);
@@ -37,6 +37,7 @@ public class ShipSelecterGUI extends JPanel {
         JPanel also = new JPanel();
         also.setBounds(0, 35, size().width, 100);
         also.setLayout(null);
+        also.setBackground(Color.WHITE);
         this.add(also);
 
         JButton shipHorizontal = new JButton();
@@ -53,15 +54,42 @@ public class ShipSelecterGUI extends JPanel {
                     shipPlaceHorizontal = true;
                 }
                 for (ShipSelectorEvent listener : listeners) {
-                    listener.onSelect(selectedShipSize, shipPlaceHorizontal);
+                    listener.onSelectDirection(shipPlaceHorizontal);
                 }
             }
         });
         felso.add(shipHorizontal);
 
+        JButton clearBoard = new JButton();
+        clearBoard.setText("Clear board");
+        clearBoard.setBounds((size().width - 100) / 2, 65, 100, 35);
+        clearBoard.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                resetShips();
+                for (ShipSelectorEvent listener : listeners) {
+                    listener.onClearBoard();
+                }
+            }
+        });
+        felso.add(clearBoard);
+
+        JButton randomPlaceShips = new JButton();
+        randomPlaceShips.setText("Randomize ships");
+        randomPlaceShips.setBounds((size().width - 100) / 2, 65, 100, 35);
+        randomPlaceShips.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                setShipsPieceTo(0);
+                for (ShipSelectorEvent listener : listeners) {
+                    listener.onPlaceRandomShips();
+                }
+            }
+        });
+        felso.add(randomPlaceShips);
+
         listeners = new ArrayList<>();
 
-        int shipTypeNumbers = 4;
         selectedShipSize = shipTypeNumbers;
         shipPlaceHorizontal = true;
         //shipDB = new int[shipTypeNumbers];
@@ -84,6 +112,18 @@ public class ShipSelecterGUI extends JPanel {
             also.add(infoPanel);
             shipInfoPanels[i] = infoPanel;
 
+        }
+    }
+
+    private void setShipsPieceTo(int number) {
+        for (ShipInfoPanel shipInfoPanel : shipInfoPanels) {
+            shipInfoPanel.SetPiece(0);
+        }
+    }
+
+    private void resetShips() {
+        for (int i = 0; i < shipInfoPanels.length; i++) {
+            shipInfoPanels[i].SetPiece(shipTypeNumbers - i);
         }
     }
 
@@ -114,9 +154,13 @@ public class ShipSelecterGUI extends JPanel {
     }
 
     private void SelectShip(ShipInfoPanel infoPanel) {
+        for (ShipInfoPanel shipInfoPanel : shipInfoPanels) {
+            shipInfoPanel.UnSelect();
+        }
+        infoPanel.Select();
         //System.out.println("Selected size: " + selectedShipSize);
         for (ShipSelectorEvent listener : listeners) {
-            listener.onSelect(infoPanel.shipSize, shipPlaceHorizontal);
+            listener.onSelectShip(infoPanel.shipSize);
         }
     }
 
@@ -149,10 +193,25 @@ class ShipInfoPanel extends JPanel {
 
     public ShipInfoPanel(int shipSize, int piece) {
         //setLayout(null);
+        setBackground(Color.WHITE);
         this.shipSize = shipSize;
         this.piece = piece;
         felirat = new JLabel("1x" + (shipSize) + ": " + piece + "db");
         add(felirat);
+    }
+
+    protected void SetPiece(int piece) {
+        this.piece = piece;
+        felirat.setText("1x" + (shipSize) + ": " + piece + "db");
+        setVisible(true);
+    }
+
+    public void Select() {
+        setBackground(Color.LIGHT_GRAY);
+    }
+
+    public void UnSelect() {
+        setBackground(Color.WHITE);
     }
 
     public int getPiece() {
@@ -162,7 +221,7 @@ class ShipInfoPanel extends JPanel {
     public void decrease() {
         piece--;
         felirat.setText("1x" + (shipSize) + ": " + piece + "db");
-        if (piece==0) {
+        if (piece == 0) {
             setVisible(false);
         }
     }
