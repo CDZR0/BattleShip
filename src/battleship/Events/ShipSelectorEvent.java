@@ -7,6 +7,13 @@ package battleship.Events;
  */
 public interface ShipSelectorEvent {
 
-    void onSelect(int shipSize, boolean shipPlaceHorizontal);
+    void onSelectShip(int shipSize);
+
+    void onSelectDirection(boolean shipPlaceHorizontal);
+
     void onRanOutOfShips(boolean ranOutOf);
+
+    void onClearBoard();
+    
+    void onPlaceRandomShips();
 }
