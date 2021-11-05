@@ -39,6 +39,7 @@ public class CellGUI extends JPanel {
                 break;
             case NearShip:
                 this.cellStatus = cellStatus;
+                setBackground(Color.BLUE);
                 break;
             case Ship:
                 placeShip();
@@ -73,10 +74,10 @@ public class CellGUI extends JPanel {
         }
     }
 
-    public CellStatus getStatus(){
+    public CellStatus getStatus() {
         return cellStatus;
     }
-    
+
     public int getI() {
         return i;
     }

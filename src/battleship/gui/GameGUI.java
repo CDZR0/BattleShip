@@ -1,9 +1,12 @@
 //Csaba
 package battleship.gui;
 
-import battleship.gui.Game.BoardGUI;
+import battleship.Events.ShipPlaceEvent;
+import battleship.Events.ShipSelectorEvent;
 import battleship.gui.Game.ShipSelecterGUI;
 import battleship.Logic.Board;
+import battleship.gui.Game.EnemyBoardGUI;
+import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -26,12 +29,18 @@ public class GameGUI extends JPanel {
         setBackground(Color.yellow);
 
         JLabel title = new JLabel();
+        JButton backButton = new JButton();
+        ownBoard = new Board();
+        enemyBoard = new Board();
+        PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
+        EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
+        selecter = new ShipSelecterGUI();
+
         title.setText("Game");
         title.setBackground(Color.red);
         title.setBounds(10, 10, 100, 35);
         this.add(title);
 
-        JButton backButton = new JButton();
         backButton.setText("Back");
         backButton.setSize(100, 35);
         backButton.setLocation((size().width - 100) / 2, 222);
@@ -44,37 +53,45 @@ public class GameGUI extends JPanel {
         });
         this.add(backButton);
 
-        selecter = new ShipSelecterGUI();
-        selecter.setLocation(50, 100);
-        this.add(selecter);
+        ownBoardGUI.setLocation(50, 250);
+        this.add(ownBoardGUI);
 
-        ownBoard = new Board();
-        enemyBoard = new Board();
-        BoardGUI boardGUI = new BoardGUI(ownBoard);
-        boardGUI.setLocation(50, 250);
-        this.add(boardGUI);
-
-        BoardGUI enemyBoardGUI = new BoardGUI(enemyBoard);
         enemyBoardGUI.setLocation(450, 250);
         enemyBoardGUI.setEnabled(false);
         this.add(enemyBoardGUI);
 
-        JButton shipHorizontal = new JButton();
-        shipHorizontal.setText("Horizontal");
-        shipHorizontal.setBounds((size().width - 100) / 2, 65, 100, 35);
-        shipHorizontal.addActionListener(new ActionListener() {
+        selecter.setLocation(50, 100);
+        selecter.addShipSelectorListener(new ShipSelectorEvent() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent ae) {
-                if (shipHorizontal.getText() == "Horizontal") {
-                    shipHorizontal.setText("Vertical");
-                    boardGUI.shipPlaceHorizontal = false;
-                } else {
-                    shipHorizontal.setText("Horizontal");
-                    boardGUI.shipPlaceHorizontal = true;
-                }
+            public void onSelect(int shipSize, boolean shipPlaceHorizontal) {
+                System.out.println("szam: " + shipSize);
+                ownBoardGUI.selectedShipSize = shipSize;
+                System.out.println("::" + shipPlaceHorizontal);
+                ownBoardGUI.shipPlaceHorizontal = shipPlaceHorizontal;
+            }
+
+            @Override
+            public void onRanOutOfShips(boolean ranOutOf) {
+                ownBoardGUI.canPlace = !ranOutOf;
             }
         });
-        this.add(shipHorizontal);
+        this.add(selecter);
+
+        ownBoardGUI.addPlaceOrPickUpListener(new ShipPlaceEvent() {
+            @Override
+            public void onPlace(int shipSize, boolean shipPlaceHorizontal) {
+                System.out.println("Placed ship size: " + shipSize + " horizontal: " + shipPlaceHorizontal);
+                selecter.LerakTablara(shipSize);
+            }
+
+            @Override
+            public void onPickUp(int shipSize, boolean shipPlacehorizontal) {
+                System.out.println("Picked up ship size: " + shipSize + " horizontal: " + shipPlacehorizontal);
+                selecter.FelveszTablarol(shipSize);
+                ownBoardGUI.canPlace = true;
+            }
+        });
+        repaint();
     }
 
     public GameGUI(String ip) {
