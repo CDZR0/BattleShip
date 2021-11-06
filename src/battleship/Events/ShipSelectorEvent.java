@@ -11,7 +11,7 @@ public interface ShipSelectorEvent {
 
     void onSelectDirection(boolean shipPlaceHorizontal);
 
-    void onRanOutOfShips(boolean ranOutOf);
+    void onRanOutOfShips();
 
     void onClearBoard();
 

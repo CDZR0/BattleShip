@@ -30,21 +30,22 @@ public class GameGUI extends JPanel {
 
         JLabel title = new JLabel();
         JButton backButton = new JButton();
-        ownBoard = Board.TesztBoard();
+        ownBoard = new Board();
         enemyBoard = new Board();
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
         System.out.println(ownBoard.toString());
 
-        title.setText("Game");
+        title.setText("Game infos");
         title.setBackground(Color.red);
-        title.setBounds(10, 10, 100, 35);
+        title.setSize(300, 35);
+        title.setLocation((this.size().width - title.size().width) / 2, 10);
         this.add(title);
 
         backButton.setText("Back");
         backButton.setSize(100, 35);
-        backButton.setLocation((size().width - 100) / 2, 222);
+        backButton.setLocation(10, 10);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
@@ -65,8 +66,9 @@ public class GameGUI extends JPanel {
         selecter.addShipSelectorListener(new ShipSelectorEvent() {
 
             @Override
-            public void onRanOutOfShips(boolean ranOutOf) {
-                ownBoardGUI.canPlace = !ranOutOf;
+            public void onRanOutOfShips() {
+                ownBoardGUI.canPlace = false;
+                selecter.setCanDoneButton(true);
             }
 
             @Override
@@ -85,17 +87,19 @@ public class GameGUI extends JPanel {
             public void onClearBoard() {
                 ownBoardGUI.ClearBoard();
                 ownBoardGUI.canPlace = true;
+                selecter.setCanDoneButton(false);
             }
 
             @Override
             public void onPlaceRandomShips() {
                 ownBoardGUI.canPlace = false;
                 ownBoardGUI.RandomPlace();
+                selecter.setCanDoneButton(true);
             }
 
             @Override
             public void onDone() {
-                //ownBoardGUI.setEnabled(false);
+                ownBoardGUI.setEnabled(false);
                 System.out.println(ownBoard.toString());
             }
         });
@@ -113,6 +117,7 @@ public class GameGUI extends JPanel {
                 System.out.println("Picked up ship size: " + shipSize + " horizontal: " + shipPlacehorizontal);
                 selecter.FelveszTablarol(shipSize);
                 ownBoardGUI.canPlace = true;
+                selecter.setCanDoneButton(false);
             }
         });
         repaint();
@@ -121,9 +126,9 @@ public class GameGUI extends JPanel {
     public GameGUI(String ip) {
 
     }
-    
-    private void sendReady(Board board){
-        
+
+    private void sendReady(Board board) {
+
     }
-    
+
 }

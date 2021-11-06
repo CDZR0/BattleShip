@@ -93,13 +93,14 @@ public class ShipSelecterGUI extends JPanel {
         doneButton = new JButton();
         doneButton.setText("Done");
         doneButton.setBounds(felso.size().width - 120, 0, 100, 35);
-        //doneButton.setEnabled(false);
+        doneButton.setEnabled(false);
         doneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 for (ShipSelectorEvent listener : listeners) {
                     listener.onDone();
                 }
+                setVisible(false);
             }
         });
         felso.add(doneButton);
@@ -143,6 +144,10 @@ public class ShipSelecterGUI extends JPanel {
         }
     }
 
+    public void setCanDoneButton(boolean value){
+        doneButton.setEnabled(value);
+    }
+    
     public void addShipSelectorListener(ShipSelectorEvent listener) {
         listeners.add(listener);
     }
@@ -195,7 +200,7 @@ public class ShipSelecterGUI extends JPanel {
             --i;
         }
         for (ShipSelectorEvent listener : listeners) {
-            listener.onRanOutOfShips(true);
+            listener.onRanOutOfShips();
         }
     }
 
