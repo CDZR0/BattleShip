@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 public class CellGUI extends JPanel {
 
     private final Color backgroundColor = Color.WHITE;
-    private final Color selectedColor = Color.LIGHT_GRAY;
     private final Color shipColor = Color.GRAY;
     private final int i;
     private final int j;
@@ -64,13 +63,15 @@ public class CellGUI extends JPanel {
 
     public void select() {
         if (cellStatus == CellStatus.Empty) {
-            setBackground(selectedColor);
+//            setBackground(selectedColor);
+            setColorSelected();
         }
     }
 
     public void unSelect() {
         if (cellStatus == CellStatus.Empty) {
-            setBackground(backgroundColor);
+            //setBackground(backgroundColor);
+            SetColorUnSelected();
         }
     }
 
@@ -88,6 +89,27 @@ public class CellGUI extends JPanel {
 
     public boolean isIJ(int i, int j) {
         return this.i == i && this.j == j;
+    }
+
+    private void setColorSelected() {
+        int darkeningLevel = -64;
+
+        Color color = new Color(
+                getBackground().getRed() + darkeningLevel < 0 ? 0 : getBackground().getRed() + darkeningLevel,
+                getBackground().getGreen() + darkeningLevel < 0 ? 0 : getBackground().getGreen() + darkeningLevel,
+                getBackground().getBlue() + darkeningLevel < 0 ? 0 : getBackground().getBlue() + darkeningLevel
+        );
+        setBackground(color);
+    }
+
+    private void SetColorUnSelected() {
+        int darkeningLevel = 64;
+        Color color = new Color(
+                getBackground().getRed() + darkeningLevel > 256 ? 255 : getBackground().getRed() + darkeningLevel,
+                getBackground().getGreen() + darkeningLevel > 256 ? 255 : getBackground().getGreen() + darkeningLevel,
+                getBackground().getBlue() + darkeningLevel > 256 ? 255 : getBackground().getBlue() + darkeningLevel
+        );
+        setBackground(color);
     }
 
 }
