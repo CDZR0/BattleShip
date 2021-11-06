@@ -76,10 +76,10 @@ public class PlayerBoardGUI extends BoardGUI {
 
                 });
                 cells[i][j] = seged;
+                seged.setCell(board.getCellstatus()[i][j]);
                 this.add(seged);
             }
         }
-
     }
 
     private void setNearAreas(CellGUI cell, CellStatus status) {
@@ -219,36 +219,6 @@ public class PlayerBoardGUI extends BoardGUI {
         }
     }
 
-    private void cellEntered_OLD_2(CellGUI cell) {
-        selectedCells.clear();
-
-        if (shipPlaceHorizontal) { //Vízszintes
-            if (cell.getI() + selectedShipSize - 1 <= 9) { //ha elfér
-                for (int i = 0; i < selectedShipSize; i++) {
-                    cells[i + cell.getI()][cell.getJ()].select();
-                    selectedCells.add(cells[i + cell.getI()][cell.getJ()]);
-                }
-            } else { // ha nem fér el
-                for (int i = cells.length - selectedShipSize; i < cells.length; i++) {
-                    cells[i][cell.getJ()].select();
-                    selectedCells.add(cells[i][cell.getJ()]);
-                }
-            }
-        } else { //Függőleges
-            if (cell.getJ() + selectedShipSize - 1 <= 9) { //ha elfér
-                for (int i = 0; i < selectedShipSize; i++) {
-                    cells[cell.getI()][cell.getJ() + i].select();
-                    selectedCells.add(cells[cell.getI()][cell.getJ() + i]);
-                }
-            } else { //ha nem fér el
-                for (int i = cells.length - selectedShipSize; i < cells.length; i++) {
-                    cells[cell.getI()][i].select();
-                    selectedCells.add(cells[cell.getI()][i]);
-                }
-            }
-        }
-    }
-
     private boolean isEmptyPlace(CellGUI cell) {
         //System.out.println("#######################");
         if (shipPlaceHorizontal) {
@@ -299,39 +269,10 @@ public class PlayerBoardGUI extends BoardGUI {
         return true;
     }
 
-    private void selectCellsHorizontal(CellGUI cell) {
-
-    }
-
     private void cellExited(CellGUI cell) {
         for (CellGUI selectedCell : selectedCells) {
             selectedCell.unSelect();
         }
-//        if (shipPlaceHorizontal) { //Vízszintes
-//            if (cell.getI() + selectedShipSize - 1 <= 9) { //ha elfér
-//                for (int i = selectedShipSize - 1; i >= 0; i--) {
-//                    if (i + cell.getI() < cells.length) {
-//                        cells[i + cell.getI()][cell.getJ()].unSelect();
-//                    }
-//                }
-//            } else { // ha nem fér el
-//                for (int i = cells.length - selectedShipSize; i < cells.length; i++) {
-//                    cells[i][cell.getJ()].unSelect();
-//                }
-//            }
-//        } else { //Függőleges
-//            if (cell.getJ() + selectedShipSize - 1 <= 9) { //ha elfér
-//                for (int i = selectedShipSize - 1; i >= 0; i--) {
-//                    if (i + cell.getJ() < cells.length) {
-//                        cells[cell.getI()][cell.getJ() + i].unSelect();
-//                    }
-//                }
-//            } else { // ha nem fér el
-//                for (int i = cells.length - selectedShipSize; i < cells.length; i++) {
-//                    cells[cell.getI()][i].unSelect();
-//                }
-//            }
-//        }
     }
 
     public void ClearBoard() {
@@ -344,11 +285,12 @@ public class PlayerBoardGUI extends BoardGUI {
     }
 
     public void RandomPlace() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void getCells() {
-
+        board = Board.RandomBoard();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                cells[i][j].setCell(board.getCellstatus()[i][j]);
+            }
+        }
     }
 
 }

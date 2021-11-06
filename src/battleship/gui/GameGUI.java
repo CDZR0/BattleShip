@@ -30,7 +30,7 @@ public class GameGUI extends JPanel {
 
         JLabel title = new JLabel();
         JButton backButton = new JButton();
-        ownBoard = new Board();
+        ownBoard = Board.TesztBoard();
         enemyBoard = new Board();
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
@@ -95,7 +95,7 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onDone() {
-                ownBoardGUI.setEnabled(false);
+                //ownBoardGUI.setEnabled(false);
                 System.out.println(ownBoard.toString());
             }
         });
