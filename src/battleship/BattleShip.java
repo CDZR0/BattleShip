@@ -19,24 +19,20 @@ public class BattleShip extends Application {
         Settings settings = Settings.getInstance();
         //DEBUG
         
-//        Networking.Server server = new Networking.Server();
-//        Thread serverThread = new Thread(server);
-//        serverThread.start();
-//        
-//        Networking.Client client = new Networking.Client();
-//        Thread clientThread = new Thread(client);
-//        clientThread.start();
-
-        Server server = new Server("0");
+        Networking.Server server = new Networking.Server();
+        Thread serverThread = new Thread(server);
+        serverThread.start();   
         
-        NetworkBridge nwBridge = new NetworkBridge();
-        nwBridge.ConnectServer(Settings.getIP(), Settings.getPort());
+        Networking.Client client0 = new Networking.Client();
+        Thread clientThread0 = new Thread(client0);
+        clientThread0.start();
         
-        NetworkBridge nwBridge2 = new NetworkBridge();
-        nwBridge2.ConnectServer(Settings.getIP(), Settings.getPort());
+        Networking.Client client1 = new Networking.Client();
+        Thread clientThread1 = new Thread(client1);
+        clientThread1.start();
+        client1.sendMessage("hahó1");
         
-        //NetworkBridge partner = new NetworkBridge();
-        //partner.ConnectServer(Settings.ip, Integer.parseInt(Settings.port));
+        client0.sendMessage("hahó2");
         
         //DEBUG
         
