@@ -14,7 +14,7 @@ public class EnemyBoardGUI extends BoardGUI {
     public EnemyBoardGUI(Board board) {
         super(board);
         
-         cells = new CellGUI[board.getN()][board.getN()];
+         cells = new CellGUI[board.getNLength()][board.getNLength()];
 
         int width = super.size().width / cells.length;
 

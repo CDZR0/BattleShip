@@ -35,6 +35,7 @@ public class GameGUI extends JPanel {
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
+        System.out.println(ownBoard.toString());
 
         title.setText("Game");
         title.setBackground(Color.red);
@@ -91,6 +92,12 @@ public class GameGUI extends JPanel {
                 ownBoardGUI.canPlace = false;
                 ownBoardGUI.RandomPlace();
             }
+
+            @Override
+            public void onDone() {
+                ownBoardGUI.setEnabled(false);
+                System.out.println(ownBoard.toString());
+            }
         });
         this.add(selecter);
 
@@ -114,4 +121,9 @@ public class GameGUI extends JPanel {
     public GameGUI(String ip) {
 
     }
+    
+    private void sendReady(Board board){
+        
+    }
+    
 }

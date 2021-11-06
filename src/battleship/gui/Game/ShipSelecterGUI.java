@@ -25,12 +25,14 @@ public class ShipSelecterGUI extends JPanel {
     //int[] shipDB;
     ShipInfoPanel[] shipInfoPanels;
     private List<ShipSelectorEvent> listeners;
+    JButton doneButton;
 
     public ShipSelecterGUI() {
         setLayout(null);
         setSize(700, 135);
 
         JPanel felso = new JPanel();
+        felso.setLayout(null);
         felso.setBounds(0, 0, size().width, 35);
         this.add(felso);
 
@@ -42,7 +44,7 @@ public class ShipSelecterGUI extends JPanel {
 
         JButton shipHorizontal = new JButton();
         shipHorizontal.setText("Horizontal");
-        shipHorizontal.setBounds((size().width - 100) / 2, 65, 100, 35);
+        shipHorizontal.setBounds(20, 0, 100, 35);
         shipHorizontal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
@@ -62,7 +64,7 @@ public class ShipSelecterGUI extends JPanel {
 
         JButton clearBoard = new JButton();
         clearBoard.setText("Clear board");
-        clearBoard.setBounds((size().width - 100) / 2, 65, 100, 35);
+        clearBoard.setBounds(140, 0, 100, 35);
         clearBoard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
@@ -76,7 +78,7 @@ public class ShipSelecterGUI extends JPanel {
 
         JButton randomPlaceShips = new JButton();
         randomPlaceShips.setText("Randomize ships");
-        randomPlaceShips.setBounds((size().width - 100) / 2, 65, 100, 35);
+        randomPlaceShips.setBounds(260, 0, 140, 35);
         randomPlaceShips.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
@@ -87,6 +89,20 @@ public class ShipSelecterGUI extends JPanel {
             }
         });
         felso.add(randomPlaceShips);
+
+        doneButton = new JButton();
+        doneButton.setText("Done");
+        doneButton.setBounds(felso.size().width - 120, 0, 100, 35);
+        //doneButton.setEnabled(false);
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                for (ShipSelectorEvent listener : listeners) {
+                    listener.onDone();
+                }
+            }
+        });
+        felso.add(doneButton);
 
         listeners = new ArrayList<>();
 
@@ -117,7 +133,7 @@ public class ShipSelecterGUI extends JPanel {
 
     private void setShipsPieceTo(int number) {
         for (ShipInfoPanel shipInfoPanel : shipInfoPanels) {
-            shipInfoPanel.SetPiece(0);
+            shipInfoPanel.SetPiece(number);
         }
     }
 
@@ -206,16 +222,16 @@ class ShipInfoPanel extends JPanel {
         setVisible(true);
     }
 
+    public int getPiece() {
+        return this.piece;
+    }
+
     public void Select() {
         setBackground(Color.LIGHT_GRAY);
     }
 
     public void UnSelect() {
         setBackground(Color.WHITE);
-    }
-
-    public int getPiece() {
-        return this.piece;
     }
 
     public void decrease() {

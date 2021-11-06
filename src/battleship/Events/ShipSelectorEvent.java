@@ -14,6 +14,8 @@ public interface ShipSelectorEvent {
     void onRanOutOfShips(boolean ranOutOf);
 
     void onClearBoard();
-    
+
     void onPlaceRandomShips();
+
+    void onDone();
 }

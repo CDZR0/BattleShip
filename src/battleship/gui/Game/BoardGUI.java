@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  */
 public class BoardGUI extends JPanel {
 
-    private Board board;
+    protected Board board;
     protected CellGUI[][] cells;
 
     public BoardGUI(Board board) {

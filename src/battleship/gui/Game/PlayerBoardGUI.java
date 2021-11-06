@@ -39,7 +39,7 @@ public class PlayerBoardGUI extends BoardGUI {
         selectedCells = new ArrayList<CellGUI>();
         this.listeners = new ArrayList<>();
 
-        cells = new CellGUI[board.getN()][board.getN()];
+        cells = new CellGUI[board.getNLength()][board.getNLength()];
 
         int width = super.size().width / cells.length;
 
@@ -52,20 +52,25 @@ public class PlayerBoardGUI extends BoardGUI {
 
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        cellClick(seged);
+                        if (isEnabled()) {
+                            cellClick(seged);
+                        }
                     }
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        if (canPlace) {
-                            cellEntered(seged);
+                        if (isEnabled()) {
+                            if (canPlace) {
+                                cellEntered(seged);
+                            }
                         }
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-
-                        cellExited(seged);
+                        if (isEnabled()) {
+                            cellExited(seged);
+                        }
 
                     }
 
@@ -133,11 +138,12 @@ public class PlayerBoardGUI extends BoardGUI {
 
     private void cellClick(CellGUI cell) {
         if (cell.getStatus() != CellStatus.Ship && canPlace) { //Ha lerak
-            for (CellGUI selectedCell : selectedCells) {
-                selectedCell.setCell(CellStatus.Ship);
-            }
             if (selectedCells.size() > 0) {
                 System.out.println("lerak");
+                for (CellGUI selectedCell : selectedCells) {
+                    selectedCell.setCell(CellStatus.Ship);
+                    board.setCell(selectedCell.getI(), selectedCell.getJ(), selectedCell.getStatus());
+                }
                 shipPlaced();
                 //setNearAreas(cell, CellStatus.NearShip);
             }
@@ -339,6 +345,10 @@ public class PlayerBoardGUI extends BoardGUI {
 
     public void RandomPlace() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void getCells() {
+
     }
 
 }

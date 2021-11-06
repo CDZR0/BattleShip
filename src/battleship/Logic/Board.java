@@ -17,7 +17,28 @@ public class Board {
         }
     }
 
-    public int getN() {
+    public void setCell(int i, int j, CellStatus status) {
+        cellstatus[i][j] = status;
+    }
+
+    public int getNLength() {
         return cellstatus.length;
     }
+
+    public CellStatus[][] getCellstatus() {
+        return cellstatus;
+    }
+
+    @Override
+    public String toString() {
+        String a = "";
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                a += cellstatus[i][j] + " ";
+            }
+            a += "\n";
+        }
+        return "Board:\n" + a;
+    }
+
 }
