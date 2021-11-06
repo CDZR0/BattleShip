@@ -10,14 +10,17 @@ public class Server implements Runnable {
     public GameLogic gameLogic;
     
     public ServerSocket sSocket;
-    public Socket cSocket1, cSocket2;
     private String msgBuffer;
     private PrintWriter out;
-    private BufferedReader in;
+    private BufferedReader bf;
     
     public static byte clientID;
     
-    Server(NetworkBridge host){
+//    Server(NetworkBridge host){
+//        gameLogic = new GameLogic();
+//    }
+    
+    Server(String hostID){
         gameLogic = new GameLogic();
     }
     
@@ -31,10 +34,36 @@ public class Server implements Runnable {
     
     public void ServeClient(){
         Thread thread = new Thread(() -> {
+            Socket socket;
             try {
-                Socket client = sSocket.accept();
+                socket = sSocket.accept();
                 System.out.println("client Connected");
             } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+                socket = new Socket();
+            }
+            
+            try{
+                bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                
+                System.out.println("Reading socket");
+                
+                while (/*(msgBuffer = bf.readLine()) != null*/true){
+                    out = new PrintWriter(socket.getOutputStream());
+                    msgBuffer = bf.readLine();
+                    msgBuffer = "fasz";
+                    System.out.println(msgBuffer);
+                    out.write("ServerToClient");
+                    out.flush();
+                    out.close();
+                }
+                
+//                out = new PrintWriter(socket.getOutputStream());
+//                out.write("ServerToClient");
+//                out.flush();
+                //out.close();
+                
+            } catch (IOException ex){
                 System.out.println(ex.getMessage());
             }
             

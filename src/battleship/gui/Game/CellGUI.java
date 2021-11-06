@@ -1,0 +1,115 @@
+//Csaba
+package battleship.gui.Game;
+
+import battleship.Logic.CellStatus;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author Csaba
+ */
+public class CellGUI extends JPanel {
+
+    private final Color backgroundColor = Color.WHITE;
+    private final Color shipColor = Color.GRAY;
+    private final int i;
+    private final int j;
+    private CellStatus cellStatus;
+
+    public CellGUI(int i, int j) {
+        this.i = i;
+        this.j = j;
+        cellStatus = CellStatus.Empty;
+        setBackground(backgroundColor);
+        setName("Button: " + i + ":" + j);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    }
+
+    public void setCell(CellStatus cellStatus) {
+        switch (cellStatus) {
+            case Empty:
+                this.cellStatus = cellStatus;
+                setBackground(backgroundColor);
+                break;
+            case EmptyHit:
+                this.cellStatus = cellStatus;
+                break;
+            case NearShip:
+                this.cellStatus = cellStatus;
+                setBackground(Color.BLUE);
+                break;
+            case Ship:
+                placeShip();
+                break;
+            case ShipHit:
+                this.cellStatus = cellStatus;
+                break;
+            case ShipSunk:
+                this.cellStatus = cellStatus;
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
+
+    private void placeShip() {
+        if (cellStatus == CellStatus.Empty) {
+            cellStatus = CellStatus.Ship;
+            setBackground(shipColor);
+        }
+    }
+
+    public void select() {
+        if (cellStatus == CellStatus.Empty) {
+//            setBackground(selectedColor);
+            setColorSelected();
+        }
+    }
+
+    public void unSelect() {
+        if (cellStatus == CellStatus.Empty) {
+            //setBackground(backgroundColor);
+            SetColorUnSelected();
+        }
+    }
+
+    public CellStatus getStatus() {
+        return cellStatus;
+    }
+
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
+    }
+
+    public boolean isIJ(int i, int j) {
+        return this.i == i && this.j == j;
+    }
+
+    private void setColorSelected() {
+        int darkeningLevel = -64;
+
+        Color color = new Color(
+                getBackground().getRed() + darkeningLevel < 0 ? 0 : getBackground().getRed() + darkeningLevel,
+                getBackground().getGreen() + darkeningLevel < 0 ? 0 : getBackground().getGreen() + darkeningLevel,
+                getBackground().getBlue() + darkeningLevel < 0 ? 0 : getBackground().getBlue() + darkeningLevel
+        );
+        setBackground(color);
+    }
+
+    private void SetColorUnSelected() {
+        int darkeningLevel = 64;
+        Color color = new Color(
+                getBackground().getRed() + darkeningLevel > 256 ? 255 : getBackground().getRed() + darkeningLevel,
+                getBackground().getGreen() + darkeningLevel > 256 ? 255 : getBackground().getGreen() + darkeningLevel,
+                getBackground().getBlue() + darkeningLevel > 256 ? 255 : getBackground().getBlue() + darkeningLevel
+        );
+        setBackground(color);
+    }
+
+}
