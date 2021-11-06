@@ -1,4 +1,3 @@
-//Csaba
 package battleship;
 
 import java.io.IOException;
@@ -30,9 +29,13 @@ public class BattleShip extends Application {
         Networking.Client client1 = new Networking.Client();
         Thread clientThread1 = new Thread(client1);
         clientThread1.start();
-        client1.sendMessage("hahó1");
         
-        client0.sendMessage("hahó2");
+        client1.sendMessage("hahó1");
+        client1.sendMessage("hahó2");
+        
+        client0.sendMessage("hahóFromTheOtherSide");
+        client0.sendMessage("márta");
+        client0.sendMessage("szökik a málna");
         
         //DEBUG
         

@@ -5,48 +5,53 @@ import java.io.*;
 import battleship.*;
 
 public class Server implements Runnable{
-    String BroadcastMessage = "ÓÓÓÓÓÓÓÓÓ";
     ServerSocket sSocket = null;
-    GameLogic logicHandler;
+    GameLogic gameLogic;
     
-    public Server(){
-        try {
+    private static int clientID = 0;
+    
+    public Server()
+    {
+        try 
+        {
             sSocket = new ServerSocket(Settings.getPort());
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             System.out.println(ex.getMessage());
         }
-        logicHandler = new GameLogic();
+        gameLogic = new GameLogic();
     } 
     
-    private void ServeClient(){
+    private void ServeClient()
+    {
         Thread thread = new Thread(() -> {
-            BufferedReader bfr = null;
-            BufferedWriter bfw = null;
-            Socket socket = null;
-        
+            BufferedReader bfr;
+            BufferedWriter bfw;
+            Socket socket;
+            
             
             while(!BattleShip.quit)
             {
                 try 
                 {
                     socket = sSocket.accept();
+                    Integer ID = clientID++;
                     bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
                     while(!BattleShip.quit)
                     {
                         String inMsg = bfr.readLine();
-                        BroadcastMessage = inMsg;
                         
-                        String outMsg = BroadcastMessage;
-                        bfw.write(outMsg);
+                        String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
+                        
+                        bfw.write(BroadcastMessage);
                         bfw.newLine();
                         bfw.flush();
                         
-                        if (inMsg != null && inMsg.equals("QUIT")) {
-                            break;
-                        }
-                        if (outMsg != null && outMsg.equals("QUIT")) {
+                        if (BroadcastMessage != null && BroadcastMessage.equals("QUIT")) 
+                        {
                             break;
                         }
                     }
@@ -61,9 +66,9 @@ public class Server implements Runnable{
     }
     
     @Override
-    public void run() {
+    public void run() 
+    {
         ServeClient();
         ServeClient();
     }
-    
 }
