@@ -10,10 +10,13 @@ import java.lang.reflect.Field;
 import java.util.Scanner;
 
 public class Settings {
-    public static String ip;
-    public static String port;   
+    private static final Settings settings = new Settings();
     
-    public static void Init(){
+    public static String ip;
+    
+    public static String port;
+    
+    public static Settings getInstance(){
         try{
             File file = new File("settings.cfg");
             Scanner reader = new Scanner(file);
@@ -40,6 +43,7 @@ public class Settings {
             
             WriteFile();
         }
+        return settings;
     }
     
     public static void WriteFile(){
@@ -62,5 +66,13 @@ public class Settings {
         catch(IOException | IllegalAccessException ex){
             System.out.println(ex.getMessage());
         }
+    }
+    
+    public static String getIP() {
+        return ip;
+    }
+
+    public static int getPort() {
+        return Integer.parseInt(port);
     }
 }

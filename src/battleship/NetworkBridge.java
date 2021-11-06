@@ -44,9 +44,9 @@ public class NetworkBridge implements Runnable{
                     
             
             try {                                    
-//                out.write("ClientToServer");
-//                out.flush();
-//                out.close();
+                out.write("ClientToServer");
+                //out.newLine();
+                out.flush();
                 bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));    
                                
                 while (/*(msgBuffer = bf.readLine()) != null*/true){
@@ -77,14 +77,6 @@ public class NetworkBridge implements Runnable{
         socket.close();
     }
     
-    public void CreateServer() throws IOException{
-        server = new Server(this);
-        serverThread = new Thread(server);
-        serverThread.start();
-        ConnectServer(Settings.ip, Integer.parseInt(Settings.port));
-        //Create TCP/IP server
-    }
-    
     public void CloseServer(){
         try{
             serverThread.join();
@@ -93,14 +85,6 @@ public class NetworkBridge implements Runnable{
         catch(IOException | InterruptedException ex){
             System.out.println(ex.getMessage());
         }
-    }
-    
-    public void SendData(){
-        //Send the data received from a client to the server
-    }
-    
-    public void ReceiveData(){
-        //Send the data received from the server to a client
     }
 
     @Override
