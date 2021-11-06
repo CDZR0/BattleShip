@@ -48,22 +48,6 @@ public class MenuGUI extends JFrame {
         title.setLocation(0, 0);
         menu.add(title);
 
-        GameGUI gameGUI = new GameGUI();
-        gameGUI.setBounds(0, 0, this.size().width, this.size().height);
-        gameGUI.setVisible(false);
-        gameGUI.addComponentListener(new ComponentAdapter() {
-            public void componentShown(ComponentEvent e) {
-
-            }
-
-            public void componentHidden(ComponentEvent e) {
-                menu.setVisible(true);
-            }
-        });
-        //this.setGlassPane(gameGUI);
-
-        this.add(gameGUI);
-
         newGame = new JButton();
         newGame.setText("New game");
         newGame.setSize(buttonWidth, buttonHeight);
@@ -73,7 +57,8 @@ public class MenuGUI extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("new");
                 menu.setVisible(false);
-                gameGUI.setVisible(true);
+                //gameGUI.setVisible(true);
+                createGameGUI();
             }
         });
         menu.add(newGame);
@@ -122,6 +107,23 @@ public class MenuGUI extends JFrame {
         joinGame.setVisible(value);
         settingsButton.setVisible(value);
         exitButton.setVisible(value);
+    }
+
+    private void createGameGUI() {
+        GameGUI gameGUI = new GameGUI();
+        gameGUI.setBounds(0, 0, this.size().width, this.size().height);
+        //gameGUI.setVisible(false);
+        gameGUI.addComponentListener(new ComponentAdapter() {
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            public void componentHidden(ComponentEvent e) {
+                menu.setVisible(true);
+            }
+        });
+
+        this.add(gameGUI);
     }
 
 }
