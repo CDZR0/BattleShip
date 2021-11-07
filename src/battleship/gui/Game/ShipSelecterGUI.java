@@ -230,6 +230,7 @@ class ShipInfoPanel extends JPanel {
             setEnabled(true);
         } else {
             setEnabled(false);
+            UnSelect();
         }
     }
 
@@ -250,6 +251,7 @@ class ShipInfoPanel extends JPanel {
         felirat.setText("1x" + (shipSize) + ": " + piece + "db");
         if (piece == 0) {
             setEnabled(false);
+            UnSelect();
         }
     }
 
