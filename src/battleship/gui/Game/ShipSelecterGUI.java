@@ -123,7 +123,9 @@ public class ShipSelecterGUI extends JPanel {
             infoPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    SelectShip(infoPanel);
+                    if (isEnabled()) {
+                        SelectShip(infoPanel);
+                    }
                 }
             });
             also.add(infoPanel);
@@ -144,10 +146,10 @@ public class ShipSelecterGUI extends JPanel {
         }
     }
 
-    public void setCanDoneButton(boolean value){
+    public void setCanDoneButton(boolean value) {
         doneButton.setEnabled(value);
     }
-    
+
     public void addShipSelectorListener(ShipSelectorEvent listener) {
         listeners.add(listener);
     }
@@ -224,7 +226,11 @@ class ShipInfoPanel extends JPanel {
     protected void SetPiece(int piece) {
         this.piece = piece;
         felirat.setText("1x" + (shipSize) + ": " + piece + "db");
-        setVisible(true);
+        if (piece > 0) {
+            setEnabled(true);
+        } else {
+            setEnabled(false);
+        }
     }
 
     public int getPiece() {
@@ -243,14 +249,14 @@ class ShipInfoPanel extends JPanel {
         piece--;
         felirat.setText("1x" + (shipSize) + ": " + piece + "db");
         if (piece == 0) {
-            setVisible(false);
+            setEnabled(false);
         }
     }
 
     public void increase() {
         piece++;
         felirat.setText("1x" + (shipSize) + ": " + piece + "db");
-        setVisible(true);
+        setEnabled(true);
     }
 
 }
