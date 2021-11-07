@@ -139,7 +139,6 @@ public class PlayerBoardGUI extends BoardGUI {
     private void cellClick(CellGUI cell) {
         if (cell.getStatus() != CellStatus.Ship && canPlace) { //Ha lerak
             if (selectedCells.size() > 0) {
-                System.out.println("lerak");
                 for (CellGUI selectedCell : selectedCells) {
                     selectedCell.setCell(CellStatus.Ship);
                     board.setCell(selectedCell.getI(), selectedCell.getJ(), selectedCell.getStatus());
@@ -148,7 +147,6 @@ public class PlayerBoardGUI extends BoardGUI {
                 //setNearAreas(cell, CellStatus.NearShip);
             }
         } else if (cell.getStatus() == CellStatus.Ship) { //Ha felszedi
-            System.out.println("felszed");
             int cellI = cell.getI(), cellJ = cell.getJ();
             int i = 1;
             int pickupShipSize = 0;

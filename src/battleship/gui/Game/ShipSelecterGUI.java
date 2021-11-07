@@ -22,7 +22,6 @@ public class ShipSelecterGUI extends JPanel {
     private final int shipTypeNumbers = 4;
     int selectedShipSize;
     boolean shipPlaceHorizontal;
-    //int[] shipDB;
     ShipInfoPanel[] shipInfoPanels;
     private List<ShipSelectorEvent> listeners;
     JButton doneButton;
@@ -109,13 +108,11 @@ public class ShipSelecterGUI extends JPanel {
 
         selectedShipSize = shipTypeNumbers;
         shipPlaceHorizontal = true;
-        //shipDB = new int[shipTypeNumbers];
         shipInfoPanels = new ShipInfoPanel[shipTypeNumbers];
 
         int enWidth = size().width / shipTypeNumbers;
         int enHeight = size().height;
         for (int i = 0; i < shipTypeNumbers; i++) {
-            //shipDB[i] = shipTypeNumbers - i;
             ShipInfoPanel infoPanel = new ShipInfoPanel(i + 1, shipTypeNumbers - i);
             infoPanel.setSize(enWidth, enHeight);
             infoPanel.setLocation(i * enWidth, 0);
@@ -156,10 +153,8 @@ public class ShipSelecterGUI extends JPanel {
 
     public void LerakTablara(int size) {
         shipInfoPanels[size - 1].decrease();
-        System.out.println("Now: " + shipInfoPanels[size - 1].getPiece());
         if (shipInfoPanels[size - 1].getPiece() == 0) {
             shipInfoPanels[size - 1].setEnabled(false);
-            System.out.println("Disabled: " + size);
             automaticSelectShip();
         }
 
@@ -167,10 +162,8 @@ public class ShipSelecterGUI extends JPanel {
 
     public void FelveszTablarol(int size) {
         shipInfoPanels[size - 1].increase();
-        System.out.println("Now: " + shipInfoPanels[size - 1].getPiece());
         if (shipInfoPanels[size - 1].getPiece() == shipInfoPanels.length) {
             shipInfoPanels[size - 1].setEnabled(false);
-            System.out.println("Disabled: " + size);
             SelectShip(shipInfoPanels[size - 1]);
         }
         automaticSelectShip();
