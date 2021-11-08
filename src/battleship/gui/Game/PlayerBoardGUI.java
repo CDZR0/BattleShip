@@ -71,7 +71,6 @@ public class PlayerBoardGUI extends BoardGUI {
                         if (isEnabled()) {
                             cellExited(seged);
                         }
-
                     }
 
                 });
@@ -97,7 +96,6 @@ public class PlayerBoardGUI extends BoardGUI {
                             cells[cellI][cellJ].setCell(status);
                         }
                     }
-
                 }
             }
         } else {

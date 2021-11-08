@@ -100,6 +100,8 @@ public class GameGUI extends JPanel {
                 System.out.println(ownBoard.toString());
 
                 enemyBoardGUI.setEnabled(true);
+                //#### TESZT ####
+                enemyBoardGUI.tesztBoard = ownBoardGUI.getBoard();
             }
         });
         this.add(selecter);

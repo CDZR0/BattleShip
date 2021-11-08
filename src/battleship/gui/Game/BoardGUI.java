@@ -21,4 +21,8 @@ public class BoardGUI extends JPanel {
         this.setSize(widtheight, widtheight);
         this.setBackground(Color.GRAY);
     }
+    
+    public Board getBoard(){
+        return this.board;
+    }
 }

@@ -128,7 +128,6 @@ public class CellGUI extends JPanel {
             case Empty:
                 break;
             case EmptyHit:
-                //(waterColor);
                 break;
             case NearShip:
                 g2.setColor(Color.BLUE);
