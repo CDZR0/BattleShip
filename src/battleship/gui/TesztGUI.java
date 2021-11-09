@@ -1,11 +1,9 @@
 //TESZTRE
 package battleship.gui;
-
-import com.sun.deploy.panel.JSmartTextArea;
+import battleship.Networking.Client;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -14,16 +12,19 @@ import javax.swing.JTextField;
  */
 public class TesztGUI extends JPanel {
 
-    JTextField area;
+    JTextField textbox;
     JButton button;
 
     public TesztGUI() {
         setLayout(null);
         this.setSize(800, 600);
-        area = new JTextField();
-        area.setSize(100, 40);
-        area.setLocation(0, 0);
-        this.add(area);
+        Client client0 = new Client();
+        Thread clientThread0 = new Thread(client0);
+        clientThread0.start();
+        textbox = new JTextField();
+        textbox.setSize(100, 40);
+        textbox.setLocation(0, 0);
+        this.add(textbox);
         button = new JButton();
         button.setText("Send");
         button.setSize(100, 40);
@@ -31,8 +32,8 @@ public class TesztGUI extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("küld lenyomva:\t" + area.getText());
-
+                System.out.println("küld lenyomva:\t" + textbox.getText());
+                client0.sendMessage(textbox.getText());
             }
         });
         this.add(button);
