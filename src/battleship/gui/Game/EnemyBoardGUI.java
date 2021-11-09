@@ -2,6 +2,7 @@
 package battleship.gui.Game;
 
 import battleship.Logic.Board;
+import battleship.Logic.CellStatus;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -10,12 +11,15 @@ import java.awt.event.MouseEvent;
  * @author Csaba
  */
 public class EnemyBoardGUI extends BoardGUI {
-    
+
+    boolean canTip;
+    public Board tesztBoard;
+
     public EnemyBoardGUI(Board board) {
         super(board);
-        
-         cells = new CellGUI[board.getNLength()][board.getNLength()];
 
+        cells = new CellGUI[board.getNLength()][board.getNLength()];
+        canTip = true;
         int width = super.size().width / cells.length;
 
         for (int i = 0; i < cells.length; i++) {
@@ -27,14 +31,15 @@ public class EnemyBoardGUI extends BoardGUI {
 
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        if (isEnabled()) {
+                        if (isEnabled() && canTip) {
+                            System.out.println("cell clicked");
                             cellClick(seged);
                         }
                     }
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        if (isEnabled()) {
+                        if (isEnabled() && canTip) {
                             cellEntered(seged);
                         }
                     }
@@ -52,16 +57,25 @@ public class EnemyBoardGUI extends BoardGUI {
             }
         }
     }
-    
-    private void cellClick(CellGUI seged){
-        
+
+    private void cellClick(CellGUI cell) {
+        if (testIsHit(cell)) {
+            cells[cell.getI()][cell.getJ()].setCell(CellStatus.Ship);
+        }
     }
-    
-    private void cellEntered(CellGUI seged){
-        
+
+    private void cellEntered(CellGUI cell) {
+        cells[cell.getI()][cell.getJ()].select();
     }
-    
-    private void cellExited(CellGUI seged){
-        
+
+    private void cellExited(CellGUI cell) {
+        cells[cell.getI()][cell.getJ()].unSelect();
+    }
+
+    private boolean testIsHit(CellGUI cell) {
+        if (tesztBoard.getCellstatus()[cell.getI()][cell.getJ()] == CellStatus.Ship) {
+            return true;
+        }
+        return false;
     }
 }

@@ -49,7 +49,6 @@ public class GameGUI extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("back");
                 setVisible(false);
             }
         });
@@ -73,13 +72,11 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onSelectShip(int shipSize) {
-                System.out.println("szam: " + shipSize);
                 ownBoardGUI.selectedShipSize = shipSize;
             }
 
             @Override
             public void onSelectDirection(boolean shipPlaceHorizontal) {
-                System.out.println("Horizontal: " + shipPlaceHorizontal);
                 ownBoardGUI.shipPlaceHorizontal = shipPlaceHorizontal;
             }
 
@@ -101,6 +98,10 @@ public class GameGUI extends JPanel {
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
                 System.out.println(ownBoard.toString());
+
+                enemyBoardGUI.setEnabled(true);
+                //#### TESZT ####
+                enemyBoardGUI.tesztBoard = ownBoardGUI.getBoard();
             }
         });
         this.add(selecter);
@@ -108,13 +109,11 @@ public class GameGUI extends JPanel {
         ownBoardGUI.addPlaceOrPickUpListener(new ShipPlaceEvent() {
             @Override
             public void onPlace(int shipSize, boolean shipPlaceHorizontal) {
-                System.out.println("Placed ship size: " + shipSize + " horizontal: " + shipPlaceHorizontal);
                 selecter.LerakTablara(shipSize);
             }
 
             @Override
             public void onPickUp(int shipSize, boolean shipPlacehorizontal) {
-                System.out.println("Picked up ship size: " + shipSize + " horizontal: " + shipPlacehorizontal);
                 selecter.FelveszTablarol(shipSize);
                 ownBoardGUI.canPlace = true;
                 selecter.setCanDoneButton(false);
