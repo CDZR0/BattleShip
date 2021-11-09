@@ -24,6 +24,13 @@ public class GameGUI extends JPanel {
     private ShipSelecterGUI selecter;
 
     public GameGUI() {
+        
+        
+        
+        
+    }
+
+    public GameGUI(String ip, int port) {
         setLayout(null);
         this.setSize(800, 600);
         setBackground(Color.yellow);
@@ -120,10 +127,6 @@ public class GameGUI extends JPanel {
             }
         });
         repaint();
-    }
-
-    public GameGUI(String ip) {
-
     }
 
     private void sendReady(Board board) {
