@@ -19,25 +19,9 @@ public class BattleShip extends Application {
         Settings settings = Settings.getInstance();
         //DEBUG
         
-        Server server;
-        server = new Server();
+        Server server = new Server();
         Thread serverThread = new Thread(server);
-        serverThread.start();   
-        
-        Client client0 = new Client();
-        Thread clientThread0 = new Thread(client0);
-        clientThread0.start();
-        
-        Client client1 = new Client();
-        Thread clientThread1 = new Thread(client1);
-        clientThread1.start();
-        
-        client1.sendMessage("hahó1");
-        client1.sendMessage("hahó2");
-        
-        client0.sendMessage("hahóFromTheOtherSide");
-        client0.sendMessage("márta");
-        client0.sendMessage("szökik a málna");
+        serverThread.start();
         
         //DEBUG
         
