@@ -1,5 +1,6 @@
 //TESZTRE
 package battleship.gui;
+
 import battleship.Networking.Client;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -13,7 +14,7 @@ import javax.swing.JTextField;
 public class TesztGUI extends JPanel {
 
     JTextField textbox;
-    JButton button;
+    JButton sendButton, backButton;
 
     public TesztGUI() {
         setLayout(null);
@@ -22,22 +23,34 @@ public class TesztGUI extends JPanel {
         Thread clientThread0 = new Thread(client0);
         clientThread0.start();
         textbox = new JTextField();
-        textbox.setSize(100, 40);
-        textbox.setLocation(0, 0);
+        textbox.setSize(300, 40);
+        textbox.setLocation((this.size().width - textbox.size().width) / 2, 30);
         this.add(textbox);
-        button = new JButton();
-        button.setText("Send");
-        button.setSize(100, 40);
-        button.setLocation(0, 100);
-        button.addActionListener(new ActionListener() {
+        sendButton = new JButton();
+        sendButton.setText("Send");
+        sendButton.setSize(100, 40);
+        sendButton.setLocation((this.size().width - sendButton.size().width) / 2, 80);
+        sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("küld lenyomva:\t" + textbox.getText());
                 client0.sendMessage(textbox.getText());
             }
         });
-        this.add(button);
+        this.add(sendButton);
+
+        backButton = new JButton();
+        backButton.setText("Back");
+        backButton.setSize(100, 35);
+        backButton.setLocation(10, 10);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                setVisible(false);
+            }
+        });
+        this.add(backButton);
+
         repaint();
     }
-
 }
