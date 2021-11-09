@@ -24,17 +24,6 @@ public class Client implements Runnable {
         BufferedWriter bfw = null;
         Socket socket = null;
         
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                System.out.println("Connection timed out at " + Settings.getIP() + ":" + Settings.getPort());
-//                Thread.currentThread().interrupt();
-//            }
-//        };
-//        
-//        Timer timer = new Timer("Timer");
-//        timer.schedule(task, 3000);
-         
         try
         {
             socket = new Socket(Settings.getIP(), Settings.getPort());

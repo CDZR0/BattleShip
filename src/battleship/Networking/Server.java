@@ -3,6 +3,7 @@ package battleship.Networking;
 import java.net.*;
 import java.io.*;
 import battleship.*;
+import java.util.ArrayList;
 
 public class Server implements Runnable{
     ServerSocket sSocket = null;
@@ -10,10 +11,21 @@ public class Server implements Runnable{
     
     private static int clientID = 0;
     
+    private ArrayList<String>[] queueArray;
+    
+    public void addMessageToQueue(String message, int index)
+    {       
+        queueArray[index].add(message);
+    }
+    
     public Server()
     {
         try 
         {
+            queueArray = new ArrayList[2];
+            for (int i = 0; i < 2; i++) {
+                queueArray[i] = new ArrayList<>();
+            }
             sSocket = new ServerSocket(Settings.getPort());
         } 
         catch (IOException ex) 
@@ -37,6 +49,8 @@ public class Server implements Runnable{
                 {
                     socket = sSocket.accept();
                     Integer ID = clientID++;
+                    int otherQueueID = (ID == 0) ? 1 : 0;
+                    int ownQueueID = (ID == 0) ? 0 : 1;
                     bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
@@ -46,13 +60,15 @@ public class Server implements Runnable{
                         
                         String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
                         
-                        bfw.write(BroadcastMessage);
-                        bfw.newLine();
-                        bfw.flush();
+                        addMessageToQueue(BroadcastMessage, otherQueueID);
                         
-                        if (BroadcastMessage != null && BroadcastMessage.equals("QUIT")) 
+                        while (queueArray[ownQueueID].size() > 0)
                         {
-                            break;
+                            String message = queueArray[ownQueueID].get(0);
+                            queueArray[ownQueueID].remove(0);
+                            bfw.write(message);
+                            bfw.newLine();
+                            bfw.flush();
                         }
                     }
                 } 
