@@ -23,7 +23,8 @@ public class Server implements Runnable{
         try 
         {
             queueArray = new ArrayList[2];
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 2; i++) 
+            {
                 queueArray[i] = new ArrayList<>();
             }
             sSocket = new ServerSocket(Settings.getPort());
@@ -45,10 +46,13 @@ public class Server implements Runnable{
             
             while(!BattleShip.quit)
             {
+                Integer ID = -1;
                 try 
                 {
                     socket = sSocket.accept();
-                    Integer ID = clientID++;
+                    
+                    ID = clientID++;
+                    System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
                     int ownQueueID = (ID == 0) ? 0 : 1;
                     bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -70,11 +74,12 @@ public class Server implements Runnable{
                             bfw.newLine();
                             bfw.flush();
                         }
-                    }
+                    }  
                 } 
                 catch (IOException ex) 
                 {
-                    System.out.println(ex.getMessage());                   
+                    System.out.println("Disconnected at ID: " + ID);
+                    --clientID;
                 }
             }
         });
