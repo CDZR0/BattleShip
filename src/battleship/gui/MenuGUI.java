@@ -30,7 +30,7 @@ public class MenuGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         menu = new JPanel();
-        menu.setBackground(Color.green);
+        menu.setBackground(new Color(50, 105, 168));
         menu.setLayout(null);
         menu.setBounds(0, 0, 800, 600);
         this.add(menu);
@@ -63,6 +63,16 @@ public class MenuGUI extends JFrame {
         });
         menu.add(newGame);
 
+        JoinGUI joinGUI = new JoinGUI();
+        joinGUI.setBounds(0, 0, this.size().width, this.size().height);
+        joinGUI.setVisible(false);
+        joinGUI.addComponentListener(new ComponentAdapter() {
+            public void componentHidden(ComponentEvent e) {
+                menu.setVisible(true);
+            }
+        });
+        this.add(joinGUI);
+
         joinGame = new JButton();
         joinGame.setText("Join game");
         joinGame.setSize(buttonWidth, buttonHeight);
@@ -71,6 +81,8 @@ public class MenuGUI extends JFrame {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("join");
+                menu.setVisible(false);
+                joinGUI.setVisible(true);
             }
         });
         menu.add(joinGame);
@@ -151,5 +163,4 @@ public class MenuGUI extends JFrame {
 
         this.add(gameGUI);
     }
-
 }

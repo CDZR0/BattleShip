@@ -33,10 +33,10 @@ public class GameGUI extends JPanel {
     public GameGUI(String ip, int port) {
         setLayout(null);
         this.setSize(800, 600);
-        setBackground(Color.yellow);
+        setBackground(new Color(50, 105, 168));
 
         JLabel title = new JLabel();
-        JButton backButton = new JButton();
+        JButton exitButton = new JButton();
         ownBoard = new Board();
         enemyBoard = new Board();
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
@@ -50,16 +50,16 @@ public class GameGUI extends JPanel {
         title.setLocation((this.size().width - title.size().width) / 2, 10);
         this.add(title);
 
-        backButton.setText("Back");
-        backButton.setSize(100, 35);
-        backButton.setLocation(10, 10);
-        backButton.addActionListener(new ActionListener() {
+        exitButton.setText("Exit game");
+        exitButton.setSize(100, 35);
+        exitButton.setLocation(10, 10);
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 setVisible(false);
             }
         });
-        this.add(backButton);
+        this.add(exitButton);
 
         ownBoardGUI.setLocation(50, 250);
         this.add(ownBoardGUI);

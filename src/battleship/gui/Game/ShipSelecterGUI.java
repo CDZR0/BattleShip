@@ -33,6 +33,7 @@ public class ShipSelecterGUI extends JPanel {
         JPanel felso = new JPanel();
         felso.setLayout(null);
         felso.setBounds(0, 0, size().width, 35);
+        felso.setBackground(new Color(50, 105, 168));
         this.add(felso);
 
         JPanel also = new JPanel();
