@@ -120,7 +120,7 @@ public class ShipSelecterGUI extends JPanel {
             infoPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if (isEnabled()) {
+                    if (infoPanel.isEnabled()) {
                         SelectShip(infoPanel);
                     }
                 }
@@ -174,7 +174,6 @@ public class ShipSelecterGUI extends JPanel {
             shipInfoPanel.UnSelect();
         }
         infoPanel.Select();
-        //System.out.println("Selected size: " + selectedShipSize);
         for (ShipSelectorEvent listener : listeners) {
             listener.onSelectShip(infoPanel.shipSize);
         }
