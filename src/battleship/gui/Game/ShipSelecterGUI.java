@@ -39,7 +39,7 @@ public class ShipSelecterGUI extends JPanel {
         JPanel also = new JPanel();
         also.setBounds(0, 35, size().width, 100);
         also.setLayout(null);
-        also.setBackground(Color.WHITE);
+        also.setBackground(new Color(66, 121, 184));
         this.add(also);
 
         JButton shipHorizontal = new JButton();
@@ -209,7 +209,7 @@ class ShipInfoPanel extends JPanel {
 
     public ShipInfoPanel(int shipSize, int piece) {
         //setLayout(null);
-        setBackground(Color.WHITE);
+        setBackground(new Color(66, 121, 184));
         this.shipSize = shipSize;
         this.piece = piece;
         felirat = new JLabel("1x" + (shipSize) + ": " + piece + "db");
@@ -232,11 +232,11 @@ class ShipInfoPanel extends JPanel {
     }
 
     public void Select() {
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(new Color(34, 89, 152));
     }
 
     public void UnSelect() {
-        setBackground(Color.WHITE);
+        setBackground(new Color(66, 121, 184));
     }
 
     public void decrease() {
