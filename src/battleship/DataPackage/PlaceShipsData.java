@@ -1,7 +1,7 @@
 //Csaba
 package battleship.DataPackage;
 
-import battleship.Data;
+import battleship.Logic.Board;
 
 /**
  *
@@ -9,7 +9,20 @@ import battleship.Data;
  */
 public class PlaceShipsData {
 
-    public PlaceShipsData(byte clientID) {
+    byte clientID;
+    Board board;
 
+    public PlaceShipsData(byte clientID, Board board) {
+        this.clientID = clientID;
+        this.board = board;
     }
+
+    public byte getClientID() {
+        return clientID;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
 }

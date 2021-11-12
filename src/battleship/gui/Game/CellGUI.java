@@ -18,7 +18,7 @@ public class CellGUI extends JPanel {
 
     private final Color backgroundColor = Color.WHITE;
     private final Color shipColor = Color.GRAY;
-    private final Color waterColor = new Color(0, 0, 64);
+    private final Color waterColor = new Color(0, 0, 0);
     private final int i;
     private final int j;
     private CellStatus cellStatus;
@@ -44,7 +44,7 @@ public class CellGUI extends JPanel {
                 break;
             case NearShip:
                 this.cellStatus = cellStatus;
-                setBackground(Color.BLUE);
+                setBackground(waterColor);
                 break;
             case Ship:
                 placeShip();
@@ -128,6 +128,15 @@ public class CellGUI extends JPanel {
             case Empty:
                 break;
             case EmptyHit:
+                g2.setColor(Color.BLUE);
+                g2.setStroke(new BasicStroke(2));
+                for (int k = 0; k < 6; k++) {
+                    int[] x = {0, 5, 10, 15, 20, 25, 30};
+                    int[] y = {0 + k * 5, 5 + k * 5, 0 + k * 5, 5 + k * 5, 0 + k * 5, 5 + k * 5, 0 + k * 5};
+                    for (int i = 1; i < x.length; i++) {
+                        g2.draw(new Line2D.Float(x[i - 1], y[i - 1], x[i], y[i]));
+                    }
+                }
                 break;
             case NearShip:
                 g2.setColor(Color.BLUE);
