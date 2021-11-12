@@ -41,7 +41,7 @@ public class JoinGUI extends JPanel {
         segedPanel.setLayout(null);
         segedPanel.setSize(0, 0);
         segedPanel.setLocation(0, 0);
-        segedPanel.setBackground(Color.yellow);
+        segedPanel.setBackground(new Color(50, 105, 168));
         //segedPanel.setPreferredSize(new Dimension(0,5000));
 
         JScrollPane listPanel = new JScrollPane(segedPanel);
