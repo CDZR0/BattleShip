@@ -19,4 +19,12 @@ public class Player {
     public void setBoard(PlaceShipsData ships) {
 
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 }

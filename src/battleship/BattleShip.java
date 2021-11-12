@@ -2,6 +2,7 @@ package battleship;
 
 import java.io.IOException;
 import battleship.gui.MenuGUI;
+import battleship.Networking.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,24 +19,9 @@ public class BattleShip extends Application {
         Settings settings = Settings.getInstance();
         //DEBUG
         
-        Networking.Server server = new Networking.Server();
+        Server server = new Server(Settings.getPort());
         Thread serverThread = new Thread(server);
-        serverThread.start();   
-        
-        Networking.Client client0 = new Networking.Client();
-        Thread clientThread0 = new Thread(client0);
-        clientThread0.start();
-        
-        Networking.Client client1 = new Networking.Client();
-        Thread clientThread1 = new Thread(client1);
-        clientThread1.start();
-        
-        client1.sendMessage("hahó1");
-        client1.sendMessage("hahó2");
-        
-        client0.sendMessage("hahóFromTheOtherSide");
-        client0.sendMessage("márta");
-        client0.sendMessage("szökik a málna");
+        serverThread.start();
         
         //DEBUG
         

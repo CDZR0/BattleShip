@@ -3,6 +3,8 @@ package battleship.Networking;
 import java.net.*;
 import java.io.*;
 import battleship.*;
+import java.util.Vector;
+import java.util.List;
 
 public class Server implements Runnable{
     ServerSocket sSocket = null;
@@ -10,11 +12,23 @@ public class Server implements Runnable{
     
     private static int clientID = 0;
     
-    public Server()
+    private List<String>[] queueArray;
+    
+    public void addMessageToQueue(String message, int index)
+    {       
+        queueArray[index].add(message);
+    }
+    
+    public Server(int port)
     {
         try 
         {
-            sSocket = new ServerSocket(Settings.getPort());
+            queueArray = new Vector[2];
+            for (int i = 0; i < 2; ++i) 
+            {
+                queueArray[i] = new Vector<>();
+            }
+            sSocket = new ServerSocket(port);
         } 
         catch (IOException ex) 
         {
@@ -25,40 +39,56 @@ public class Server implements Runnable{
     
     private void ServeClient()
     {
-        Thread thread = new Thread(() -> {
-            BufferedReader bfr;
-            BufferedWriter bfw;
-            Socket socket;
-            
-            
+        Thread thread = new Thread(() -> {         
             while(!BattleShip.quit)
             {
                 try 
                 {
-                    socket = sSocket.accept();
+                    Socket socket = sSocket.accept();
+                    
                     Integer ID = clientID++;
-                    bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    System.out.println("Someone joined the server with ID: " + ID);
+                    int otherQueueID = (ID == 0) ? 1 : 0;
+                    int ownQueueID = (ID == 0) ? 0 : 1;
+                    BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    
+                    Thread thread2 = new Thread(() -> {
+                        while (!BattleShip.quit) 
+                        {
+                            try 
+                            {
+                                String inMsg = bfr.readLine();
+                                String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
+                                addMessageToQueue(BroadcastMessage, otherQueueID);
+                            } 
+                            catch (IOException ex) 
+                            {
+                                System.out.println(ex.getMessage());
+                                break;
+                            }
+                        }
+                        
+                    });
+                    thread2.start();
                     
                     while(!BattleShip.quit)
-                    {
-                        String inMsg = bfr.readLine();
-                        
-                        String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
-                        
-                        bfw.write(BroadcastMessage);
-                        bfw.newLine();
-                        bfw.flush();
-                        
-                        if (BroadcastMessage != null && BroadcastMessage.equals("QUIT")) 
+                    {                      
+                        while (queueArray[ownQueueID].size() > 0)
                         {
-                            break;
+                            
+                            String message = queueArray[ownQueueID].get(0);
+                            queueArray[ownQueueID].remove(0);
+                            bfw.write(message);
+                            bfw.newLine();
+                            bfw.flush();
                         }
-                    }
+                    }  
                 } 
                 catch (IOException ex) 
                 {
-                    System.out.println(ex.getMessage());                   
+                    System.out.println("Secondary player disconnected.");
+                    --clientID;
                 }
             }
         });

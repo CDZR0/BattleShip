@@ -5,12 +5,11 @@ import battleship.*;
 
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
+import java.util.Vector;
 
 public class Client implements Runnable {
-    private final ArrayList<String> messageQueue = new ArrayList<>();
+    private final List<String> messageQueue = new Vector<>();
     
     public void sendMessage(String message)
     {       
@@ -20,31 +19,31 @@ public class Client implements Runnable {
     @Override
     public void run()
     {
-        BufferedReader bfr = null;
-        BufferedWriter bfw = null;
-        Socket socket = null;
-        
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                System.out.println("Connection timed out at " + Settings.getIP() + ":" + Settings.getPort());
-//                Thread.currentThread().interrupt();
-//            }
-//        };
-//        
-//        Timer timer = new Timer("Timer");
-//        timer.schedule(task, 3000);
-         
         try
         {
-            socket = new Socket(Settings.getIP(), Settings.getPort());
+            Socket socket = new Socket(Settings.getIP(), Settings.getPort());
+            BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             
-            bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            Thread thread = new Thread(() -> {
+                try 
+                {
+                    while(!BattleShip.quit)
+                    {
+                        String inMsg = bfr.readLine();
+                        System.out.println(inMsg);
+                    }
+                }
+                catch (IOException ex) 
+                {
+                    System.out.println(ex.getMessage());
+                }
+            });
+            thread.start();
             
             while(!BattleShip.quit)
             {
-                while (messageQueue.size() > 0)
+                while (!messageQueue.isEmpty())
                 {
                     String message = messageQueue.get(0);
                     messageQueue.remove(0);
@@ -52,34 +51,21 @@ public class Client implements Runnable {
                     bfw.newLine();
                     bfw.flush();
                 }
-                
-                String inMsg = bfr.readLine();
-                System.out.println(inMsg);
-                
-                if (inMsg != null && inMsg.contains("QUIT")) 
-                {
-                    break;
-                }
             }
-        }
-        catch(IOException ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        finally{
             try
             {
-                if (socket != null)
-                    socket.close();
-                if (bfr != null)
-                    bfr.close();
-                if (bfw != null)
-                    bfw.close();
+                socket.close();
+                bfr.close();
+                bfw.close();
             } 
             catch(IOException ex)
             {
                 System.out.println(ex.getMessage());
             }
+        }
+        catch(IOException ex)
+        {
+            System.out.println(ex.getMessage());
         }
     }
 }

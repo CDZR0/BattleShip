@@ -2,7 +2,11 @@
 package battleship.gui.Game;
 
 import battleship.Logic.CellStatus;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -14,6 +18,7 @@ public class CellGUI extends JPanel {
 
     private final Color backgroundColor = Color.WHITE;
     private final Color shipColor = Color.GRAY;
+    private final Color waterColor = new Color(0, 0, 0);
     private final int i;
     private final int j;
     private CellStatus cellStatus;
@@ -35,16 +40,19 @@ public class CellGUI extends JPanel {
                 break;
             case EmptyHit:
                 this.cellStatus = cellStatus;
+                setBackground(waterColor);
                 break;
             case NearShip:
                 this.cellStatus = cellStatus;
-                setBackground(Color.BLUE);
+                setBackground(waterColor);
                 break;
             case Ship:
                 placeShip();
+                //paintX(this.getGraphics());
                 break;
             case ShipHit:
                 this.cellStatus = cellStatus;
+                this.paintComponent(this.getGraphics());
                 break;
             case ShipSunk:
                 this.cellStatus = cellStatus;
@@ -110,6 +118,50 @@ public class CellGUI extends JPanel {
                 getBackground().getBlue() + darkeningLevel > 256 ? 255 : getBackground().getBlue() + darkeningLevel
         );
         setBackground(color);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        super.paintComponent(g2);
+        switch (cellStatus) {
+            case Empty:
+                break;
+            case EmptyHit:
+                g2.setColor(Color.BLUE);
+                g2.setStroke(new BasicStroke(2));
+                for (int k = 0; k < 6; k++) {
+                    int[] x = {0, 5, 10, 15, 20, 25, 30};
+                    int[] y = {0 + k * 5, 5 + k * 5, 0 + k * 5, 5 + k * 5, 0 + k * 5, 5 + k * 5, 0 + k * 5};
+                    for (int i = 1; i < x.length; i++) {
+                        g2.draw(new Line2D.Float(x[i - 1], y[i - 1], x[i], y[i]));
+                    }
+                }
+                break;
+            case NearShip:
+                g2.setColor(Color.BLUE);
+                g2.setStroke(new BasicStroke(2));
+                for (int k = 0; k < 6; k++) {
+                    int[] x = {0, 5, 10, 15, 20, 25, 30};
+                    int[] y = {0 + k * 5, 5 + k * 5, 0 + k * 5, 5 + k * 5, 0 + k * 5, 5 + k * 5, 0 + k * 5};
+                    for (int i = 1; i < x.length; i++) {
+                        g2.draw(new Line2D.Float(x[i - 1], y[i - 1], x[i], y[i]));
+                    }
+                }
+                break;
+            case Ship:
+                break;
+            case ShipHit:
+                g2.setColor(Color.RED);
+                g2.setStroke(new BasicStroke(5));
+                g2.draw(new Line2D.Float(0, 0, 30, 30));
+                g2.draw(new Line2D.Float(0, 30, 30, 0));
+                break;
+            case ShipSunk:
+                break;
+            default:
+                throw new AssertionError();
+        }
     }
 
 }

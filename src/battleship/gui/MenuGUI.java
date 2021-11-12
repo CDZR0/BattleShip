@@ -99,6 +99,32 @@ public class MenuGUI extends JFrame {
             }
         });
         menu.add(exitButton);
+
+        TesztGUI t = new TesztGUI();
+        t.setVisible(false);
+        t.addComponentListener(new ComponentAdapter() {
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            public void componentHidden(ComponentEvent e) {
+                menu.setVisible(true);
+            }
+        });
+        this.add(t);
+
+        JButton tesztButton = new JButton();
+        tesztButton.setText("teszt környezet");
+        tesztButton.setBounds(10, 10, 150, 40);
+        tesztButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                System.out.println("tesztButton lenyomva");
+                menu.setVisible(false);
+                t.setVisible(true);
+            }
+        });
+        menu.add(tesztButton);
         repaint();
     }
 
@@ -110,7 +136,7 @@ public class MenuGUI extends JFrame {
     }
 
     private void createGameGUI() {
-        GameGUI gameGUI = new GameGUI();
+        GameGUI gameGUI = new GameGUI("", 0);
         gameGUI.setBounds(0, 0, this.size().width, this.size().height);
         //gameGUI.setVisible(false);
         gameGUI.addComponentListener(new ComponentAdapter() {
