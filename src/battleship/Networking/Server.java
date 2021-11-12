@@ -38,35 +38,41 @@ public class Server implements Runnable{
     
     private void ServeClient()
     {
-        Thread thread = new Thread(() -> {
-            BufferedReader bfr;
-            BufferedWriter bfw;
-            Socket socket;
-            
-            
+        Thread thread = new Thread(() -> {         
             while(!BattleShip.quit)
             {
-                Integer ID = -1;
                 try 
                 {
-                    socket = sSocket.accept();
+                    Socket socket = sSocket.accept();
                     
-                    ID = clientID++;
+                    Integer ID = clientID++;
                     System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
                     int ownQueueID = (ID == 0) ? 0 : 1;
-                    bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    
+                    Thread thread2 = new Thread(() -> {
+                        while (!BattleShip.quit) 
+                        {
+                            try 
+                            {
+                                String inMsg = bfr.readLine();
+                                String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
+                                addMessageToQueue(BroadcastMessage, otherQueueID);
+                                System.out.println("added to queue");
+                            } 
+                            catch (IOException ex) 
+                            {
+                                System.out.println("faszom");
+                            }
+                        }
+                        
+                    });
+                    thread2.start();
                     
                     while(!BattleShip.quit)
                     {
-                        String inMsg = bfr.readLine();
-                        
-                        String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
-                        
-                        addMessageToQueue(BroadcastMessage, otherQueueID);
-                        System.out.println("added to queue");
-                        
                         while (queueArray[ownQueueID].size() > 0)
                         {
                             String message = queueArray[ownQueueID].get(0);
@@ -79,7 +85,7 @@ public class Server implements Runnable{
                 } 
                 catch (IOException ex) 
                 {
-                    System.out.println("Disconnected at ID: " + ID);
+                    System.out.println("Secondary player disconnected.");
                     --clientID;
                 }
             }

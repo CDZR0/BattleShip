@@ -6,8 +6,6 @@ import battleship.*;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Client implements Runnable {
     private final ArrayList<String> messageQueue = new ArrayList<>();
