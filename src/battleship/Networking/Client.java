@@ -36,7 +36,7 @@ public class Client implements Runnable {
                 }
                 catch (IOException ex) 
                 {
-                    System.out.println("fasz van");
+                    System.out.println(ex.getMessage());
                 }
             });
             thread.start();

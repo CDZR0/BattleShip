@@ -3,7 +3,8 @@ package battleship.Networking;
 import java.net.*;
 import java.io.*;
 import battleship.*;
-import java.util.ArrayList;
+import java.util.Vector;
+import java.util.List;
 
 public class Server implements Runnable{
     ServerSocket sSocket = null;
@@ -11,7 +12,7 @@ public class Server implements Runnable{
     
     private static int clientID = 0;
     
-    private ArrayList<String>[] queueArray;
+    private List<String>[] queueArray;
     
     public void addMessageToQueue(String message, int index)
     {       
@@ -22,10 +23,10 @@ public class Server implements Runnable{
     {
         try 
         {
-            queueArray = new ArrayList[2];
-            for (int i = 0; i < 2; i++) 
+            queueArray = new Vector[2];
+            for (int i = 0; i < 2; ++i) 
             {
-                queueArray[i] = new ArrayList<>();
+                queueArray[i] = new Vector<>();
             }
             sSocket = new ServerSocket(port);
         } 
@@ -60,11 +61,11 @@ public class Server implements Runnable{
                                 String inMsg = bfr.readLine();
                                 String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
                                 addMessageToQueue(BroadcastMessage, otherQueueID);
-                                System.out.println("added to queue");
                             } 
                             catch (IOException ex) 
                             {
-                                System.out.println("faszom");
+                                System.out.println(ex.getMessage());
+                                break;
                             }
                         }
                         
@@ -72,11 +73,7 @@ public class Server implements Runnable{
                     thread2.start();
                     
                     while(!BattleShip.quit)
-                    {
-                        if (!queueArray[ownQueueID].isEmpty()){
-                            System.out.println(queueArray[ownQueueID].size());
-                        }
-                        
+                    {                      
                         while (queueArray[ownQueueID].size() > 0)
                         {
                             
