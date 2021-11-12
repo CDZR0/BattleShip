@@ -43,7 +43,7 @@ public class Settings {
         catch(FileNotFoundException | IllegalArgumentException | SecurityException  ex)
         {
             System.out.println(ex.getMessage());
-            ip = "127.0.0.1";
+            ip = "0.0.0.0";
             port = "25564";
             
             WriteFile();

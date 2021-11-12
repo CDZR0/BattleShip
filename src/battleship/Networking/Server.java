@@ -18,7 +18,7 @@ public class Server implements Runnable{
         queueArray[index].add(message);
     }
     
-    public Server()
+    public Server(int port)
     {
         try 
         {
@@ -27,7 +27,7 @@ public class Server implements Runnable{
             {
                 queueArray[i] = new ArrayList<>();
             }
-            sSocket = new ServerSocket(Settings.getPort());
+            sSocket = new ServerSocket(port);
         } 
         catch (IOException ex) 
         {
@@ -65,6 +65,7 @@ public class Server implements Runnable{
                         String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
                         
                         addMessageToQueue(BroadcastMessage, otherQueueID);
+                        System.out.println("added to queue");
                         
                         while (queueArray[ownQueueID].size() > 0)
                         {
