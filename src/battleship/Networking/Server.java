@@ -73,8 +73,13 @@ public class Server implements Runnable{
                     
                     while(!BattleShip.quit)
                     {
+                        if (!queueArray[ownQueueID].isEmpty()){
+                            System.out.println(queueArray[ownQueueID].size());
+                        }
+                        
                         while (queueArray[ownQueueID].size() > 0)
                         {
+                            
                             String message = queueArray[ownQueueID].get(0);
                             queueArray[ownQueueID].remove(0);
                             bfw.write(message);
