@@ -40,6 +40,7 @@ public class Client implements Runnable {
                     System.out.println("fasz van");
                 }
             });
+            thread.start();
             
             while(!BattleShip.quit)
             {
