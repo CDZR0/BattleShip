@@ -25,6 +25,7 @@ public class JoinGUI extends JPanel {
 
     private ServerListItem selectedServer;
     private JPanel listPanel, segedServersListPanel;
+    JButton connectButton, addButton, editButton, deleteButton;
 
     public JoinGUI() {
         //zöld 50, 168, 82
@@ -64,7 +65,6 @@ public class JoinGUI extends JPanel {
         segedServersListPanel.setLayout(null);
         segedServersListPanel.setLocation(0, 0);
         segedServersListPanel.setBackground(Resources.BackgroundColor);
-        loadList();
 
         JScrollPane listServerPanel = new JScrollPane(segedServersListPanel);
         listServerPanel.getVerticalScrollBar().setPreferredSize(new Dimension(30, 0));
@@ -78,8 +78,6 @@ public class JoinGUI extends JPanel {
         sp.setLocation(0, listPanel.size().height - 55);
         sp.setBackground(Resources.BackgroundColor);
         listPanel.add(sp);
-
-        JButton connectButton, addButton, editButton, deleteButton;
 
         connectButton = new JButton();
         connectButton.setText("Connect to server");
@@ -135,6 +133,7 @@ public class JoinGUI extends JPanel {
         });
         sp.add(deleteButton);
 
+        loadList();
     }
 
     private void ShowAddEdit() {
@@ -164,6 +163,11 @@ public class JoinGUI extends JPanel {
     }
 
     private void loadList() {
+        selectedServer = null;
+        connectButton.setEnabled(false);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
         segedServersListPanel.removeAll();
         for (int i = 0; i < Settings.getServers().size(); i++) {
             ServerListItem sli = new ServerListItem(Settings.getServers().get(i));
@@ -180,6 +184,9 @@ public class JoinGUI extends JPanel {
                     }
 
                     selectedServer = sli;
+                    connectButton.setEnabled(true);
+                    editButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
                     sli.Select();
                     if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                         ConnectServer();
