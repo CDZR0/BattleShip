@@ -1,8 +1,5 @@
 package battleship.Networking;
 
-import battleship.Settings;
-import battleship.*;
-
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -10,10 +7,24 @@ import java.util.Vector;
 
 public class Client implements Runnable {
     private final List<String> messageQueue = new Vector<>();
+    private String ip;
+    private int port;
+    private boolean close = false;
+    
+    public Client(String ip, int port)
+    {
+        this.ip = ip;
+        this.port = port;
+    }
     
     public void sendMessage(String message)
     {       
         messageQueue.add(message);
+    }
+    
+    public void close()
+    {
+        close = true;
     }
     
     @Override
@@ -21,14 +32,14 @@ public class Client implements Runnable {
     {
         try
         {
-            Socket socket = new Socket(Settings.getIP(), Settings.getPort());
+            Socket socket = new Socket(ip, port);
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             
             Thread thread = new Thread(() -> {
                 try 
                 {
-                    while(!BattleShip.quit)
+                    while(!close)
                     {
                         String inMsg = bfr.readLine();
                         System.out.println(inMsg);
@@ -41,7 +52,7 @@ public class Client implements Runnable {
             });
             thread.start();
             
-            while(!BattleShip.quit)
+            while(!close)
             {
                 while (!messageQueue.isEmpty())
                 {

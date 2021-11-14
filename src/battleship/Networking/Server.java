@@ -7,16 +7,21 @@ import java.util.Vector;
 import java.util.List;
 
 public class Server implements Runnable{
-    ServerSocket sSocket = null;
-    GameLogic gameLogic;
+    private ServerSocket sSocket = null;
+    private GameLogic gameLogic;
     
-    private static int clientID = 0;
-    
+    private static int clientID = 0;   
     private List<String>[] queueArray;
+    private boolean close = false;
     
     public void addMessageToQueue(String message, int index)
     {       
         queueArray[index].add(message);
+    }
+    
+    public void close()
+    {
+        close = true;
     }
     
     public Server(int port)
@@ -40,7 +45,7 @@ public class Server implements Runnable{
     private void ServeClient()
     {
         Thread thread = new Thread(() -> {         
-            while(!BattleShip.quit)
+            while(!close)
             {
                 try 
                 {
@@ -54,7 +59,7 @@ public class Server implements Runnable{
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
                     Thread thread2 = new Thread(() -> {
-                        while (!BattleShip.quit) 
+                        while (!close) 
                         {
                             try 
                             {
@@ -72,7 +77,7 @@ public class Server implements Runnable{
                     });
                     thread2.start();
                     
-                    while(!BattleShip.quit)
+                    while(!close)
                     {                      
                         while (queueArray[ownQueueID].size() > 0)
                         {

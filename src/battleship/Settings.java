@@ -169,11 +169,14 @@ public class Settings {
     
     public static void editServer(String name, ServerAddress newAddress)
     {
-        for (ServerAddress serverAddress : serverList) 
+        if (!name.equals(newAddress.getName()))
         {
-            if (newAddress.getName().equals(serverAddress.getName())) 
+            for (ServerAddress serverAddress : serverList) 
             {
-                throw new RuntimeException("SZERVER NÉV MÁR LÉTEZIK");
+                if (newAddress.getName().equals(serverAddress.getName())) 
+                {
+                    throw new RuntimeException("SZERVER NÉV MÁR LÉTEZIK");
+                }
             }
         }
         
@@ -184,18 +187,6 @@ public class Settings {
                 serverAddress.setName(newAddress.getName());
                 serverAddress.setIP(newAddress.getIP());
                 serverAddress.setPort(newAddress.getPort());
-                WriteFile();
-            }
-        }
-    }
-    
-    public static void deleteServer(String name)
-    {
-        for (int i = 0; i < serverList.size(); ++i)
-        {
-            if (serverList.get(i).getName().equals(name))
-            {
-                serverList.remove(serverList.get(i));
                 WriteFile();
             }
         }
