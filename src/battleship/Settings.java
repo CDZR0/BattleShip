@@ -181,15 +181,8 @@ public class Settings {
         }
     }
     
-    public static void deleteServer(String name)
-    {
-        for (ServerAddress serverAddress : serverList) 
-        {
-            if (serverAddress.getName().equals(name))
-            {
-                serverList.remove(serverAddress);
-                WriteFile();
-            }
-        }
+public static void deleteServer(ServerAddress as) {
+        serverList.remove(as);
+        WriteFile();
     }
 }
