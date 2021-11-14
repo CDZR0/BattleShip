@@ -70,10 +70,8 @@ public class GameGUI extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Warning", 0) == JOptionPane.YES_OPTION) {
                     client.close();
-                    clientThread.stop();
                     if (server != null) {
                         server.close();
-                        serverThread.stop();
                     }
                     setVisible(false);
                 }
@@ -124,7 +122,7 @@ public class GameGUI extends JPanel {
             @Override
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
-                System.out.println(ownBoard.toString());
+                System.out.println(ownBoardGUI.getBoard().toString());
 
                 enemyBoardGUI.setEnabled(true);
                 //#### TESZT ####
