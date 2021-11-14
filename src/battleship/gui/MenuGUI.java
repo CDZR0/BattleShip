@@ -4,7 +4,6 @@ package battleship.gui;
 import battleship.Events.JoinGUIEvent;
 import battleship.Networking.ServerAddress;
 import battleship.Resources.Resources;
-import battleship.Settings;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;

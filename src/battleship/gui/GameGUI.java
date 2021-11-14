@@ -11,8 +11,6 @@ import battleship.Resources.Resources;
 import battleship.Settings;
 import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.PlayerBoardGUI;
-import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
