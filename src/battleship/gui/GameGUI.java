@@ -74,7 +74,7 @@ public class GameGUI extends JPanel {
                         try {
                             server.close();
                         } catch (Exception e) {
-                            System.out.println("Sikertelen server close()");
+                            System.out.println("Sikertelen server close():\n" + e.getMessage());
                         }
                     }
                     setVisible(false);
