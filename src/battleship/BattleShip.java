@@ -19,9 +19,9 @@ public class BattleShip extends Application {
         Settings settings = Settings.getInstance();
         //DEBUG
         
-        Server server = new Server(Settings.getPort());
-        Thread serverThread = new Thread(server);
-        serverThread.start();
+//        Server server = new Server(Settings.getPort());
+//        Thread serverThread = new Thread(server);
+//        serverThread.start();
         
         //DEBUG
         

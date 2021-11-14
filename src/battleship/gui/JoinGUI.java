@@ -5,7 +5,6 @@ import battleship.Resources.Resources;
 import battleship.Settings;
 import battleship.gui.Join.AddEditServer;
 import battleship.gui.Join.ServerListItem;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -13,9 +12,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import battleship.Events.JoinGUIEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -26,6 +28,7 @@ public class JoinGUI extends JPanel {
     private ServerListItem selectedServer;
     private JPanel listPanel, segedServersListPanel;
     JButton connectButton, addButton, editButton, deleteButton;
+    private List<JoinGUIEvent> listeners;
 
     public JoinGUI() {
         //zöld 50, 168, 82
@@ -33,7 +36,9 @@ public class JoinGUI extends JPanel {
         setLayout(null);
         this.setSize(800, 600 - MenuGUI.WindowInsets);
         setBackground(Resources.BackgroundColor);
-
+        
+        listeners = new ArrayList<>();
+        
         JButton backButton = new JButton();
         backButton.setText("Back to menu");
         backButton.setSize(115, 35);
@@ -160,8 +165,15 @@ public class JoinGUI extends JPanel {
 
     private void ConnectServer() {
         System.out.println("Connecting to server: " + selectedServer.getServerAddress().getName());
+        for (JoinGUIEvent listener : listeners) {
+            listener.onConnect(selectedServer.getServerAddress());
+        }
     }
 
+    public void AddConnectListener(JoinGUIEvent listener){
+        listeners.add(listener);
+    }
+    
     private void loadList() {
         selectedServer = null;
         connectButton.setEnabled(false);
