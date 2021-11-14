@@ -17,6 +17,7 @@ public class BattleShip extends Application {
 
     public static void main(String[] args) throws IOException{
         Settings settings = Settings.getInstance();
+        ServerManager serverManager = ServerManager.getInstance();
         //DEBUG
         
 //        Server server = new Server(Settings.getPort());

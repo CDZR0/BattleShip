@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import battleship.Events.JoinGUIEvent;
+import battleship.Networking.ServerManager;
 import java.util.ArrayList;
 
 /**
@@ -131,7 +132,7 @@ public class JoinGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 listPanel.setVisible(false);
-                Settings.deleteServer(selectedServer.getServerAddress());
+                ServerManager.deleteServer(selectedServer.getServerAddress());
                 Settings.WriteFile();
                 listPanel.setVisible(true);
             }
@@ -181,8 +182,8 @@ public class JoinGUI extends JPanel {
         deleteButton.setEnabled(false);
 
         segedServersListPanel.removeAll();
-        for (int i = 0; i < Settings.getServers().size(); i++) {
-            ServerListItem sli = new ServerListItem(Settings.getServers().get(i));
+        for (int i = 0; i < ServerManager.getServers().size(); i++) {
+            ServerListItem sli = new ServerListItem(ServerManager.getServers().get(i));
             sli.setSize(this.size().width, 60);
             sli.setLocation(0, 60 * i);
             sli.addMouseListener(new MouseAdapter() {
