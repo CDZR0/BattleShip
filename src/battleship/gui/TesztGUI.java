@@ -5,12 +5,15 @@ import battleship.Networking.Client;
 import battleship.Networking.Server;
 import battleship.Settings;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -131,10 +134,15 @@ public class TesztGUI extends JPanel {
         chatTextBox.setSize(700, 350);
         chatTextBox.setBackground(Color.DARK_GRAY);
         chatTextBox.setForeground(Color.WHITE);
-        chatTextBox.setEnabled(false);
-        chatTextBox.setLocation((this.size().width - chatTextBox.size().width) / 2, 100);
+        chatTextBox.setEditable(false);
+        chatTextBox.setPreferredSize(new Dimension(680, 5000));
+        chatTextBox.setLocation(0, 0);
         this.add(chatTextBox);
 
+        JScrollPane scroll = new JScrollPane(chatTextBox);
+        scroll.setBounds((this.size().width - chatTextBox.size().width) / 2, 100, chatTextBox.size().width, chatTextBox.size().height);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.add(scroll);
         repaint();
     }
 
