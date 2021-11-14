@@ -1,6 +1,7 @@
 //Csaba
 package battleship.gui;
 
+import battleship.Resources.Resources;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,7 +13,7 @@ import javax.swing.JPanel;
 public class SettingsGUI extends JPanel {
 
     public SettingsGUI() {
-        setBackground(Color.yellow);
+        setBackground(Resources.BackgroundColor);
 
         JLabel title = new JLabel();
         title.setBackground(Color.red);
