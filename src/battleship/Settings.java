@@ -200,4 +200,16 @@ public class Settings {
             }
         }
     }
+    
+    public static void deleteServer(ServerAddress sAddress)
+    {
+        for (int i = 0; i < serverList.size(); ++i)
+        {
+            if (serverList.get(i).getName().equals(sAddress.getName()))
+            {
+                serverList.remove(serverList.get(i));
+                WriteFile();
+            }
+        }
+    }
 }
