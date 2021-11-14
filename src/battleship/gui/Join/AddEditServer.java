@@ -87,11 +87,25 @@ public class AddEditServer extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 if (add) {
-                    Settings.addServer(new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
-                    Settings.WriteFile();
+                    try {
+                        Settings.addServer(new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
+                        Settings.WriteFile();
+                        setVisible(false);
+                    } catch (Exception e) {
+                        if (e.getMessage().equals("SZERVER NÉV MÁR LÉTEZIK")) {
+                            nameText.setText(nameText.getText() + " (1)");
+                        }
+                    }
                 } else {
-                    Settings.editServer(sa.getName(),new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
-                    Settings.WriteFile();
+                    try {
+                        Settings.editServer(sa.getName(), new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
+                        Settings.WriteFile();
+                        setVisible(false);
+                    } catch (Exception e) {
+                        if (e.getMessage().equals("SZERVER NÉV MÁR LÉTEZIK")) {
+                            nameText.setText(nameText.getText() + " (1)");
+                        }
+                    }
                 }
             }
         });

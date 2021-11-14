@@ -50,6 +50,10 @@ public class JoinGUI extends JPanel {
         listPanel.setBackground(Resources.BackgroundColor);
         listPanel.setBounds(0, 55, this.size().width, this.size().height - 55);
         listPanel.addComponentListener(new ComponentAdapter() {
+            public void componentShow(ComponentEvent e) {
+                loadList();
+            }
+
             public void componentHidden(ComponentEvent e) {
                 loadList();
             }
@@ -123,9 +127,10 @@ public class JoinGUI extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
+                listPanel.setVisible(false);
                 Settings.deleteServer(selectedServer.getServerAddress());
                 Settings.WriteFile();
-                loadList();
+                listPanel.setVisible(true);
             }
         });
         sp.add(deleteButton);
@@ -147,6 +152,7 @@ public class JoinGUI extends JPanel {
         addEditServer.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
                 remove(addEditServer);
+                loadList();
                 listPanel.setVisible(true);
             }
         });
@@ -160,7 +166,6 @@ public class JoinGUI extends JPanel {
     private void loadList() {
         segedServersListPanel.removeAll();
         for (int i = 0; i < Settings.getServers().size(); i++) {
-            System.out.println(Settings.getServers().get(i));
             ServerListItem sli = new ServerListItem(Settings.getServers().get(i));
             sli.setSize(this.size().width, 60);
             sli.setLocation(0, 60 * i);
