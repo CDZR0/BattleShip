@@ -15,7 +15,7 @@ public class Settings {
     
     public static String ip;   
     public static String port;
-    private static final List<ServerAddress> serverList = new ArrayList<>();
+    public static final List<ServerAddress> serverList = new ArrayList<>();
     
     private Settings() {}
     
@@ -163,6 +163,7 @@ public class Settings {
             }
         }
         serverList.add(sAddress);
+        WriteFile();
     }
     
     public static void editServer(ServerAddress sAddress)
@@ -173,6 +174,7 @@ public class Settings {
             {
                 serverAddress.setIP(sAddress.getIP());
                 serverAddress.setPort(sAddress.getPort());
+                WriteFile();
             }
         }
     }
@@ -184,7 +186,9 @@ public class Settings {
             if (serverAddress.getName().equals(name))
             {
                 serverList.remove(serverAddress);
+                WriteFile();
             }
         }
+        
     }
 }
