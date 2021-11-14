@@ -29,12 +29,13 @@ public class GameGUI extends JPanel {
     private Board enemyBoard;
     private ShipSelecterGUI selecter;
     private Client client;
-    private Thread clientThread;
+    private Thread clientThread, serverThread;
+    private Server server;
 
     public GameGUI() {
         this(Settings.getIP(), Settings.getPort());
-        Server server = new Server(Settings.getPort());
-        Thread serverThread = new Thread(server);
+        server = new Server(Settings.getPort());
+        serverThread = new Thread(server);
         serverThread.start();
         System.out.println("szerver itt");
     }
@@ -44,7 +45,7 @@ public class GameGUI extends JPanel {
         this.setSize(800, 600);
         setBackground(Resources.BackgroundColor);
 
-        client = new Client();
+        client = new Client(ip, port);
         clientThread = new Thread(client);
         clientThread.start();
 
@@ -68,7 +69,12 @@ public class GameGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Warning", 0) == JOptionPane.YES_OPTION) {
+                    client.close();
                     clientThread.stop();
+                    if (server != null) {
+                        server.close();
+                        serverThread.stop();
+                    }
                     setVisible(false);
                 }
             }

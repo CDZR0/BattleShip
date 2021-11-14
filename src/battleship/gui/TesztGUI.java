@@ -2,6 +2,7 @@
 package battleship.gui;
 
 import battleship.Networking.Client;
+import battleship.Settings;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -21,7 +22,7 @@ public class TesztGUI extends JPanel {
         setLayout(null);
         setBackground(Color.DARK_GRAY);
         this.setSize(800, 600);
-        Client client0 = new Client();
+        Client client0 = new Client(Settings.getIP(), Settings.getPort());
         Thread clientThread0 = new Thread(client0);
         clientThread0.start();
         textbox = new JTextField();

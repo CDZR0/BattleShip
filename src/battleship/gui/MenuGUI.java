@@ -100,6 +100,7 @@ public class MenuGUI extends JFrame {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("join");
+                dontShowMenu = false;
                 menu.setVisible(false);
                 joinGUI.setVisible(true);
             }
