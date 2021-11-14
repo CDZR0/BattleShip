@@ -23,6 +23,7 @@ public class Server implements Runnable{
     {
         close = true;
         sSocket.close();
+        clientID = 0;
     }
     
     public Server(int port)
