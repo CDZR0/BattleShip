@@ -15,7 +15,7 @@ public class Settings {
     
     public static String ip;   
     public static String port;
-    public static final List<ServerAddress> serverList = new ArrayList<>();
+    private static final List<ServerAddress> serverList = new ArrayList<>();
     
     private Settings() {}
     
@@ -166,14 +166,15 @@ public class Settings {
         WriteFile();
     }
     
-    public static void editServer(ServerAddress sAddress)
+    public static void editServer(String name, ServerAddress newAddress)
     {
         for (ServerAddress serverAddress : serverList) 
         {
-            if (sAddress.getName().equals(serverAddress.getName()))
+            if (name.equals(serverAddress.getName()))
             {
-                serverAddress.setIP(sAddress.getIP());
-                serverAddress.setPort(sAddress.getPort());
+                serverAddress.setName(newAddress.getName());
+                serverAddress.setIP(newAddress.getIP());
+                serverAddress.setPort(newAddress.getPort());
                 WriteFile();
             }
         }
@@ -189,6 +190,5 @@ public class Settings {
                 WriteFile();
             }
         }
-        
     }
 }
