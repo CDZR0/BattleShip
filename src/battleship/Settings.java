@@ -188,6 +188,7 @@ public class Settings {
                 serverAddress.setIP(newAddress.getIP());
                 serverAddress.setPort(newAddress.getPort());
                 WriteFile();
+                break;
             }
         }
     }
@@ -200,6 +201,7 @@ public class Settings {
             {
                 serverList.remove(serverList.get(i));
                 WriteFile();
+                break;
             }
         }
     }
