@@ -39,7 +39,7 @@ public class TesztGUI extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("küld lenyomva:\t" + sendTextBox.getText());
                 client.sendMessage(sendTextBox.getText());
-                chatTextBox.append("[" + LocalTime.now() + "] " + sendTextBox.getText() + "\n");
+                send(sendTextBox.getText(), "SendButton");
             }
         });
         this.add(sendButton);
@@ -68,11 +68,16 @@ public class TesztGUI extends JPanel {
         serverToggleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
+                send("lenyomva", "serverToggleButton");
                 if (serverToggleButton.getText().equals("Server ON")) {
-                    serverToggleButton.setText("Server OFF");
-                    server = new Server(Settings.getPort());
-                    serverThread = new Thread(server);
-                    serverThread.start();
+                    try {
+                        server = new Server(Settings.getPort());
+                        serverThread = new Thread(server);
+                        serverThread.start();
+                        serverToggleButton.setText("Server OFF");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 } else {
                     serverToggleButton.setText("Server ON");
                     try {
@@ -87,7 +92,7 @@ public class TesztGUI extends JPanel {
 
         ipTextBox = new JTextField();
         ipTextBox.setSize(300, 35);
-        ipTextBox.setText("IP");
+        ipTextBox.setText(Settings.getIP());
         ipTextBox.setLocation(this.size().width - serverToggleButton.size().width - 10 - ipTextBox.size().width, 10);
         this.add(ipTextBox);
 
@@ -98,11 +103,16 @@ public class TesztGUI extends JPanel {
         clientToggleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
+                send("lenyomva", "clientToggleButton");
                 if (clientToggleButton.getText().equals("Client ON")) {
-                    clientToggleButton.setText("Client OFF");
-                    client = new Client(ipTextBox.getText(), Integer.parseInt(portTextBox.getText()));
-                    Thread clientThread0 = new Thread(client);
-                    clientThread0.start();
+                    try {
+                        client = new Client(ipTextBox.getText(), Integer.parseInt(portTextBox.getText()));
+                        clientThread = new Thread(client);
+                        clientThread.start();
+                        clientToggleButton.setText("Client OFF");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 } else {
                     clientToggleButton.setText("Client ON");
                     client.close();
@@ -113,7 +123,7 @@ public class TesztGUI extends JPanel {
 
         portTextBox = new JTextField();
         portTextBox.setSize(300, 35);
-        portTextBox.setText("port");
+        portTextBox.setText(Settings.getPort() + "");
         portTextBox.setLocation(this.size().width - serverToggleButton.size().width - 10 - portTextBox.size().width, 55);
         this.add(portTextBox);
 
@@ -126,5 +136,9 @@ public class TesztGUI extends JPanel {
         this.add(chatTextBox);
 
         repaint();
+    }
+
+    private void send(String text, String sender) {
+        chatTextBox.append("[" + LocalTime.now() + "] [" + sender + "] : " + text + "\n");
     }
 }
