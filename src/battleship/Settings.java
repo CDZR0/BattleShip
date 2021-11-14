@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Settings {
     private static final Settings settings = new Settings();
@@ -54,7 +56,6 @@ public class Settings {
                     }
                 }
             }
-            getServers();
         }
         catch(FileNotFoundException | IllegalArgumentException | SecurityException  ex)
         {
@@ -171,6 +172,14 @@ public class Settings {
     {
         for (ServerAddress serverAddress : serverList) 
         {
+            if (newAddress.getName().equals(serverAddress.getName())) 
+            {
+                throw new RuntimeException("SZERVER NÉV MÁR LÉTEZIK");
+            }
+        }
+        
+        for (ServerAddress serverAddress : serverList) 
+        {
             if (name.equals(serverAddress.getName()))
             {
                 serverAddress.setName(newAddress.getName());
@@ -183,11 +192,11 @@ public class Settings {
     
     public static void deleteServer(String name)
     {
-        for (ServerAddress serverAddress : serverList) 
+        for (int i = 0; i < serverList.size(); ++i)
         {
-            if (serverAddress.getName().equals(name))
+            if (serverList.get(i).getName().equals(name))
             {
-                serverList.remove(serverAddress);
+                serverList.remove(serverList.get(i));
                 WriteFile();
             }
         }
