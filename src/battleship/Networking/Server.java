@@ -19,9 +19,10 @@ public class Server implements Runnable{
         queueArray[index].add(message);
     }
     
-    public void close()
+    public void close() throws IOException
     {
         close = true;
+        sSocket.close();
     }
     
     public Server(int port)
