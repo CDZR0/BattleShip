@@ -54,6 +54,7 @@ public class Settings {
                     }
                 }
             }
+            getServers();
         }
         catch(FileNotFoundException | IllegalArgumentException | SecurityException  ex)
         {
