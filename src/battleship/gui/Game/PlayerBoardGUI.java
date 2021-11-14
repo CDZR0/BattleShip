@@ -84,15 +84,12 @@ public class PlayerBoardGUI extends BoardGUI {
     private void setNearAreas(CellGUI cell, CellStatus status) {
         if (shipPlaceHorizontal) {
             for (int i = 0; i < selectedShipSize; i++) {
-                //System.out.println("");
                 for (Point relativeCoord : relativeCoords) {
                     int cellI = cell.getI() + relativeCoord.y;
                     int cellJ = cell.getJ() + relativeCoord.x;
                     cellI += i;
-                    //System.out.println("H_ CellI:" + cellI + " cellJ:" + cellJ);
                     if (cellI >= 0 && cellI <= 9 && cellJ >= 0 && cellJ <= 9) {
                         if (cells[cellI][cellJ].getStatus() == CellStatus.Empty) {
-                            //System.out.println("H_ Invalid place: " + cellI + " - " + cellJ);
                             cells[cellI][cellJ].setCell(status);
                         }
                     }
@@ -100,16 +97,13 @@ public class PlayerBoardGUI extends BoardGUI {
             }
         } else {
             for (int i = 0; i < selectedShipSize; i++) {
-                //System.out.println("V_ ");
                 for (Point relativeCoord : relativeCoords) {
                     int cellI = cell.getI() + relativeCoord.y;
                     int cellJ = cell.getJ() + relativeCoord.x;
 
                     cellJ += i;
-                    //System.out.println("V_ CellI:" + cellI + " cellJ:" + cellJ);
                     if (cellI >= 0 && cellI <= 9 && cellJ >= 0 && cellJ <= 9) {
                         if (cells[cellI][cellJ].getStatus() != CellStatus.Empty) {
-                            //System.out.println("V_ Invalid place: " + cellI + " - " + cellJ);
                             cells[cellI][cellJ].setCell(status);
                         }
                     }
@@ -216,49 +210,40 @@ public class PlayerBoardGUI extends BoardGUI {
     }
 
     private boolean isEmptyPlace(CellGUI cell) {
-        //System.out.println("#######################");
         if (shipPlaceHorizontal) {
             if (cell.getI() + selectedShipSize - 1 <= 9) {
                 for (int i = 0; i < selectedShipSize; i++) {
-                    //System.out.println("");
                     for (Point relativeCoord : relativeCoords) {
                         int cellI = cell.getI() + relativeCoord.y;
                         int cellJ = cell.getJ() + relativeCoord.x;
 
                         cellI += i;
-                        //System.out.println("H_ CellI:" + cellI + " cellJ:" + cellJ);
                         if (cellI >= 0 && cellI <= 9 && cellJ >= 0 && cellJ <= 9) {
                             if (cells[cellI][cellJ].getStatus() == CellStatus.Ship) {
-                                //System.out.println("H_ Invalid place: " + cellI + " - " + cellJ);
                                 return false;
                             }
                         }
                     }
                 }
             } else {
-                //System.out.println("H_ Hahó ez kiesne");
                 return false;
             }
         } else {//Vertical
             if (cell.getJ() + selectedShipSize - 1 <= 9) {
                 for (int i = 0; i < selectedShipSize; i++) {
-                    //System.out.println("V_ ");
                     for (Point relativeCoord : relativeCoords) {
                         int cellI = cell.getI() + relativeCoord.y;
                         int cellJ = cell.getJ() + relativeCoord.x;
 
                         cellJ += i;
-                        //System.out.println("V_ CellI:" + cellI + " cellJ:" + cellJ);
                         if (cellI >= 0 && cellI <= 9 && cellJ >= 0 && cellJ <= 9) {
                             if (cells[cellI][cellJ].getStatus() != CellStatus.Empty) {
-                                //System.out.println("V_ Invalid place: " + cellI + " - " + cellJ);
                                 return false;
                             }
                         }
                     }
                 }
             } else {
-                //System.out.println("V_ Hahó ez kiesne");
                 return false;
             }
         }
@@ -287,6 +272,7 @@ public class PlayerBoardGUI extends BoardGUI {
                 cells[i][j].setCell(board.getCellstatus()[i][j]);
             }
         }
+        selectedCells.clear();
     }
 
 }

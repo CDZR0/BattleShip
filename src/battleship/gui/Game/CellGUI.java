@@ -16,8 +16,8 @@ import javax.swing.JPanel;
  */
 public class CellGUI extends JPanel {
 
-    private final Color backgroundColor = Color.WHITE;
-    private final Color shipColor = Color.GRAY;
+    private final Color backgroundColor = new Color(82,137,200);
+    private final Color shipColor = new Color(18,73,136);
     private final Color waterColor = new Color(0, 0, 0);
     private final int i;
     private final int j;
@@ -100,7 +100,7 @@ public class CellGUI extends JPanel {
     }
 
     private void setColorSelected() {
-        int darkeningLevel = -64;
+        int darkeningLevel = -32;
 
         Color color = new Color(
                 getBackground().getRed() + darkeningLevel < 0 ? 0 : getBackground().getRed() + darkeningLevel,
@@ -111,7 +111,7 @@ public class CellGUI extends JPanel {
     }
 
     private void SetColorUnSelected() {
-        int darkeningLevel = 64;
+        int darkeningLevel = 32;
         Color color = new Color(
                 getBackground().getRed() + darkeningLevel > 256 ? 255 : getBackground().getRed() + darkeningLevel,
                 getBackground().getGreen() + darkeningLevel > 256 ? 255 : getBackground().getGreen() + darkeningLevel,

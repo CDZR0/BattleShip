@@ -5,12 +5,16 @@ import battleship.Events.ShipPlaceEvent;
 import battleship.Events.ShipSelectorEvent;
 import battleship.gui.Game.ShipSelecterGUI;
 import battleship.Logic.Board;
+import battleship.Networking.Client;
+import battleship.Resources.Resources;
 import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -24,42 +28,44 @@ public class GameGUI extends JPanel {
     private ShipSelecterGUI selecter;
 
     public GameGUI() {
-        
-        
-        
-        
+
     }
 
     public GameGUI(String ip, int port) {
         setLayout(null);
         this.setSize(800, 600);
-        setBackground(Color.yellow);
+        setBackground(Resources.BackgroundColor);
+
+        Client client = new Client();
+        Thread clientThread = new Thread(client);
+        clientThread.start();
 
         JLabel title = new JLabel();
-        JButton backButton = new JButton();
+        JButton exitButton = new JButton();
         ownBoard = new Board();
         enemyBoard = new Board();
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
-        System.out.println(ownBoard.toString());
 
         title.setText("Game infos");
-        title.setBackground(Color.red);
         title.setSize(300, 35);
         title.setLocation((this.size().width - title.size().width) / 2, 10);
         this.add(title);
 
-        backButton.setText("Back");
-        backButton.setSize(100, 35);
-        backButton.setLocation(10, 10);
-        backButton.addActionListener(new ActionListener() {
+        exitButton.setText("Exit game");
+        exitButton.setSize(100, 35);
+        exitButton.setLocation(10, 10);
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                setVisible(false);
+                if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Warning", 0) == JOptionPane.YES_OPTION) {
+                    clientThread.stop();
+                    setVisible(false);
+                }
             }
         });
-        this.add(backButton);
+        this.add(exitButton);
 
         ownBoardGUI.setLocation(50, 250);
         this.add(ownBoardGUI);
@@ -108,6 +114,7 @@ public class GameGUI extends JPanel {
 
                 enemyBoardGUI.setEnabled(true);
                 //#### TESZT ####
+                client.sendMessage("Done");
                 enemyBoardGUI.tesztBoard = ownBoardGUI.getBoard();
             }
         });

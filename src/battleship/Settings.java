@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Settings {
     private static final Settings settings = new Settings();
     
@@ -163,27 +164,51 @@ public class Settings {
             }
         }
         serverList.add(sAddress);
+        WriteFile();
     }
     
-    public static void editServer(ServerAddress sAddress)
+    public static void editServer(String name, ServerAddress newAddress)
     {
         for (ServerAddress serverAddress : serverList) 
         {
-            if (sAddress.getName().equals(serverAddress.getName()))
+            if (newAddress.getName().equals(serverAddress.getName())) 
             {
-                serverAddress.setIP(sAddress.getIP());
-                serverAddress.setPort(sAddress.getPort());
+                throw new RuntimeException("SZERVER NÉV MÁR LÉTEZIK");
+            }
+        }
+        
+        for (ServerAddress serverAddress : serverList) 
+        {
+            if (name.equals(serverAddress.getName()))
+            {
+                serverAddress.setName(newAddress.getName());
+                serverAddress.setIP(newAddress.getIP());
+                serverAddress.setPort(newAddress.getPort());
+                WriteFile();
             }
         }
     }
     
     public static void deleteServer(String name)
     {
-        for (ServerAddress serverAddress : serverList) 
+        for (int i = 0; i < serverList.size(); ++i)
         {
-            if (serverAddress.getName().equals(name))
+            if (serverList.get(i).getName().equals(name))
             {
-                serverList.remove(serverAddress);
+                serverList.remove(serverList.get(i));
+                WriteFile();
+            }
+        }
+    }
+    
+    public static void deleteServer(ServerAddress sAddress)
+    {
+        for (int i = 0; i < serverList.size(); ++i)
+        {
+            if (serverList.get(i).getName().equals(sAddress.getName()))
+            {
+                serverList.remove(serverList.get(i));
+                WriteFile();
             }
         }
     }
