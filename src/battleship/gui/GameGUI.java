@@ -71,7 +71,11 @@ public class GameGUI extends JPanel {
                 if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Warning", 0) == JOptionPane.YES_OPTION) {
                     client.close();
                     if (server != null) {
-                        server.close();
+                        try {
+                            server.close();
+                        } catch (Exception e) {
+                            System.out.println("Sikertelen server close()");
+                        }
                     }
                     setVisible(false);
                 }
