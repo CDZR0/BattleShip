@@ -3,7 +3,6 @@ package battleship.gui.Game;
 
 import battleship.GameLogic;
 import battleship.Logic.Board;
-import battleship.Logic.CellStatus;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,7 +14,6 @@ public class EnemyBoardGUI extends BoardGUI {
 
     GameLogic tesztGameLogic = new GameLogic();
     boolean canTip;
-    public Board tesztBoard;
 
     public EnemyBoardGUI(Board board) {
         super(board);
@@ -61,9 +59,7 @@ public class EnemyBoardGUI extends BoardGUI {
     }
 
     private void cellClick(CellGUI cell) {
-        if (testIsHit(cell)) {
-            cells[cell.getI()][cell.getJ()].setCell(CellStatus.Ship);
-        }
+
     }
 
     private void cellEntered(CellGUI cell) {
@@ -72,15 +68,5 @@ public class EnemyBoardGUI extends BoardGUI {
 
     private void cellExited(CellGUI cell) {
         cells[cell.getI()][cell.getJ()].unSelect();
-    }
-
-    private boolean testIsHit(CellGUI cell) {
-        //adat küldés szerverre kliensen át.
-        //szerver megkapja és ott a gamelogic feldolgozza:
-        //tesztGameLogic.setBoard();
-        if (tesztBoard.getCellstatus()[cell.getI()][cell.getJ()] == CellStatus.Ship) {
-            return true;
-        }
-        return false;
     }
 }

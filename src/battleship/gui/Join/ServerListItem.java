@@ -4,12 +4,15 @@ package battleship.gui.Join;
 import battleship.Networking.ServerAddress;
 import battleship.Resources.Resources;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javafx.scene.Parent;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -18,8 +21,10 @@ import javax.swing.JPanel;
 public class ServerListItem extends JPanel {
 
     private ServerAddress serverAddress;
+    private JLabel name, ipPort;
 
     public ServerListItem(ServerAddress serverAddress) {
+        this.setLayout(null);
         this.serverAddress = serverAddress;
         setBackground(Resources.BackgroundColor);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -34,10 +39,27 @@ public class ServerListItem extends JPanel {
                 Exited();
             }
         });
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                name.setSize(size().width, 35);
+                ipPort.setSize(size().width, 35);
+//                name.setLocation((size().width - name.size().width) / 2, 0);
+//                ipPort.setLocation((size().width - ipPort.size().width) / 2, 30);
+            }
+        });
 
-        JLabel name = new JLabel();
-        name.setText(serverAddress.getName());
+        name = new JLabel(serverAddress.getName(), SwingConstants.CENTER);
+        name.setSize(100, 35);
+//        name.setLocation((this.size().width + name.size().width) / 2, 0);
+        name.setLocation(0, 0);
+        name.setFont(new Font("Dialog", Font.BOLD, 20));
         this.add(name);
+
+        ipPort = new JLabel(serverAddress.getIP() + ":" + serverAddress.getPort(), SwingConstants.CENTER);
+        ipPort.setSize(100, 35);
+//        ipPort.setLocation((this.size().width - ipPort.size().width) / 2, 30);
+        ipPort.setLocation(0, 30);
+        this.add(ipPort);
     }
 
     public ServerAddress getServerAddress() {
