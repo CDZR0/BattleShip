@@ -117,6 +117,21 @@ public class TesztGUI extends JPanel {
                                 System.out.println("get message: " + message);
                                 send(message, "client event");
                             }
+
+                            @Override
+                            public void onYourTurn() {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
+
+                            @Override
+                            public void onGameEnded(boolean win) {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
+
+                            @Override
+                            public void onEnemyHitMe(int x, int y) {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
                         });
                         clientThread = new Thread(client);
                         clientThread.start();
@@ -143,6 +158,7 @@ public class TesztGUI extends JPanel {
         chatTextBox.setBackground(Color.DARK_GRAY);
         chatTextBox.setForeground(Color.WHITE);
         chatTextBox.setEditable(false);
+        chatTextBox.setAutoscrolls(true);
         chatTextBox.setPreferredSize(new Dimension(680, 5000));
         chatTextBox.setLocation(0, 0);
         this.add(chatTextBox);
