@@ -4,12 +4,15 @@ import java.net.*;
 import java.io.*;
 import java.util.List;
 import java.util.Vector;
+import battleship.Events.ClientEvent;
+import java.util.ArrayList;
 
 public class Client implements Runnable {
     private final List<String> messageQueue = new Vector<>();
     private String ip;
     private int port;
     private boolean close = false;
+    private List<ClientEvent> listeners = new ArrayList<>();
     
     public Client(String ip, int port)
     {
@@ -27,6 +30,11 @@ public class Client implements Runnable {
         close = true;
     }
     
+    public void addMessageEventListener(ClientEvent cEvent)
+    {
+        listeners.add(cEvent);
+    }
+    
     @Override
     public void run()
     {
@@ -42,6 +50,10 @@ public class Client implements Runnable {
                     while(!close)
                     {
                         String inMsg = bfr.readLine();
+                        for (ClientEvent listener : listeners) 
+                        {
+                            listener.onMessageReceived(inMsg);
+                        }
                         System.out.println(inMsg);
                     }
                 }
