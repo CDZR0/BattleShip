@@ -10,7 +10,7 @@ public class Server implements Runnable{
     private ServerSocket sSocket = null;
     private GameLogic gameLogic;
     
-    private static int clientID = 0;   
+    private int clientID = 0;   
     private List<String>[] queueArray;
     private boolean close = false;
     
@@ -23,7 +23,6 @@ public class Server implements Runnable{
     {
         close = true;
         sSocket.close();
-        clientID = 0;
     }
     
     public Server(int port)
@@ -63,12 +62,12 @@ public class Server implements Runnable{
                     Thread thread2 = new Thread(() -> {
                         while (!close) 
                         {
-                            try 
+                            try
                             {
                                 String inMsg = bfr.readLine();
                                 String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
                                 addMessageToQueue(BroadcastMessage, otherQueueID);
-                            } 
+                            }
                             catch (IOException ex) 
                             {
                                 System.out.println(ex.getMessage());

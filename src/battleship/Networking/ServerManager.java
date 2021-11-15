@@ -25,12 +25,12 @@ public class ServerManager {
     {
         try (FileWriter fw = new FileWriter("servers.dat")) 
         {
-            fw.write(System.lineSeparator() + "Saved_Servers {" + System.lineSeparator());
+            fw.write("Saved_Servers {" + System.lineSeparator());
             for (ServerAddress serverAddress : serverList) 
             {
                 fw.write("\t" + serverAddress + System.lineSeparator());
             }
-            fw.write("}" + System.lineSeparator());
+            fw.write("}");
         } 
         catch (IOException ex) 
         {

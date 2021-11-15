@@ -1,9 +1,9 @@
 package battleship.DataPackage;
 
 public abstract class Data {
-    public byte clientID;
+    public int clientID;
     
-    Data(byte clientID){
+    Data(int clientID){
         this.clientID = clientID;
     }
 }

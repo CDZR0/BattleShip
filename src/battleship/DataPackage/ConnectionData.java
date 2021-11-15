@@ -4,7 +4,7 @@ import battleship.DataPackage.Data;
 
 public class ConnectionData extends Data {
     
-    public ConnectionData(byte clientID) {
+    public ConnectionData(int clientID) {
         super(clientID);
     }
     
