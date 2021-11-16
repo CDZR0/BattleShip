@@ -64,6 +64,9 @@ public class Server implements Runnable{
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
+                    bfw.write("ID");
+                    bfw.newLine();
+                    bfw.flush();                    
                     
                     Thread threadReader = new Thread(() -> {
                         while (!close) 

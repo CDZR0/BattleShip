@@ -61,6 +61,11 @@ public class Client implements Runnable {
                     while(!close)
                     {
                         String inMsg = bfr.readLine();
+                        if (inMsg.equals("0") && inMsg.equals("1"))
+                        {
+                            ID = Integer.parseInt(inMsg);
+                            continue;
+                        }
                         for (ClientEvent listener : listeners) 
                         {
                             listener.onMessageReceived(inMsg);
