@@ -66,6 +66,11 @@ public class Client implements Runnable {
                             ID = Integer.parseInt(inMsg);
                             continue;
                         }
+                        //#####################################################
+                        //Innentől kéne eldönteni milyen típusú üzenetet kapott
+                        //és hogy utána milye nevent történjen.
+                        //A lenti rész a ChatData lesz.
+                        //#####################################################
                         for (ClientEvent listener : listeners) 
                         {
                             listener.onMessageReceived(inMsg);

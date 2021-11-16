@@ -26,17 +26,17 @@ public class GameLogic {
 
     public void processMessage(String message) {
         List<String> asd = DataConverter.decode(message);
-        System.out.println("Üzi hossza: " + asd.size());
-        for (String string : asd) {
-            System.out.println(asd);
-        }
-        System.out.println("Vége.");
+//        System.out.println("Üzi hossza: " + asd.size());
+//        for (String string : asd) {
+//            System.out.println(string);
+//        }
+//        System.out.println("Vége.");
         int id = Integer.parseInt(asd.get(0));
         String dataType = asd.get(1);
         String data = asd.get(2);
         
         switch (dataType) {
-            case "Chat":
+            case "ChatData":
                 messageQueue.add(DataConverter.encode(id, "Chat", data, 0));
                 messageQueue.add(DataConverter.encode(id, "Chat", data, 1));
                 break;
