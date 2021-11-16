@@ -1,6 +1,7 @@
 //TESZTRE
 package battleship.gui;
 
+import battleship.DataPackage.ChatData;
 import battleship.Events.ClientEvent;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
@@ -42,7 +43,7 @@ public class TesztGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("küld lenyomva:\t" + sendTextBox.getText());
-                client.sendMessage("Chat" + "$" + sendTextBox.getText());
+                client.sendMessage(new ChatData(client.ID, sendTextBox.getText()));
                 send(sendTextBox.getText(), "SendButton");
             }
         });

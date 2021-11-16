@@ -9,15 +9,15 @@ import battleship.Logic.Board;
  */
 public class PlaceShipsData {
 
-    byte clientID;
+    int clientID;
     Board board;
 
-    public PlaceShipsData(byte clientID, Board board) {
+    public PlaceShipsData(int clientID, Board board) {
         this.clientID = clientID;
         this.board = board;
     }
 
-    public byte getClientID() {
+    public int getClientID() {
         return clientID;
     }
 
