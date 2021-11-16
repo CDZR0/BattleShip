@@ -70,7 +70,7 @@ public class Server implements Runnable{
                             try
                             {
                                 String inMsg = bfr.readLine();
-                                String BroadcastMessage = gameLogic.processMessage(inMsg);
+                                gameLogic.processMessage(inMsg);
                             }
                             catch (IOException ex) 
                             {
