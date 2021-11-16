@@ -82,22 +82,9 @@ public class Server implements Runnable{
                     });
                     threadReader.start();
                     
-                    Thread threadWriter = new Thread(() -> {
-                        while (!close)
-                        {
-                            while (!gameLogic.messageQueue.isEmpty())
-                            {
-                                String BroadcastMessage = gameLogic.messageQueue.get(0);
-                                gameLogic.messageQueue.remove(0);
-                                addMessageToQueue(BroadcastMessage, otherQueueID);
-                            }
-                        }
-                    });
-                    threadWriter.start();
-                    
                     while(!close)
                     {                      
-                        while (queueArray[ownQueueID].size() > 0)
+                        while (!queueArray[ownQueueID].isEmpty())
                         {
                             
                             String message = queueArray[ownQueueID].get(0);
@@ -105,6 +92,13 @@ public class Server implements Runnable{
                             bfw.write(message);
                             bfw.newLine();
                             bfw.flush();
+                        }
+                        
+                        while (!gameLogic.messageQueue.isEmpty()) 
+                        {
+                            String BroadcastMessage = gameLogic.messageQueue.get(0);
+                            gameLogic.messageQueue.remove(0);
+                            addMessageToQueue(BroadcastMessage, otherQueueID);
                         }
                     }  
                 } 
