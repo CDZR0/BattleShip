@@ -24,4 +24,9 @@ public class DataConverter {
         }
         return encoded;
     }
+    
+    public static String encode(int senderID, String type, String data, int recipientID)
+    {
+        return senderID + "$" + type + "$" + data + "$" + recipientID;
+    }
 }
