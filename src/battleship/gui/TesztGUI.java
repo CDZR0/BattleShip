@@ -42,7 +42,7 @@ public class TesztGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("küld lenyomva:\t" + sendTextBox.getText());
-                client.sendMessage(sendTextBox.getText());
+                client.sendMessage("Chat" + "$" + sendTextBox.getText());
                 send(sendTextBox.getText(), "SendButton");
             }
         });
