@@ -7,18 +7,13 @@ import battleship.Logic.Board;
  *
  * @author nycs0
  */
-public class PlaceShipsData {
+public class PlaceShipsData extends Data {
 
-    int clientID;
     Board board;
 
     public PlaceShipsData(int clientID, Board board) {
-        this.clientID = clientID;
+        super(clientID);
         this.board = board;
-    }
-
-    public int getClientID() {
-        return clientID;
     }
 
     public Board getBoard() {

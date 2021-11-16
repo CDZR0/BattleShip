@@ -151,7 +151,7 @@ public class GameGUI extends JPanel {
     }
 
     private void sendReady(Board board) {
-        client.sendMessage(new PlaceShipsData(0, board));
+        client.sendMessage(new PlaceShipsData(client.ID, board));
     }
 
 }

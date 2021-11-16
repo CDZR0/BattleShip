@@ -3,7 +3,7 @@ package battleship.Logic;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.DataPackage.PlaceShipsData;
-import battleship.DataPackage.Shot;
+import battleship.DataPackage.ShotData;
 import battleship.Logic.Player;
 import java.util.List;
 import java.util.Vector;
@@ -26,6 +26,11 @@ public class GameLogic {
 
     public void processMessage(String message) {
         List<String> asd = DataConverter.decode(message);
+        System.out.println("Üzi hossza: " + asd.size());
+        for (String string : asd) {
+            System.out.println(asd);
+        }
+        System.out.println("Vége.");
         int id = Integer.parseInt(asd.get(0));
         String dataType = asd.get(1);
         String data = asd.get(2);
@@ -43,7 +48,7 @@ public class GameLogic {
             case "Tip":
                 int i = Integer.parseInt(data.split(";")[0]);
                 int j = Integer.parseInt(data.split(";")[1]);
-                calcShot(new Shot(id, i, j));
+                calcShot(new ShotData(id, i, j));
                 break;
             case "0":
                 break;
@@ -58,7 +63,7 @@ public class GameLogic {
         return message;
     }
 
-    private void calcShot(Shot data) {
+    private void calcShot(ShotData data) {
         if (player1.identifier.equals(data.getClientID())) {
             //Ez majd itt switch lesz
             if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
