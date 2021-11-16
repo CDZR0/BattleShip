@@ -1,5 +1,6 @@
 package battleship.Networking;
 
+import battleship.DataPackage.DataConverter;
 import battleship.Logic.GameLogic;
 import java.net.*;
 import java.io.*;
@@ -63,15 +64,13 @@ public class Server implements Runnable{
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
                     
-                    Thread thread2 = new Thread(() -> {
+                    Thread threadReader = new Thread(() -> {
                         while (!close) 
                         {
                             try
                             {
                                 String inMsg = bfr.readLine();
-                                //String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
-                                String BroadcastMessage = ID + inMsg;
-                                addMessageToQueue(BroadcastMessage, otherQueueID);
+                                String BroadcastMessage = gameLogic.processMessage(inMsg);
                             }
                             catch (IOException ex) 
                             {
@@ -81,7 +80,20 @@ public class Server implements Runnable{
                         }
                         
                     });
-                    thread2.start();
+                    threadReader.start();
+                    
+                    Thread threadWriter = new Thread(() -> {
+                        while (!close)
+                        {
+                            while (!gameLogic.messageQueue.isEmpty())
+                            {
+                                String BroadcastMessage = gameLogic.messageQueue.get(0);
+                                gameLogic.messageQueue.remove(0);
+                                addMessageToQueue(BroadcastMessage, otherQueueID);
+                            }
+                        }
+                    });
+                    threadWriter.start();
                     
                     while(!close)
                     {                      
