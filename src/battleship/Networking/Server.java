@@ -2,6 +2,7 @@ package battleship.Networking;
 
 import battleship.DataPackage.DataConverter;
 import battleship.Logic.GameLogic;
+import battleship.Logic.GameLogicVili;
 import java.net.*;
 import java.io.*;
 import java.util.Enumeration;
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
 
 public class Server implements Runnable{
     private ServerSocket sSocket = null;
-    private GameLogic gameLogic;
+    private GameLogicVili gameLogic;
     
     private int clientID = 0;   
     private List<String>[] queueArray;
@@ -44,7 +45,7 @@ public class Server implements Runnable{
         {
             System.out.println(ex.getMessage());
         }
-        gameLogic = new GameLogic();
+        gameLogic = new GameLogicVili();
     } 
     
     private void ServeClient()
@@ -70,7 +71,7 @@ public class Server implements Runnable{
                             try
                             {
                                 String inMsg = bfr.readLine();
-                                gameLogic.processMessage(inMsg);
+                                gameLogic.processMessage(ID + "$" + inMsg);
                             }
                             catch (IOException ex) 
                             {
@@ -98,7 +99,8 @@ public class Server implements Runnable{
                         {
                             String BroadcastMessage = gameLogic.messageQueue.get(0);
                             gameLogic.messageQueue.remove(0);
-                            addMessageToQueue(BroadcastMessage, otherQueueID);
+                            int recipient = Integer.parseInt(DataConverter.decode(BroadcastMessage).get(3));
+                            addMessageToQueue(BroadcastMessage, recipient);
                         }
                     }  
                 } 
