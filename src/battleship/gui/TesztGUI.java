@@ -43,9 +43,8 @@ public class TesztGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("küld lenyomva:\t" + sendTextBox.getText());
-                System.out.println("eze?"+client.ID);
                 client.sendMessage(new ChatData(client.ID, sendTextBox.getText()));
-                send(sendTextBox.getText(), "SendButton");
+                //send(sendTextBox.getText(), "SendButton");
             }
         });
         this.add(sendButton);
@@ -116,7 +115,7 @@ public class TesztGUI extends JPanel {
                         client.addMessageEventListener(new ClientEvent() {
                             @Override
                             public void onMessageReceived(String message) {
-                                System.out.println("get message: " + message);
+                                //System.out.println("get message: " + message);
                                 send(message, "client event");
                             }
 
