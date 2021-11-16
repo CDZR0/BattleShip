@@ -1,11 +1,11 @@
 package battleship.Logic;
 
+import battleship.DataPackage.Data;
 import battleship.DataPackage.PlaceShipsData;
 import battleship.Logic.Player;
 
 public class GameLogic {
 
-    private int senderID;
     private Player player1;
     private Player player2;
 
@@ -15,33 +15,24 @@ public class GameLogic {
     }
 
     public void setBoard(PlaceShipsData data) {
-        if (player1.getIdentifier().equals(data.getClientID())) {
-            player1.setBoard(data);
+
+    }
+
+    public void processMessage(Data data) {
+        switch (data.getClass().getSimpleName()) {
+            case "PlaceShipsData":
+                
+                break;
+            case "ConnectionData":
+
+                break;
+            case "":
+
+                break;
+            default:
+                System.out.println("Ismeretlen");
+                throw new AssertionError();
         }
-    }
-
-    public String processMessage(int senderID, String message) {
-        String decoded = decodeMessage(senderID, message);
-        String output = CalculateLogic(decoded);
-        String encoded = encodeMessage(output);
-
-        return encoded;
-    }
-
-    private String decodeMessage(int senderID, String message) {
-        //Szervertől kapott üzenetet alakítja vissza "CalculateLogic" által értelmezhető adattá, majd megoldom, ne aggódj miatta
-        String decodedMessage = senderID + message;
-
-        this.senderID = senderID;
-
-        return decodedMessage;
-    }
-
-    private String encodeMessage(String message) {
-        //"CalculateLogic"-tól kapott üzenetet alakítja vissza a szerver által visszaküldött kóddá, majd megoldom, ne aggódj miatta
-        String encodedMessage = message;
-
-        return encodedMessage;
     }
 
     private String CalculateLogic(String message) {
