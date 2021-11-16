@@ -42,6 +42,8 @@ public class Client implements Runnable {
         try
         {
             Socket socket = new Socket(ip, port);
+            
+            
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             

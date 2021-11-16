@@ -3,8 +3,11 @@ package battleship.Networking;
 import java.net.*;
 import java.io.*;
 import battleship.*;
+import java.util.Enumeration;
 import java.util.Vector;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server implements Runnable{
     private ServerSocket sSocket = null;
@@ -103,8 +106,27 @@ public class Server implements Runnable{
             }
         });
         thread.start();
-        
-        
+    }
+    
+    private String getLocalIP()
+    {
+        try {
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress)ee.nextElement();                  
+                    if (i.getHostAddress().split("\\.")[0].equals("192"))
+                        return i.getHostAddress();               
+                }
+            }
+        } 
+        catch (SocketException ex) 
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "NO IP FOUND";
     }
     
     @Override
@@ -113,6 +135,6 @@ public class Server implements Runnable{
         ServeClient();
         ServeClient();
         
-        //System.out.println(sSocket.getInetAddress());
+        System.out.println(getLocalIP());
     }
 }
