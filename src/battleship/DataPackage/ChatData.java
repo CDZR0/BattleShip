@@ -14,4 +14,8 @@ public class ChatData extends Data {
         this.message = message;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
 }
