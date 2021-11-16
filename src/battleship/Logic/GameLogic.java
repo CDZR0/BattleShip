@@ -23,21 +23,8 @@ public class GameLogic {
 
     }
 
-    public void processMessage(Data data) {
-        switch (data.getClass().getSimpleName()) {
-            case "PlaceShipsData":
-
-                break;
-            case "ConnectionData":
-
-                break;
-            case "Tip":
-
-                break;
-            default:
-                System.out.println("Ismeretlen");
-                throw new AssertionError();
-        }
+    public void processMessage(String message) {
+        
     }
 
     private String CalculateLogic(String message) {
