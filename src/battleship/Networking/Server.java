@@ -13,16 +13,15 @@ import java.util.logging.Logger;
 
 public class Server implements Runnable{
     private ServerSocket sSocket = null;
-    private GameLogic gameLogic;
-    private GameLogicVili gameLogicVili;
+    private GameLogicVili gameLogic;
     
     private int clientID = 0;   
     private List<String>[] queueArray;
     private boolean close = false;
     
-    public void addMessageToQueue(String message, int index)
+    public void addMessageToQueue(String message, int ID)
     {       
-        queueArray[index].add(message);
+        queueArray[ID].add(message);
     }
     
     public void close() throws IOException
@@ -46,7 +45,7 @@ public class Server implements Runnable{
         {
             System.out.println(ex.getMessage());
         }
-        gameLogic = new GameLogic();
+        gameLogic = new GameLogicVili();
     } 
     
     private void ServeClient()
@@ -101,17 +100,8 @@ public class Server implements Runnable{
                             String BroadcastMessage = gameLogic.messageQueue.get(0);
                             gameLogic.messageQueue.remove(0);
                             List<String> decoded = DataConverter.decode(BroadcastMessage);
-                            for (String string : decoded) {
-                                System.out.println(string);
-                                System.out.println("hahdasd");
-                            }
                             int recipient = Integer.parseInt(decoded.get(3));
-                            if (recipient == 2)
-                                addMessageToQueue(BroadcastMessage, recipient);
-                            else {
-                                addMessageToQueue(BroadcastMessage, 0);
-                                addMessageToQueue(BroadcastMessage, 1);
-                            }
+                            addMessageToQueue(BroadcastMessage, recipient);
                         }
                     }  
                 } 
