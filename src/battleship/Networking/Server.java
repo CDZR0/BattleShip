@@ -1,5 +1,6 @@
 package battleship.Networking;
 
+import battleship.Logic.GameLogic;
 import java.net.*;
 import java.io.*;
 import battleship.*;

@@ -1,5 +1,6 @@
 package battleship;
 
+import battleship.Utils.Settings;
 import java.io.IOException;
 import battleship.gui.MenuGUI;
 import battleship.Networking.*;
