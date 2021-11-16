@@ -103,6 +103,8 @@ public class Server implements Runnable{
             }
         });
         thread.start();
+        
+        
     }
     
     @Override
@@ -110,5 +112,7 @@ public class Server implements Runnable{
     {
         ServeClient();
         ServeClient();
+        
+        //System.out.println(sSocket.getInetAddress());
     }
 }

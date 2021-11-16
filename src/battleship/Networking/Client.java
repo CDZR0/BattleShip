@@ -4,7 +4,7 @@ import java.net.*;
 import java.io.*;
 import java.util.List;
 import java.util.Vector;
-import battleship.Events.ClientMessageReceivedEvent;
+import battleship.Events.ClientEvent;
 import java.util.ArrayList;
 
 public class Client implements Runnable {
@@ -12,7 +12,7 @@ public class Client implements Runnable {
     private String ip;
     private int port;
     private boolean close = false;
-    private List<ClientMessageReceivedEvent> listeners = new ArrayList<>();
+    private List<ClientEvent> listeners = new ArrayList<>();
     private Integer ID;
     
     public Client(String ip, int port)
@@ -31,7 +31,7 @@ public class Client implements Runnable {
         close = true;
     }
     
-    public void addMessageEventListener(ClientMessageReceivedEvent cEvent)
+    public void addMessageEventListener(ClientEvent cEvent)
     {
         listeners.add(cEvent);
     }
@@ -51,7 +51,7 @@ public class Client implements Runnable {
                     while(!close)
                     {
                         String inMsg = bfr.readLine();
-                        for (ClientMessageReceivedEvent listener : listeners) 
+                        for (ClientEvent listener : listeners) 
                         {
                             listener.onMessageReceived(inMsg);
                         }
