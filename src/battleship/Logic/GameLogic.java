@@ -26,18 +26,14 @@ public class GameLogic {
 
     public void processMessage(String message) {
         List<String> asd = DataConverter.decode(message);
-        System.out.println("Kapott üzenet hossza: " + asd.size());
-        for (String string : asd) {
-            System.out.println(string);
-        }
-        System.out.println("Üzenet vége.");
         int id = Integer.parseInt(asd.get(0));
         String dataType = asd.get(1);
         String data = asd.get(2);
-        Class<PlaceShipsData> a;
+        
         switch (dataType) {
             case "Chat":
-                messageQueue.add(DataConverter.encode(id, "Chat", data, 2));
+                messageQueue.add(DataConverter.encode(id, "Chat", data, 0));
+                messageQueue.add(DataConverter.encode(id, "Chat", data, 1));
                 break;
             case "PlaceShipsData":
 
