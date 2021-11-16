@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 
 public class Server implements Runnable{
     private ServerSocket sSocket = null;
-    private GameLogicVili gameLogic;
+    private GameLogic gameLogic;
+    private GameLogicVili gameLogicVili;
     
     private int clientID = 0;   
     private List<String>[] queueArray;
@@ -45,7 +46,7 @@ public class Server implements Runnable{
         {
             System.out.println(ex.getMessage());
         }
-        gameLogic = new GameLogicVili();
+        gameLogic = new GameLogic();
     } 
     
     private void ServeClient()
@@ -99,8 +100,18 @@ public class Server implements Runnable{
                         {
                             String BroadcastMessage = gameLogic.messageQueue.get(0);
                             gameLogic.messageQueue.remove(0);
-                            int recipient = Integer.parseInt(DataConverter.decode(BroadcastMessage).get(3));
-                            addMessageToQueue(BroadcastMessage, recipient);
+                            List<String> decoded = DataConverter.decode(BroadcastMessage);
+                            for (String string : decoded) {
+                                System.out.println(string);
+                                System.out.println("hahdasd");
+                            }
+                            int recipient = Integer.parseInt(decoded.get(3));
+                            if (recipient == 2)
+                                addMessageToQueue(BroadcastMessage, recipient);
+                            else {
+                                addMessageToQueue(BroadcastMessage, 0);
+                                addMessageToQueue(BroadcastMessage, 1);
+                            }
                         }
                     }  
                 } 
