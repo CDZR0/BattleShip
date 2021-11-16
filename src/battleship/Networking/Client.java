@@ -1,5 +1,7 @@
 package battleship.Networking;
 
+import battleship.DataPackage.Data;
+import battleship.DataPackage.DataConverter;
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -23,6 +25,12 @@ public class Client implements Runnable {
     
     public void sendMessage(String message)
     {       
+        messageQueue.add(message);
+    }
+    
+    public void sendMessage(Data data)
+    {
+        String message = DataConverter.encode(data);   
         messageQueue.add(message);
     }
     

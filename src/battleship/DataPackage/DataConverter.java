@@ -29,4 +29,19 @@ public class DataConverter {
     {
         return senderID + "$" + type + "$" + data + "$" + recipientID;
     }
+    
+    public static String encode(Data data)
+    {
+        String encoded = new String();
+        switch (data.getClass().getSimpleName())
+        {
+            case "PlaceShipsData":
+                //PLACESHIPDATA
+                break;
+            case "Shot":
+                //SHOTDATA
+                break;
+        }
+        return encoded;
+    }
 }
