@@ -1,36 +1,27 @@
 package battleship.DataPackage;
 
-import java.util.Arrays;
 import java.util.List;
-
+import java.util.Arrays;
 
 public class DataConverter {
-    public static void decode(String message)
+    public static List<String> decode(String message)
     {
-        List<String> collection = Arrays.asList(message.split("\\$"));
+        return Arrays.asList(message.split("\\$"));
+    }
+    
+    public static String encode(List<String> message)
+    {
+        String encoded = "";
         
-        switch(collection.get(1))
+        int size = message.size();
+        for (int i = 0; i < size; ++i) 
         {
-            case "CHAT":
-                //Invoke chat event
-                System.out.println("CHAT VAN GECI");
-                break;
-            case "PLACE":
-                //Invoke place event
-                break;
-            case "MARK":
-                //Invoke mark event
-                break;
-            case "TURN_END":
-                //Invoke turn end event
-                break;
-            case "END_GAME":
-                //Invoke end game event
-                break;
-            default:
-                throw new RuntimeException("ISMERETLEN UTASÍTÁS");
+            encoded += message.get(i);
+            if (i != size-1)
+            {
+                encoded += "$";
+            }
         }
-        
-        System.out.println(collection.getClass().getSimpleName());
+        return encoded;
     }
 }
