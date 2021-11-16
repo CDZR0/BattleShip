@@ -69,7 +69,8 @@ public class Server implements Runnable{
                             try
                             {
                                 String inMsg = bfr.readLine();
-                                String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
+                                //String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
+                                String BroadcastMessage = ID + inMsg;
                                 addMessageToQueue(BroadcastMessage, otherQueueID);
                             }
                             catch (IOException ex) 
