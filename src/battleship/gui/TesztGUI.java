@@ -1,7 +1,7 @@
 //TESZTRE
 package battleship.gui;
 
-import battleship.Events.ClientEvent;
+import battleship.Events.ClientMessageReceivedEvent;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
 import battleship.Settings;
@@ -111,7 +111,7 @@ public class TesztGUI extends JPanel {
                 if (clientToggleButton.getText().equals("Client ON")) {
                     try {
                         client = new Client(ipTextBox.getText(), Integer.parseInt(portTextBox.getText()));
-                        client.addMessageEventListener(new ClientEvent() {
+                        client.addMessageEventListener(new ClientMessageReceivedEvent() {
                             @Override
                             public void onMessageReceived(String message) {
                                 System.out.println("get message: " + message);
