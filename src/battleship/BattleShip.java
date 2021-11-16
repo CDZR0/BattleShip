@@ -6,7 +6,6 @@ import battleship.Networking.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import battleship.DataPackage.*;
-import java.util.List;
 
 public class BattleShip extends Application {
     
