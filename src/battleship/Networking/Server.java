@@ -3,20 +3,29 @@ package battleship.Networking;
 import java.net.*;
 import java.io.*;
 import battleship.*;
+import java.util.Enumeration;
 import java.util.Vector;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server implements Runnable{
-    ServerSocket sSocket = null;
-    GameLogic gameLogic;
+    private ServerSocket sSocket = null;
+    private GameLogic gameLogic;
     
-    private static int clientID = 0;
-    
+    private int clientID = 0;   
     private List<String>[] queueArray;
+    private boolean close = false;
     
     public void addMessageToQueue(String message, int index)
     {       
         queueArray[index].add(message);
+    }
+    
+    public void close() throws IOException
+    {
+        close = true;
+        sSocket.close();
     }
     
     public Server(int port)
@@ -40,28 +49,32 @@ public class Server implements Runnable{
     private void ServeClient()
     {
         Thread thread = new Thread(() -> {         
-            while(!BattleShip.quit)
+            while(!close)
             {
                 try 
                 {
                     Socket socket = sSocket.accept();
-                    
                     Integer ID = clientID++;
+                    
                     System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
                     int ownQueueID = (ID == 0) ? 0 : 1;
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
+//                    bfw.write(ID);
+//                    bfw.newLine();
+//                    bfw.flush();
+                    
                     Thread thread2 = new Thread(() -> {
-                        while (!BattleShip.quit) 
+                        while (!close) 
                         {
-                            try 
+                            try
                             {
                                 String inMsg = bfr.readLine();
                                 String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
                                 addMessageToQueue(BroadcastMessage, otherQueueID);
-                            } 
+                            }
                             catch (IOException ex) 
                             {
                                 System.out.println(ex.getMessage());
@@ -72,7 +85,7 @@ public class Server implements Runnable{
                     });
                     thread2.start();
                     
-                    while(!BattleShip.quit)
+                    while(!close)
                     {                      
                         while (queueArray[ownQueueID].size() > 0)
                         {
@@ -95,10 +108,33 @@ public class Server implements Runnable{
         thread.start();
     }
     
+    private String getLocalIP()
+    {
+        try {
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress)ee.nextElement();                  
+                    if (i.getHostAddress().split("\\.")[0].equals("192"))
+                        return i.getHostAddress();               
+                }
+            }
+        } 
+        catch (SocketException ex) 
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "NO IP FOUND";
+    }
+    
     @Override
     public void run() 
     {
         ServeClient();
         ServeClient();
+        
+        System.out.println(getLocalIP());
     }
 }

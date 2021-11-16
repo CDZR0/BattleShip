@@ -6,11 +6,11 @@ import battleship.Events.ShipSelectorEvent;
 import battleship.gui.Game.ShipSelecterGUI;
 import battleship.Logic.Board;
 import battleship.Networking.Client;
+import battleship.Networking.Server;
 import battleship.Resources.Resources;
+import battleship.Settings;
 import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.PlayerBoardGUI;
-import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,9 +26,16 @@ public class GameGUI extends JPanel {
     private Board ownBoard;
     private Board enemyBoard;
     private ShipSelecterGUI selecter;
+    private Client client;
+    private Thread clientThread, serverThread;
+    private Server server;
 
     public GameGUI() {
-
+        this(Settings.getIP(), Settings.getPort());
+        server = new Server(Settings.getPort());
+        serverThread = new Thread(server);
+        serverThread.start();
+        System.out.println("szerver itt");
     }
 
     public GameGUI(String ip, int port) {
@@ -36,8 +43,8 @@ public class GameGUI extends JPanel {
         this.setSize(800, 600);
         setBackground(Resources.BackgroundColor);
 
-        Client client = new Client();
-        Thread clientThread = new Thread(client);
+        client = new Client(ip, port);
+        clientThread = new Thread(client);
         clientThread.start();
 
         JLabel title = new JLabel();
@@ -48,7 +55,7 @@ public class GameGUI extends JPanel {
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
 
-        title.setText("Game infos");
+        title.setText("Game infos" + ip + ":" + port);
         title.setSize(300, 35);
         title.setLocation((this.size().width - title.size().width) / 2, 10);
         this.add(title);
@@ -60,7 +67,14 @@ public class GameGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Warning", 0) == JOptionPane.YES_OPTION) {
-                    clientThread.stop();
+                    client.close();
+                    if (server != null) {
+                        try {
+                            server.close();
+                        } catch (Exception e) {
+                            System.out.println("Sikertelen server close():\n" + e.getMessage());
+                        }
+                    }
                     setVisible(false);
                 }
             }
@@ -110,7 +124,7 @@ public class GameGUI extends JPanel {
             @Override
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
-                System.out.println(ownBoard.toString());
+                System.out.println(ownBoardGUI.getBoard().toString());
 
                 enemyBoardGUI.setEnabled(true);
                 //#### TESZT ####

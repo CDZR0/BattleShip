@@ -1,8 +1,9 @@
 //Csaba
 package battleship.gui;
 
+import battleship.Events.JoinGUIEvent;
+import battleship.Networking.ServerAddress;
 import battleship.Resources.Resources;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -21,6 +22,7 @@ public class MenuGUI extends JFrame {
     public static int WindowInsets;
     JButton newGame, joinGame, settingsButton, exitButton;
     JPanel menu;
+    boolean dontShowMenu;
 
     public MenuGUI() {
         this.setSize(800, 600);
@@ -31,7 +33,7 @@ public class MenuGUI extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         WindowInsets = this.insets().top;
-        System.out.println("wi:" + (600-WindowInsets));
+        System.out.println("wi:" + (600 - WindowInsets));
 
         menu = new JPanel();
         menu.setBackground(Resources.BackgroundColor);
@@ -62,17 +64,29 @@ public class MenuGUI extends JFrame {
                 System.out.println("new");
                 menu.setVisible(false);
                 //gameGUI.setVisible(true);
-                createGameGUI();
+                createGameGUI(null);
             }
         });
         menu.add(newGame);
 
+        dontShowMenu = false;
         JoinGUI joinGUI = new JoinGUI();
         joinGUI.setBounds(0, 0, this.size().width, this.size().height);
         joinGUI.setVisible(false);
         joinGUI.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
-                menu.setVisible(true);
+                if (!dontShowMenu) {
+                    menu.setVisible(true);
+                }
+            }
+        });
+        joinGUI.AddConnectListener(new JoinGUIEvent() {
+            @Override
+            public void onConnect(ServerAddress serverAddress) {
+                System.out.println("Join");
+                joinGUI.setVisible(false);
+                dontShowMenu = true;
+                createGameGUI(serverAddress);
             }
         });
         this.add(joinGUI);
@@ -85,6 +99,7 @@ public class MenuGUI extends JFrame {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("join");
+                dontShowMenu = false;
                 menu.setVisible(false);
                 joinGUI.setVisible(true);
             }
@@ -151,13 +166,18 @@ public class MenuGUI extends JFrame {
         exitButton.setVisible(value);
     }
 
-    private void createGameGUI() {
-        GameGUI gameGUI = new GameGUI("", 0);
+    private void createGameGUI(ServerAddress sa) {
+        GameGUI gameGUI;
+        if (sa != null) {
+            gameGUI = new GameGUI(sa.getIP(), sa.getPort());
+        } else {
+            gameGUI = new GameGUI();
+        }
         gameGUI.setBounds(0, 0, this.size().width, this.size().height);
         //gameGUI.setVisible(false);
         gameGUI.addComponentListener(new ComponentAdapter() {
             public void componentShown(ComponentEvent e) {
-
+                menu.setVisible(false);
             }
 
             public void componentHidden(ComponentEvent e) {
@@ -165,7 +185,7 @@ public class MenuGUI extends JFrame {
                 remove(gameGUI);
             }
         });
-
+        menu.setVisible(false);
         this.add(gameGUI);
     }
 }

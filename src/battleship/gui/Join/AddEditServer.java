@@ -6,6 +6,7 @@
 package battleship.gui.Join;
 
 import battleship.Networking.ServerAddress;
+import battleship.Networking.ServerManager;
 import battleship.Resources.Resources;
 import battleship.Settings;
 import java.awt.Font;
@@ -88,7 +89,7 @@ public class AddEditServer extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 if (add) {
                     try {
-                        Settings.addServer(new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
+                        ServerManager.addServer(new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
                         Settings.WriteFile();
                         setVisible(false);
                     } catch (Exception e) {
@@ -98,7 +99,7 @@ public class AddEditServer extends JPanel {
                     }
                 } else {
                     try {
-                        Settings.editServer(sa.getName(), new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
+                        ServerManager.editServer(sa.getName(), new ServerAddress(nameText.getText(), ipText.getText(), Integer.parseInt(portText.getText())));
                         Settings.WriteFile();
                         setVisible(false);
                     } catch (Exception e) {
