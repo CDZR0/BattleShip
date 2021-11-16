@@ -82,19 +82,6 @@ public class Server implements Runnable{
                     });
                     threadReader.start();
                     
-                    Thread threadWriter = new Thread(() -> {
-                        while (!close)
-                        {
-                            while (!gameLogic.messageQueue.isEmpty())
-                            {
-                                String BroadcastMessage = gameLogic.messageQueue.get(0);
-                                gameLogic.messageQueue.remove(0);
-                                addMessageToQueue(BroadcastMessage, otherQueueID);
-                            }
-                        }
-                    });
-                    threadWriter.start();
-                    
                     while(!close)
                     {                      
                         while (!queueArray[ownQueueID].isEmpty())
