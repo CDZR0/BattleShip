@@ -1,6 +1,7 @@
 //Csaba
 package battleship.gui;
 
+import battleship.DataPackage.PlaceShipsData;
 import battleship.Events.ShipPlaceEvent;
 import battleship.Events.ShipSelectorEvent;
 import battleship.gui.Game.ShipSelecterGUI;
@@ -150,7 +151,7 @@ public class GameGUI extends JPanel {
     }
 
     private void sendReady(Board board) {
-
+        client.sendMessage(new PlaceShipsData(client.ID, board));
     }
 
 }
