@@ -1,9 +1,15 @@
 package battleship.DataPackage;
 
 public abstract class Data {
-    public int clientID;
-    
-    Data(int clientID){
+
+    protected int clientID;
+
+    Data(int clientID) {
         this.clientID = clientID;
     }
+
+    public int getClientID() {
+        return clientID;
+    }
+
 }
