@@ -1,10 +1,13 @@
 package battleship.Networking;
 
+import battleship.Logic.GameLogic;
 import java.net.*;
 import java.io.*;
-import battleship.*;
+import java.util.Enumeration;
 import java.util.Vector;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server implements Runnable{
     private ServerSocket sSocket = null;
@@ -51,13 +54,17 @@ public class Server implements Runnable{
                 try 
                 {
                     Socket socket = sSocket.accept();
-                    
                     Integer ID = clientID++;
+                    
                     System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
                     int ownQueueID = (ID == 0) ? 0 : 1;
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    
+//                    bfw.write(ID);
+//                    bfw.newLine();
+//                    bfw.flush();
                     
                     Thread thread2 = new Thread(() -> {
                         while (!close) 
@@ -101,10 +108,33 @@ public class Server implements Runnable{
         thread.start();
     }
     
+    private String getLocalIP()
+    {
+        try {
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress)ee.nextElement();                  
+                    if (i.getHostAddress().split("\\.")[0].equals("192"))
+                        return i.getHostAddress();               
+                }
+            }
+        } 
+        catch (SocketException ex) 
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "NO IP FOUND";
+    }
+    
     @Override
     public void run() 
     {
         ServeClient();
         ServeClient();
+        
+        System.out.println(getLocalIP());
     }
 }

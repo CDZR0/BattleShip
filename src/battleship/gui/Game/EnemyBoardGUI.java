@@ -1,7 +1,7 @@
 //Csaba
 package battleship.gui.Game;
 
-import battleship.GameLogic;
+import battleship.Logic.GameLogic;
 import battleship.Logic.Board;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

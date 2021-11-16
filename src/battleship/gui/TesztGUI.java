@@ -4,7 +4,7 @@ package battleship.gui;
 import battleship.Events.ClientEvent;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
-import battleship.Settings;
+import battleship.Utils.Settings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;

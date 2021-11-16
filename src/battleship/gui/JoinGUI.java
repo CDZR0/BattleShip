@@ -2,7 +2,7 @@
 package battleship.gui;
 
 import battleship.Resources.Resources;
-import battleship.Settings;
+import battleship.Utils.Settings;
 import battleship.gui.Join.AddEditServer;
 import battleship.gui.Join.ServerListItem;
 import java.awt.Component;

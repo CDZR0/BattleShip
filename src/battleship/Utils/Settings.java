@@ -1,4 +1,4 @@
-package battleship;
+package battleship.Utils;
 
 import battleship.Networking.ServerAddress;
 import java.io.File;

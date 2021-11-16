@@ -8,7 +8,7 @@ import battleship.Logic.Board;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
 import battleship.Resources.Resources;
-import battleship.Settings;
+import battleship.Utils.Settings;
 import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.event.ActionListener;

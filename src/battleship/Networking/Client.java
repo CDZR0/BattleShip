@@ -13,6 +13,7 @@ public class Client implements Runnable {
     private int port;
     private boolean close = false;
     private List<ClientEvent> listeners = new ArrayList<>();
+    private Integer ID;
     
     public Client(String ip, int port)
     {
@@ -41,6 +42,8 @@ public class Client implements Runnable {
         try
         {
             Socket socket = new Socket(ip, port);
+            
+            
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             

@@ -1,4 +1,4 @@
-package battleship;
+package battleship.Logic;
 
 import battleship.DataPackage.PlaceShipsData;
 import battleship.Logic.Player;
