@@ -14,13 +14,17 @@ public class GameLogic {
 
     public List<String> messageQueue = new Vector<>();
 
-    private Player player1;
-    private Player player2;
+    Player player1;
+    Player player2;
+    private Player[] players;
 
     public GameLogic() {
         player1 = new Player();
         player2 = new Player();
-    }
+        players = new Player[2];
+        players[0] = new Player();
+        players[1] = new Player();
+    } 
 
     public void setBoard(PlaceShipsData data) {
 
@@ -60,6 +64,8 @@ public class GameLogic {
     }
 
     private void calcShot(ShotData data) {
+//        players[data.getClientID()]
+        
         if (player1.identifier == data.getClientID()) {
             if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
