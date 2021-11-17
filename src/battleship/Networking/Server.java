@@ -41,15 +41,28 @@ public class Server implements Runnable{
                 queueArray[i] = new Vector<>();
             }
             sSocket = new ServerSocket(port);
+            gameLogic = new GameLogic();
             
-            
-            
+            Thread threadQueuePoll = new Thread(() -> {
+                System.out.println("cigàny vok, futok");
+                while (!close) {
+                    while (!gameLogic.messageQueue.isEmpty()) {
+                        System.out.println("picsafüst");
+                        String BroadcastMessage = gameLogic.messageQueue.get(0);
+                        gameLogic.messageQueue.remove(0);
+                        Data decoded = DataConverter.decode(BroadcastMessage);
+                        int recipient = decoded.getRecipientID();
+                        addMessageToQueue(BroadcastMessage, recipient);
+                    }
+                }
+            });
+            threadQueuePoll.start();
         }
         catch (IOException ex) 
         {
             System.out.println(ex.getMessage());
         }
-        gameLogic = new GameLogic();
+        
     } 
     
     private void ServeClient()
@@ -72,16 +85,7 @@ public class Server implements Runnable{
                     bfw.newLine();
                     bfw.flush();
                     
-                    Thread threadQueuePoll = new Thread(() -> {
-                        while (!gameLogic.messageQueue.isEmpty()) {
-                            String BroadcastMessage = gameLogic.messageQueue.get(0);
-                            gameLogic.messageQueue.remove(0);
-                            Data decoded = DataConverter.decode(BroadcastMessage);
-                            int recipient = decoded.getRecipientID();
-                            addMessageToQueue(BroadcastMessage, recipient);
-                        }
-                    });
-                    threadQueuePoll.start();
+                    
                     
                     Thread threadReader = new Thread(() -> {
                         while (!close) 
