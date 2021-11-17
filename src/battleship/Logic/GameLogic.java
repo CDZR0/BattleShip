@@ -70,7 +70,7 @@ public class GameLogic {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
                 ShotData sd = new ShotData(-1, ((ShotData) data).getI(), ((ShotData) data).getJ());
-                sd.setRecipientID(0);
+                sd.setRecipientID(1);
                 messageQueue.add(DataConverter.encode(sd));
             }
         } else {
@@ -84,7 +84,7 @@ public class GameLogic {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(0)));
                 ShotData sd = new ShotData(-1, ((ShotData) data).getI(), ((ShotData) data).getJ());
-                sd.setRecipientID(1);
+                sd.setRecipientID(0);
                 messageQueue.add(DataConverter.encode(sd));
             }
         }
