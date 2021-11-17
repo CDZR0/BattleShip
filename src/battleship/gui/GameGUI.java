@@ -62,6 +62,7 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onYourTurn() {
+                System.out.println("Its me turn.");
                 enemyBoardGUI.setTurnEnabled(true);
             }
 

@@ -64,6 +64,7 @@ public class EnemyBoardGUI extends BoardGUI {
     public void setTurnEnabled(boolean value) {
         canTip = value;
         setEnabled(value);
+        System.out.println("Enemy board now: " + value);
     }
 
     public void addShotListener(ShotEvent listener) {
