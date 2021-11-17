@@ -84,6 +84,10 @@ public class Client implements Runnable {
                                     for (ClientEvent listener : listeners) {
                                         listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
                                     }
+                                }else{
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onMyHit(((ShotData) data).getI(), ((ShotData) data).getJ());
+                                    }
                                 }
                                 break;
                             case "TurnData":

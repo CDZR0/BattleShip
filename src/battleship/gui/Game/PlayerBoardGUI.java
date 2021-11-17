@@ -81,28 +81,6 @@ public class PlayerBoardGUI extends BoardGUI {
         }
     }
 
-    public void EnemyHit(int i, int j) {
-        System.out.println("Enemy clicked: I: " + i + " j: " + j + " s: " + cells[i][j].getStatus());
-        switch (cells[i][j].getStatus()) {
-            case Empty:
-                cells[i][j].setCell(CellStatus.EmptyHit);
-                break;
-            case EmptyHit:
-                break;
-            case NearShip:
-                break;
-            case Ship:
-                cells[i][j].setCell(CellStatus.ShipHit);
-                break;
-            case ShipHit:
-                break;
-            case ShipSunk:
-                break;
-            default:
-                break;
-        }
-    }
-
     private void setNearAreas(CellGUI cell, CellStatus status) {
         if (shipPlaceHorizontal) {
             for (int i = 0; i < selectedShipSize; i++) {

@@ -74,8 +74,12 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onEnemyHitMe(int i, int j) {
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$$");
-                ownBoardGUI.EnemyHit(i, j);
+                ownBoardGUI.Hit(i, j);
+            }
+
+            @Override
+            public void onMyHit(int i, int j) {
+                enemyBoardGUI.Hit(i, j);
             }
 
         });

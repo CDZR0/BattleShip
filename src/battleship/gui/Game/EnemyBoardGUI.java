@@ -3,6 +3,7 @@ package battleship.gui.Game;
 
 import battleship.Events.ShotEvent;
 import battleship.Logic.Board;
+import battleship.Logic.CellStatus;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -42,16 +43,16 @@ public class EnemyBoardGUI extends BoardGUI {
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        if (isEnabled() && canTip) {
-                            cellEntered(seged);
-                        }
+                        //if (isEnabled() && canTip) {
+                        cellEntered(seged);
+                        //}
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        if (isEnabled()) {
-                            cellExited(seged);
-                        }
+                        //if (isEnabled()) {
+                        cellExited(seged);
+                        //}
                     }
 
                 });

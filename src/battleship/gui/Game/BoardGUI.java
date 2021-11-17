@@ -2,6 +2,7 @@
 package battleship.gui.Game;
 
 import battleship.Logic.Board;
+import battleship.Logic.CellStatus;
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -21,8 +22,33 @@ public class BoardGUI extends JPanel {
         this.setSize(widtheight, widtheight);
         this.setBackground(Color.GRAY);
     }
-    
-    public Board getBoard(){
+
+    public Board getBoard() {
         return this.board;
+    }
+
+    public void Hit(int i, int j) {
+        switch (cells[i][j].getStatus()) {
+            case Empty:
+                cells[i][j].setCell(CellStatus.EmptyHit);
+                break;
+            case EmptyHit:
+                break;
+            case NearShip:
+                break;
+            case Ship:
+                cells[i][j].setCell(CellStatus.ShipHit);
+                break;
+            case ShipHit:
+                break;
+            case ShipSunk:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setNearAreasToEmpty(int i, int j) {
+
     }
 }
