@@ -1,10 +1,12 @@
 //Csaba
 package battleship.gui.Game;
 
-import battleship.Logic.GameLogic;
+import battleship.Events.ShotEvent;
 import battleship.Logic.Board;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -12,12 +14,13 @@ import java.awt.event.MouseEvent;
  */
 public class EnemyBoardGUI extends BoardGUI {
 
-    GameLogic tesztGameLogic = new GameLogic();
+    private List<ShotEvent> listeners;
     boolean canTip;
 
     public EnemyBoardGUI(Board board) {
         super(board);
 
+        this.listeners = new ArrayList<>();
         cells = new CellGUI[board.getNLength()][board.getNLength()];
         canTip = true;
         int width = super.size().width / cells.length;
@@ -58,8 +61,14 @@ public class EnemyBoardGUI extends BoardGUI {
         }
     }
 
+        public void addShotListener(ShotEvent listener) {
+        listeners.add(listener);
+    }
+    
     private void cellClick(CellGUI cell) {
-
+        for (ShotEvent listener : listeners) {
+            listener.onShot(cell.getI(), cell.getJ());
+        }
     }
 
     private void cellEntered(CellGUI cell) {

@@ -9,7 +9,7 @@ import battleship.DataPackage.PlaceShipsData;
  */
 public class Player {
 
-    String identifier;
+    int identifier;
     Board board;
 
     public Player() {
@@ -20,7 +20,7 @@ public class Player {
 
     }
 
-    public String getIdentifier() {
+    public int getIdentifier() {
         return identifier;
     }
 
