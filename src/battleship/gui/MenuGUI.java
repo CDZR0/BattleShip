@@ -105,6 +105,17 @@ public class MenuGUI extends JFrame {
         });
         menu.add(joinGame);
 
+        SettingsGUI settingsGUI = new SettingsGUI();
+        settingsGUI.setBounds(0, 0, this.size().width, this.size().height);
+        settingsGUI.setVisible(false);
+        settingsGUI.addComponentListener(new ComponentAdapter() {
+            public void componentHidden(ComponentEvent e) {
+                if (!dontShowMenu) {
+                    menu.setVisible(true);
+                }
+            }
+        });
+
         settingsButton = new JButton();
         settingsButton.setText("Settings");
         settingsButton.setSize(buttonWidth, buttonHeight);
@@ -112,7 +123,8 @@ public class MenuGUI extends JFrame {
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //System.out.println("settingsButton");
+                menu.setVisible(false);
+                settingsGUI.setVisible(true);
             }
         });
         menu.add(settingsButton);

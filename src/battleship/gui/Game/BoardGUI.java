@@ -68,8 +68,4 @@ public class BoardGUI extends JPanel {
                 break;
         }
     }
-
-    private void setNearAreasToEmpty(int i, int j) {
-
-    }
 }
