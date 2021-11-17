@@ -1,8 +1,9 @@
 package battleship.Networking;
 
+import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.Logic.GameLogic;
-import battleship.Logic.GameLogicVili;
+//import battleship.Logic.GameLogicVili;
 import java.net.*;
 import java.io.*;
 import java.util.Enumeration;
@@ -13,14 +14,14 @@ import java.util.logging.Logger;
 
 public class Server implements Runnable{
     private ServerSocket sSocket = null;
-    private GameLogicVili gameLogic;
+    private GameLogic gameLogic;
     
     private int clientID = 0;   
     private List<String>[] queueArray;
     private boolean close = false;
     
     public void addMessageToQueue(String message, int ID)
-    {       
+    {
         queueArray[ID].add(message);
     }
     
@@ -45,7 +46,7 @@ public class Server implements Runnable{
         {
             System.out.println(ex.getMessage());
         }
-        gameLogic = new GameLogicVili();
+        gameLogic = new GameLogic();
     } 
     
     private void ServeClient()
@@ -74,7 +75,7 @@ public class Server implements Runnable{
                             try
                             {
                                 String inMsg = bfr.readLine();
-                                gameLogic.processMessage(inMsg);
+                                gameLogic.processMessage(DataConverter.decode(inMsg));
                             }
                             catch (IOException ex) 
                             {
@@ -102,8 +103,8 @@ public class Server implements Runnable{
                         {
                             String BroadcastMessage = gameLogic.messageQueue.get(0);
                             gameLogic.messageQueue.remove(0);
-                            List<String> decoded = DataConverter.decode(BroadcastMessage);
-                            int recipient = Integer.parseInt(decoded.get(3));
+                            Data decoded = DataConverter.decode(BroadcastMessage);
+                            int recipient = decoded.getRecipientID();
                             addMessageToQueue(BroadcastMessage, recipient);
                         }
                     }  
