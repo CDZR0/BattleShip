@@ -8,5 +8,5 @@ public interface ClientEvent {
     
     void onGameEnded(boolean win);
     
-    void onEnemyHitMe(int x, int y);
+    void onEnemyHitMe(int i, int j);
 }

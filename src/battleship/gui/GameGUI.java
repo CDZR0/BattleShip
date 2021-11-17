@@ -73,9 +73,11 @@ public class GameGUI extends JPanel {
             }
 
             @Override
-            public void onEnemyHitMe(int x, int y) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            public void onEnemyHitMe(int i, int j) {
+                System.out.println("###############################");
+                ownBoardGUI.EnemyHit(i, j);
             }
+
         });
         clientThread = new Thread(client);
         clientThread.start();

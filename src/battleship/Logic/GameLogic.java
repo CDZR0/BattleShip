@@ -26,10 +26,6 @@ public class GameLogic {
         players = new Player[2];
         players[0] = new Player();
         players[1] = new Player();
-    } 
-
-    public void setBoard(PlaceShipsData data) {
-
     }
 
     public void processMessage(Data data) {
@@ -60,31 +56,38 @@ public class GameLogic {
         }
     }
 
-    private String CalculateLogic(String message) {
-        //Csaba ez (várhatóan) a tiéd
-        return message;
-    }
-
     private void calcShot(ShotData data) {
 //        players[data.getClientID()]
-        
+
         if (player1.identifier == data.getClientID()) {
             if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(0)));
+                ShotData sd = data;
+                sd.setRecipientID(1);
+                messageQueue.add(DataConverter.encode(sd));
             } else {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
+                ShotData sd = data;
+                sd.setRecipientID(0);
+                messageQueue.add(DataConverter.encode(sd));
             }
         } else {
             if (player1.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
+                ShotData sd = data;
+                sd.setRecipientID(0);
+                messageQueue.add(DataConverter.encode(sd));
             } else {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(0)));
+                ShotData sd = data;
+                sd.setRecipientID(1);
+                messageQueue.add(DataConverter.encode(sd));
             }
-        }        
+        }
         System.out.println("//////////////////////////////////\nEXIT\n///////////////////////////////////////");
     }
 
@@ -98,8 +101,9 @@ public class GameLogic {
             player2.board = data.getBoard();
             player2.ready = true;
         }
-        
+
         if (player1.ready == true && player2.ready == true) {
+            System.out.println("Most dölt el:");
             messageQueue.add(DataConverter.encode(new TurnData(rnd.nextInt(2))));
         }
     }

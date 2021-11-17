@@ -82,6 +82,7 @@ public class PlayerBoardGUI extends BoardGUI {
     }
 
     public void EnemyHit(int i, int j) {
+        System.out.println("Enemy clicked: I: " + i + " j: " + j + " s: " + cells[i][j].getStatus());
         switch (cells[i][j].getStatus()) {
             case Empty:
                 cells[i][j].setCell(CellStatus.EmptyHit);
