@@ -41,7 +41,6 @@ public class CellGUI extends JPanel {
             case EmptyHit:
                 this.cellStatus = cellStatus;
                 setBackground(waterColor);
-                setBackground(Color.YELLOW);
                 break;
             case NearShip:
                 this.cellStatus = cellStatus;
@@ -130,6 +129,8 @@ public class CellGUI extends JPanel {
             case Empty:
                 break;
             case EmptyHit:
+                g2.setColor(backgroundColor);
+                g2.fillRect(0, 0, size().width, size().height);
                 g2.setColor(Color.BLUE);
                 g2.setStroke(new BasicStroke(2));
                 for (int k = 0; k < 6; k++) {

@@ -1,5 +1,6 @@
 package battleship.Events;
 
+import battleship.DataPackage.GameEndedStatus;
 import battleship.Logic.CellStatus;
 
 public interface ClientEvent {
@@ -8,7 +9,7 @@ public interface ClientEvent {
 
     void onYourTurn();
 
-    void onGameEnded(boolean win);
+    void onGameEnded(GameEndedStatus status);
 
     void onEnemyHitMe(int i, int j);
 

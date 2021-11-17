@@ -3,6 +3,7 @@ package battleship.Networking;
 import battleship.DataPackage.CellData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
+import battleship.DataPackage.GameEndedData;
 import battleship.DataPackage.ShotData;
 import java.net.*;
 import java.io.*;
@@ -97,6 +98,12 @@ public class Client implements Runnable {
                                 System.out.println("Create event: TurnData");
                                 for (ClientEvent listener : listeners) {
                                     listener.onYourTurn();
+                                }
+                                break;
+                            case "GameEndedData":
+                                System.out.println("Create event: GameEndedData");
+                                for (ClientEvent listener : listeners) {
+                                    listener.onGameEnded(((GameEndedData) data).getStatus());
                                 }
                                 break;
                             default:

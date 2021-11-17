@@ -59,6 +59,9 @@ public class DataConverter {
                 CellStatus status = CellStatus.valueOf(dataMessage.split(";")[2]);
                 data = new CellData(id, i, j, status);
                 break;
+            case "GameEndedData":
+                data = new GameEndedData(GameEndedStatus.valueOf(dataMessage), recipientID);
+                break;
             default:
                 System.out.println("########## ISMERETLEN OSZTÁLY #########");
                 System.out.println("Nincs implementálva a DataConverterben az alábbi osztály: " + dataType);
@@ -111,6 +114,9 @@ public class DataConverter {
             case "CellData":
                 //System.out.println("Encoding CellData");
                 encoded += data.clientID + "$CellData$" + ((CellData) data).getI() + ";" + ((CellData) data).getJ() + ";" + ((CellData) data).getStatus();
+                break;
+            case "GameEndedData":
+                encoded += data.clientID + "$GameEndedData$" + ((GameEndedData) data).status + "$" + ((GameEndedData) data).recipientID;
                 break;
             default:
                 System.out.println("########## ISMERETLEN OSZTÁLY #########");

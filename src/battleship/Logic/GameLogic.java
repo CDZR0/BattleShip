@@ -4,10 +4,14 @@ import battleship.DataPackage.CellData;
 import battleship.DataPackage.ChatData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
+import battleship.DataPackage.GameEndedData;
+import battleship.DataPackage.GameEndedStatus;
 import battleship.DataPackage.PlaceShipsData;
 import battleship.DataPackage.ShotData;
 import battleship.DataPackage.TurnData;
 import battleship.Logic.Player;
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
@@ -68,13 +72,19 @@ public class GameLogic {
             messageQueue.add(DataConverter.encode(cd));
 
             if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
+                player2.board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
                 System.out.println("Tts a hit!");
-                messageQueue.add(DataConverter.encode(new TurnData(0)));
+                if (isWin(player2)) {
+                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, 0)));
+                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, 1)));
+                } else {
+                    messageQueue.add(DataConverter.encode(new TurnData(0)));
+                }
             } else {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
             }
-        } else {            
+        } else {
             ShotData sd = new ShotData(data.getClientID(), data.getI(), data.getJ());
             sd.setRecipientID(0);
             messageQueue.add(DataConverter.encode(sd));
@@ -84,13 +94,36 @@ public class GameLogic {
             messageQueue.add(DataConverter.encode(cd));
 
             if (player1.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
+                player1.board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
                 System.out.println("Tts a hit!");
-                messageQueue.add(DataConverter.encode(new TurnData(1)));
+                if (isWin(player1)) {
+                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, 1)));
+                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, 0)));
+                } else {
+                    messageQueue.add(DataConverter.encode(new TurnData(1)));
+                }
             } else {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(0)));
             }
         }
+    }
+
+    private boolean isWin(Player player) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (player.board.cellstatus[i][j] == CellStatus.Ship) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private List<Point> isSunk(int i, int j) {
+        List<Point> ij = new ArrayList<>();
+
+        return ij;
     }
 
     private void setPlayerBoard(PlaceShipsData data) {

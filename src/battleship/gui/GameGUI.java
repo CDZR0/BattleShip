@@ -1,6 +1,7 @@
 //Csaba
 package battleship.gui;
 
+import battleship.DataPackage.GameEndedStatus;
 import battleship.DataPackage.PlaceShipsData;
 import battleship.DataPackage.ShotData;
 import battleship.Events.ClientEvent;
@@ -68,9 +69,19 @@ public class GameGUI extends JPanel {
             }
 
             @Override
-            public void onGameEnded(boolean win) {
+            public void onGameEnded(GameEndedStatus status) {
                 enemyBoardGUI.setTurnEnabled(false);
                 System.out.println("Ki kéne írni hogy nyert or vesztett");
+                switch (status) {
+                    case Win:
+                        System.out.println("NYERTÉL");
+                        break;
+                    case Defeat:
+                        System.out.println("VESZTETTÉL");
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override
