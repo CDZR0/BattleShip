@@ -49,7 +49,6 @@ public class Server implements Runnable{
             Thread threadQueuePoll = new Thread(() -> {
                 while (!close) {
                     while (!gameLogic.messageQueue.isEmpty()) {
-                        System.out.println("picsafüst");
                         String BroadcastMessage = gameLogic.messageQueue.get(0);
                         gameLogic.messageQueue.remove(0);
                         Data decoded = DataConverter.decode(BroadcastMessage);
