@@ -115,6 +115,7 @@ public class MenuGUI extends JFrame {
                 }
             }
         });
+        this.add(settingsGUI);
 
         settingsButton = new JButton();
         settingsButton.setText("Settings");
