@@ -1,6 +1,7 @@
 package battleship.DataPackage;
 
 import battleship.Logic.Board;
+import battleship.Logic.CellStatus;
 import java.util.List;
 
 public class DataConverter {
@@ -9,8 +10,9 @@ public class DataConverter {
 //        return Arrays.asList(message.split("\\$"));
 //    }
     public static Data decode(String message) {
-        if (message == null)
-                return new ChatData(-1, "NULL MESSAGE IN DECODE METHOD; THIS IS AN EXCEPTION");
+        if (message == null) {
+            return new ChatData(-1, "NULL MESSAGE IN DECODE METHOD; THIS IS AN EXCEPTION");
+        }
         Data data;
         String[] tordelt = (message.split("\\$"));
 //        System.out.println("#####################\nDECODE");
@@ -25,28 +27,37 @@ public class DataConverter {
         String dataMessage = tordelt[2];
         int recipientID = Integer.parseInt(tordelt[3]);
 
+        int i, j;
+
         switch (dataType) {
             case "ChatData":
-                System.out.println("Decoding ChatData");
+                //System.out.println("Decoding ChatData");
                 data = new ChatData(id, dataMessage);
                 break;
             case "PlaceShipsData":
-                System.out.println("Decoding PlaceShipsData");
+                //System.out.println("Decoding PlaceShipsData");
                 data = new PlaceShipsData(id, new Board(dataMessage));
                 break;
             case "ConnectionData":
-                System.out.println("Decoding ConnectionData");
+                //System.out.println("Decoding ConnectionData");
                 data = new ConnectionData(id);
                 break;
             case "ShotData":
-                System.out.println("Decoding ShotData");
-                int i = Integer.parseInt(dataMessage.split(";")[0]);
-                int j = Integer.parseInt(dataMessage.split(";")[1]);
+                //System.out.println("Decoding ShotData");
+                i = Integer.parseInt(dataMessage.split(";")[0]);
+                j = Integer.parseInt(dataMessage.split(";")[1]);
                 data = new ShotData(id, i, j);
                 break;
             case "TurnData":
-                System.out.println("Decoding TurnData");
+                //System.out.println("Decoding TurnData");
                 data = new TurnData(recipientID);
+                break;
+            case "CellData":
+                //System.out.println("Decoding CellData");
+                i = Integer.parseInt(dataMessage.split(";")[0]);
+                j = Integer.parseInt(dataMessage.split(";")[1]);
+                CellStatus status = CellStatus.valueOf(dataMessage.split(";")[2]);
+                data = new CellData(id, i, j, status);
                 break;
             default:
                 System.out.println("########## ISMERETLEN OSZTÁLY #########");
@@ -75,27 +86,31 @@ public class DataConverter {
     }
 
     public static String encode(Data data) {
-        System.out.println("#####################\nENCODE");
+        //System.out.println("#####################\nENCODE");
         String encoded = new String();
         switch (data.getClass().getSimpleName()) {
             case "ChatData":
-                System.out.println("Encoding ChatData");
+                //System.out.println("Encoding ChatData");
                 encoded += data.clientID + "$ChatData$" + ((ChatData) data).getMessage();
                 break;
             case "PlaceShipsData":
-                System.out.println("Encoding PlaceShipsData");
+                //System.out.println("Encoding PlaceShipsData");
                 encoded += data.clientID + "$PlaceShipsData$" + ((PlaceShipsData) data).getBoard().convertToString();
                 break;
             case "ConnectionData":
                 System.out.println("Encoding ConnectionData");
                 break;
             case "ShotData":
-                System.out.println("Encoding ShotData");
+                //System.out.println("Encoding ShotData");
                 encoded += data.clientID + "$ShotData$" + ((ShotData) data).getI() + ";" + ((ShotData) data).getJ();
                 break;
             case "TurnData":
-                System.out.println("Encoding TurnData");
+                //System.out.println("Encoding TurnData");
                 encoded += data.clientID + "$TurnData$$" + data.recipientID;
+                break;
+            case "CellData":
+                //System.out.println("Encoding CellData");
+                encoded += data.clientID + "$CellData$" + ((CellData) data).getI() + ";" + ((CellData) data).getJ() + ";" + ((CellData) data).getStatus();
                 break;
             default:
                 System.out.println("########## ISMERETLEN OSZTÁLY #########");
@@ -103,7 +118,7 @@ public class DataConverter {
                 break;
         }
         encoded += "$" + data.recipientID;
-        System.out.println(encoded);
+        //System.out.println(encoded);
         return encoded;
     }
 }

@@ -3,6 +3,7 @@ package battleship.gui;
 
 import battleship.DataPackage.ChatData;
 import battleship.Events.ClientEvent;
+import battleship.Logic.CellStatus;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
 import battleship.Utils.Settings;
@@ -131,6 +132,11 @@ public class TesztGUI extends JPanel {
 
                             @Override
                             public void onEnemyHitMe(int x, int y) {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
+
+                            @Override
+                            public void onMyHit(int i, int j, CellStatus status) {
                                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                             }
                         });

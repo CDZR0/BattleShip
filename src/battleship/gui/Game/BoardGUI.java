@@ -48,6 +48,28 @@ public class BoardGUI extends JPanel {
         }
     }
 
+    public void Hit(int i, int j, CellStatus status) {
+        System.out.println("-------SET CELL TO: " + cells[i][j].getStatus());
+        switch (cells[i][j].getStatus()) {
+            case Empty:
+                cells[i][j].setCell(CellStatus.EmptyHit);
+                break;
+            case EmptyHit:
+                break;
+            case NearShip:
+                break;
+            case Ship:
+                cells[i][j].setCell(CellStatus.ShipHit);
+                break;
+            case ShipHit:
+                break;
+            case ShipSunk:
+                break;
+            default:
+                break;
+        }
+    }
+
     private void setNearAreasToEmpty(int i, int j) {
 
     }

@@ -9,6 +9,7 @@ import battleship.Events.ShipSelectorEvent;
 import battleship.Events.ShotEvent;
 import battleship.gui.Game.ShipSelecterGUI;
 import battleship.Logic.Board;
+import battleship.Logic.CellStatus;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
 import battleship.Resources.Resources;
@@ -62,7 +63,7 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onYourTurn() {
-                System.out.println("Its me turn.");
+                //System.out.println("Its me turn.");
                 enemyBoardGUI.setTurnEnabled(true);
             }
 
@@ -78,8 +79,8 @@ public class GameGUI extends JPanel {
             }
 
             @Override
-            public void onMyHit(int i, int j) {
-                enemyBoardGUI.Hit(i, j);
+            public void onMyHit(int i, int j, CellStatus status) {
+                enemyBoardGUI.Hit(i, j, status);
             }
 
         });
@@ -164,7 +165,7 @@ public class GameGUI extends JPanel {
             @Override
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
-                System.out.println(ownBoardGUI.getBoard().toString());
+                //System.out.println(ownBoardGUI.getBoard().toString());
                 client.sendMessage(new PlaceShipsData(client.ID, ownBoardGUI.getBoard()));
 
                 //TESZT

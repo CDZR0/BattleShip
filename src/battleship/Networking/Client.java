@@ -1,5 +1,6 @@
 package battleship.Networking;
 
+import battleship.DataPackage.CellData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.DataPackage.ShotData;
@@ -84,10 +85,12 @@ public class Client implements Runnable {
                                     for (ClientEvent listener : listeners) {
                                         listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
                                     }
-                                }else{
-                                    for (ClientEvent listener : listeners) {
-                                        listener.onMyHit(((ShotData) data).getI(), ((ShotData) data).getJ());
-                                    }
+                                }
+                                break;
+                            case "CellData":
+                                System.out.println("Create event: CellData");
+                                for (ClientEvent listener : listeners) {
+                                    listener.onMyHit(((CellData) data).getI(), ((CellData) data).getJ(), ((CellData) data).getStatus());
                                 }
                                 break;
                             case "TurnData":
