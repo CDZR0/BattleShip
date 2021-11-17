@@ -2,7 +2,6 @@ package battleship.DataPackage;
 
 import battleship.Logic.Board;
 import java.util.List;
-import java.util.Arrays;
 
 public class DataConverter {
 
@@ -12,12 +11,12 @@ public class DataConverter {
     public static Data decode(String message) {
         Data data;
         String[] tordelt = (message.split("\\$"));
-        System.out.println("#####################\nDECODE");
-        System.out.println("Üzi hossza: " + tordelt.length);
-        for (String string : tordelt) {
-            System.out.println(string);
-        }
-        System.out.println("Vége.");
+//        System.out.println("#####################\nDECODE");
+////        System.out.println("Üzi hossza: " + tordelt.length);
+//        for (String string : tordelt) {
+//            System.out.println(string);
+//        }
+//        System.out.println("Vége.");
 
         int id = Integer.parseInt(tordelt[0]);
         String dataType = tordelt[1];

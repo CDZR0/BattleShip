@@ -100,7 +100,7 @@ public class GameLogic {
         }
         
         if (player1.ready == true && player2.ready == true) {
-            messageQueue.add(DataConverter.encode(new TurnData(rnd.nextInt(1))));
+            messageQueue.add(DataConverter.encode(new TurnData(rnd.nextInt(2))));
         }
     }
 }
