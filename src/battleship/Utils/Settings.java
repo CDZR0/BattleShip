@@ -1,22 +1,18 @@
 package battleship.Utils;
 
-import battleship.Networking.ServerAddress;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 
 public class Settings {
     private static final Settings settings = new Settings();
     
-    public static String ip;   
-    public static String port;
-    private static final List<ServerAddress> serverList = new ArrayList<>();
+    //public static String IP;
+    public static String Port = "25564";
     
     private Settings() {}
     
@@ -58,8 +54,7 @@ public class Settings {
         catch(FileNotFoundException | IllegalArgumentException | SecurityException  ex)
         {
             System.out.println(ex.getMessage());
-            ip = "0.0.0.0";
-            port = "25564";           
+            Port = "25564";           
             WriteFile();
         }
     }
@@ -92,11 +87,16 @@ public class Settings {
     
     public static String getIP() 
     {
-        return ip;
+        return "0.0.0.0";
     }
 
     public static int getPort() 
     {
-        return Integer.parseInt(port);
+        return Integer.parseInt(Port);
+    }
+    
+    public static void setPort(int port)
+    {
+        Port = String.valueOf(port);
     }
 }

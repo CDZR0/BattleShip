@@ -1,12 +1,17 @@
 package battleship.Events;
 
+import battleship.DataPackage.GameEndedStatus;
+import battleship.Logic.CellStatus;
 
 public interface ClientEvent {
+
     void onMessageReceived(String message);
-    
+
     void onYourTurn();
-    
-    void onGameEnded(boolean win);
-    
-    void onEnemyHitMe(int x, int y);
+
+    void onGameEnded(GameEndedStatus status);
+
+    void onEnemyHitMe(int i, int j);
+
+    void onMyHit(int i, int j, CellStatus status);
 }

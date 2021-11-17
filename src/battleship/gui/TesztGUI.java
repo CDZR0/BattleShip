@@ -1,10 +1,13 @@
 //TESZTRE
 package battleship.gui;
 
-import battleship.Events.ClientMessageReceivedEvent;
+import battleship.DataPackage.ChatData;
+import battleship.DataPackage.GameEndedStatus;
+import battleship.Events.ClientEvent;
+import battleship.Logic.CellStatus;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
-import battleship.Settings;
+import battleship.Utils.Settings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -42,8 +45,8 @@ public class TesztGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("küld lenyomva:\t" + sendTextBox.getText());
-                client.sendMessage(sendTextBox.getText());
-                send(sendTextBox.getText(), "SendButton");
+                client.sendMessage(new ChatData(client.ID, sendTextBox.getText()));
+                //send(sendTextBox.getText(), "SendButton");
             }
         });
         this.add(sendButton);
@@ -111,10 +114,10 @@ public class TesztGUI extends JPanel {
                 if (clientToggleButton.getText().equals("Client ON")) {
                     try {
                         client = new Client(ipTextBox.getText(), Integer.parseInt(portTextBox.getText()));
-                        client.addMessageEventListener(new ClientMessageReceivedEvent() {
+                        client.addClientEventListener(new ClientEvent() {
                             @Override
                             public void onMessageReceived(String message) {
-                                System.out.println("get message: " + message);
+                                //System.out.println("get message: " + message);
                                 send(message, "client event");
                             }
 
@@ -124,12 +127,17 @@ public class TesztGUI extends JPanel {
                             }
 
                             @Override
-                            public void onGameEnded(boolean win) {
+                            public void onEnemyHitMe(int x, int y) {
                                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                             }
 
                             @Override
-                            public void onEnemyHitMe(int x, int y) {
+                            public void onMyHit(int i, int j, CellStatus status) {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
+
+                            @Override
+                            public void onGameEnded(GameEndedStatus status) {
                                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                             }
                         });

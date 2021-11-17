@@ -33,7 +33,6 @@ public class MenuGUI extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         WindowInsets = this.insets().top;
-        System.out.println("wi:" + (600 - WindowInsets));
 
         menu = new JPanel();
         menu.setBackground(Resources.BackgroundColor);
@@ -61,7 +60,7 @@ public class MenuGUI extends JFrame {
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("new");
+                //System.out.println("new");
                 menu.setVisible(false);
                 //gameGUI.setVisible(true);
                 createGameGUI(null);
@@ -98,13 +97,25 @@ public class MenuGUI extends JFrame {
         joinGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("join");
+                //System.out.println("join");
                 dontShowMenu = false;
                 menu.setVisible(false);
                 joinGUI.setVisible(true);
             }
         });
         menu.add(joinGame);
+
+        SettingsGUI settingsGUI = new SettingsGUI();
+        settingsGUI.setBounds(0, 0, this.size().width, this.size().height);
+        settingsGUI.setVisible(false);
+        settingsGUI.addComponentListener(new ComponentAdapter() {
+            public void componentHidden(ComponentEvent e) {
+                if (!dontShowMenu) {
+                    menu.setVisible(true);
+                }
+            }
+        });
+        this.add(settingsGUI);
 
         settingsButton = new JButton();
         settingsButton.setText("Settings");
@@ -113,7 +124,8 @@ public class MenuGUI extends JFrame {
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("settingsButton");
+                menu.setVisible(false);
+                settingsGUI.setVisible(true);
             }
         });
         menu.add(settingsButton);
@@ -125,7 +137,7 @@ public class MenuGUI extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("exitButton");
+                //System.out.println("exitButton");
                 System.exit(0);
             }
         });
@@ -150,20 +162,13 @@ public class MenuGUI extends JFrame {
         tesztButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                System.out.println("tesztButton lenyomva");
+                //System.out.println("tesztButton lenyomva");
                 menu.setVisible(false);
                 t.setVisible(true);
             }
         });
         menu.add(tesztButton);
         repaint();
-    }
-
-    private void setVisibleMenu(boolean value) {
-        newGame.setVisible(value);
-        joinGame.setVisible(value);
-        settingsButton.setVisible(value);
-        exitButton.setVisible(value);
     }
 
     private void createGameGUI(ServerAddress sa) {

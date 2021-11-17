@@ -9,18 +9,15 @@ import battleship.DataPackage.PlaceShipsData;
  */
 public class Player {
 
-    String identifier;
+    int identifier;
+    boolean ready = false;
     Board board;
 
     public Player() {
         board = new Board();
     }
 
-    public void setBoard(PlaceShipsData ships) {
-
-    }
-
-    public String getIdentifier() {
+    public int getIdentifier() {
         return identifier;
     }
 

@@ -1,8 +1,10 @@
 package battleship.Networking;
 
+import battleship.DataPackage.Data;
+import battleship.DataPackage.DataConverter;
+import battleship.Logic.GameLogic;
 import java.net.*;
 import java.io.*;
-import battleship.*;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.List;
@@ -17,9 +19,12 @@ public class Server implements Runnable{
     private List<String>[] queueArray;
     private boolean close = false;
     
-    public void addMessageToQueue(String message, int index)
-    {       
-        queueArray[index].add(message);
+    public void addMessageToQueue(String message, int ID)
+    {
+        if (ID != -1)
+        {
+            queueArray[ID].add(message);
+        }
     }
     
     public void close() throws IOException
@@ -38,12 +43,26 @@ public class Server implements Runnable{
                 queueArray[i] = new Vector<>();
             }
             sSocket = new ServerSocket(port);
-        } 
+            gameLogic = new GameLogic();
+            
+            Thread threadQueuePoll = new Thread(() -> {
+                while (!close) {
+                    while (!gameLogic.messageQueue.isEmpty()) {
+                        String BroadcastMessage = gameLogic.messageQueue.get(0);
+                        gameLogic.messageQueue.remove(0);
+                        Data decoded = DataConverter.decode(BroadcastMessage);
+                        int recipient = decoded.getRecipientID();
+                        addMessageToQueue(BroadcastMessage, recipient);
+                    }
+                }
+            });
+            threadQueuePoll.start();
+        }
         catch (IOException ex) 
         {
             System.out.println(ex.getMessage());
         }
-        gameLogic = new GameLogic();
+        
     } 
     
     private void ServeClient()
@@ -62,18 +81,19 @@ public class Server implements Runnable{
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
-//                    bfw.write(ID);
-//                    bfw.newLine();
-//                    bfw.flush();
+                    bfw.write(ID.toString());
+                    bfw.newLine();
+                    bfw.flush();
                     
-                    Thread thread2 = new Thread(() -> {
+                    
+                    
+                    Thread threadReader = new Thread(() -> {
                         while (!close) 
                         {
                             try
                             {
                                 String inMsg = bfr.readLine();
-                                String BroadcastMessage = gameLogic.processMessage(ID, inMsg);
-                                addMessageToQueue(BroadcastMessage, otherQueueID);
+                                gameLogic.processMessage(DataConverter.decode(inMsg));
                             }
                             catch (IOException ex) 
                             {
@@ -83,11 +103,11 @@ public class Server implements Runnable{
                         }
                         
                     });
-                    thread2.start();
+                    threadReader.start();
                     
                     while(!close)
                     {                      
-                        while (queueArray[ownQueueID].size() > 0)
+                        while (!queueArray[ownQueueID].isEmpty())
                         {
                             
                             String message = queueArray[ownQueueID].get(0);
@@ -108,7 +128,7 @@ public class Server implements Runnable{
         thread.start();
     }
     
-    private String getLocalIP()
+    public static String getLocalIP()
     {
         try {
             Enumeration e = NetworkInterface.getNetworkInterfaces();
@@ -127,6 +147,25 @@ public class Server implements Runnable{
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "NO IP FOUND";
+    }
+    
+    public static boolean isServerAvailable(String ip, int port)
+    {
+        boolean isAvailable;
+        try 
+        {
+            InetAddress server = InetAddress.getByName(ip);
+            isAvailable = server.isReachable(port);
+        } 
+        catch (UnknownHostException ex) 
+        {
+            isAvailable = false;
+        } 
+        catch (IOException ex) 
+        {
+            isAvailable = false;
+        }
+        return isAvailable;
     }
     
     @Override

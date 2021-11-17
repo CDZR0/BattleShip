@@ -3,6 +3,7 @@ package battleship.Logic;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,6 +34,17 @@ public class Board {
         }
     }
 
+    public Board(String a) {
+        String[] row = a.split(";");
+        for (int i = 0; i < 10; i++) {
+            String[] column = row[i].split(":");
+            for (int j = 0; j < 10; j++) {
+                cellstatus[i][j] = CellStatus.valueOf(column[j]);
+            }
+        }
+        System.out.println(this);
+    }
+
     public void setCell(int i, int j, CellStatus status) {
         cellstatus[i][j] = status;
     }
@@ -43,6 +55,17 @@ public class Board {
 
     public CellStatus[][] getCellstatus() {
         return cellstatus;
+    }
+
+    public String convertToString() {
+        String re = "";
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                re += cellstatus[i][j] + ":";
+            }
+            re += ";";
+        }
+        return re;
     }
 
     @Override
@@ -173,6 +196,53 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public boolean hasCellStatus(CellStatus status) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (cellstatus[i][j] == status) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isSunk(int i, int j) {
+
+        for (Point relativeCoord : relativeCoords) {
+            int si = i + relativeCoord.x;
+            int sj = j + relativeCoord.y;
+            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
+                if (cellstatus[si][sj] == CellStatus.Ship) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public List<Point> nearShipPoints(int i, int j) {
+        List<Point> points = new ArrayList<>();
+        for (Point relativeCoord : relativeCoords) {
+            int si = i + relativeCoord.x;
+            int sj = j + relativeCoord.y;
+            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
+                if (cellstatus[si][sj] == CellStatus.Ship) {
+                    for (Point nearShipPoint : nearShipPoints(si, sj)) {
+                        if (!points.contains(nearShipPoint)) {
+                            points.add(nearShipPoint);
+                        }
+                    }
+                } else {
+                    if (!points.contains(new Point(si, sj))) {
+                        points.add(new Point(si, sj));
+                    }
+                }
+            }
+        }
+        return points;
     }
 
 }

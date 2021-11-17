@@ -1,14 +1,20 @@
 //Csaba
 package battleship.gui;
 
+import battleship.DataPackage.GameEndedStatus;
+import battleship.DataPackage.PlaceShipsData;
+import battleship.DataPackage.ShotData;
+import battleship.Events.ClientEvent;
 import battleship.Events.ShipPlaceEvent;
 import battleship.Events.ShipSelectorEvent;
+import battleship.Events.ShotEvent;
 import battleship.gui.Game.ShipSelecterGUI;
 import battleship.Logic.Board;
+import battleship.Logic.CellStatus;
 import battleship.Networking.Client;
 import battleship.Networking.Server;
 import battleship.Resources.Resources;
-import battleship.Settings;
+import battleship.Utils.Settings;
 import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.event.ActionListener;
@@ -43,17 +49,57 @@ public class GameGUI extends JPanel {
         this.setSize(800, 600);
         setBackground(Resources.BackgroundColor);
 
-        client = new Client(ip, port);
-        clientThread = new Thread(client);
-        clientThread.start();
-
-        JLabel title = new JLabel();
-        JButton exitButton = new JButton();
         ownBoard = new Board();
         enemyBoard = new Board();
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
+
+        client = new Client(ip, port);
+        client.addClientEventListener(new ClientEvent() {
+            @Override
+            public void onMessageReceived(String message) {
+                System.out.println("Chat nincs kész");
+            }
+
+            @Override
+            public void onYourTurn() {
+                //System.out.println("Its me turn.");
+                enemyBoardGUI.setTurnEnabled(true);
+            }
+
+            @Override
+            public void onGameEnded(GameEndedStatus status) {
+                enemyBoardGUI.setTurnEnabled(false);
+                System.out.println("Ki kéne írni hogy nyert or vesztett");
+                switch (status) {
+                    case Win:
+                        System.out.println("NYERTÉL");
+                        break;
+                    case Defeat:
+                        System.out.println("VESZTETTÉL");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onEnemyHitMe(int i, int j) {
+                ownBoardGUI.Hit(i, j);
+            }
+
+            @Override
+            public void onMyHit(int i, int j, CellStatus status) {
+                enemyBoardGUI.Hit(i, j, status);
+            }
+
+        });
+        clientThread = new Thread(client);
+        clientThread.start();
+
+        JLabel title = new JLabel();
+        JButton exitButton = new JButton();
 
         title.setText("Game infos" + ip + ":" + port);
         title.setSize(300, 35);
@@ -86,6 +132,12 @@ public class GameGUI extends JPanel {
 
         enemyBoardGUI.setLocation(450, 250);
         enemyBoardGUI.setEnabled(false);
+        enemyBoardGUI.addShotListener(new ShotEvent() {
+            @Override
+            public void onShot(int i, int j) {
+                client.sendMessage(new ShotData(client.ID, i, j));
+            }
+        });
         this.add(enemyBoardGUI);
 
         selecter.setLocation(50, 100);
@@ -124,12 +176,11 @@ public class GameGUI extends JPanel {
             @Override
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
-                System.out.println(ownBoardGUI.getBoard().toString());
+                //System.out.println(ownBoardGUI.getBoard().toString());
+                client.sendMessage(new PlaceShipsData(client.ID, ownBoardGUI.getBoard()));
 
-                enemyBoardGUI.setEnabled(true);
-                //#### TESZT ####
-                client.sendMessage("Done");
-                enemyBoardGUI.tesztBoard = ownBoardGUI.getBoard();
+                //TESZT
+                //enemyBoardGUI.setEnabled(true);
             }
         });
         this.add(selecter);
@@ -151,7 +202,7 @@ public class GameGUI extends JPanel {
     }
 
     private void sendReady(Board board) {
-
+        client.sendMessage(new PlaceShipsData(client.ID, board));
     }
 
 }

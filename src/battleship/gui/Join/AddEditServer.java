@@ -8,7 +8,7 @@ package battleship.gui.Join;
 import battleship.Networking.ServerAddress;
 import battleship.Networking.ServerManager;
 import battleship.Resources.Resources;
-import battleship.Settings;
+import battleship.Utils.Settings;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;

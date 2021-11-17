@@ -1,11 +1,13 @@
 //Csaba
 package battleship.gui.Game;
 
-import battleship.GameLogic;
+import battleship.Events.ShotEvent;
 import battleship.Logic.Board;
 import battleship.Logic.CellStatus;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,13 +15,13 @@ import java.awt.event.MouseEvent;
  */
 public class EnemyBoardGUI extends BoardGUI {
 
-    GameLogic tesztGameLogic = new GameLogic();
+    private List<ShotEvent> listeners;
     boolean canTip;
-    public Board tesztBoard;
 
     public EnemyBoardGUI(Board board) {
         super(board);
 
+        this.listeners = new ArrayList<>();
         cells = new CellGUI[board.getNLength()][board.getNLength()];
         canTip = true;
         int width = super.size().width / cells.length;
@@ -41,16 +43,16 @@ public class EnemyBoardGUI extends BoardGUI {
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        if (isEnabled() && canTip) {
-                            cellEntered(seged);
-                        }
+                        //if (isEnabled() && canTip) {
+                        cellEntered(seged);
+                        //}
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        if (isEnabled()) {
-                            cellExited(seged);
-                        }
+                        //if (isEnabled()) {
+                        cellExited(seged);
+                        //}
                     }
 
                 });
@@ -60,10 +62,22 @@ public class EnemyBoardGUI extends BoardGUI {
         }
     }
 
+    public void setTurnEnabled(boolean value) {
+        canTip = value;
+        setEnabled(value);
+        System.out.println("Enemy board now: " + value);
+    }
+
+    public void addShotListener(ShotEvent listener) {
+        listeners.add(listener);
+    }
+
     private void cellClick(CellGUI cell) {
-        if (testIsHit(cell)) {
-            cells[cell.getI()][cell.getJ()].setCell(CellStatus.Ship);
+        for (ShotEvent listener : listeners) {
+            listener.onShot(cell.getI(), cell.getJ());
         }
+        setTurnEnabled(false);
+        cellExited(cell);
     }
 
     private void cellEntered(CellGUI cell) {
@@ -72,15 +86,5 @@ public class EnemyBoardGUI extends BoardGUI {
 
     private void cellExited(CellGUI cell) {
         cells[cell.getI()][cell.getJ()].unSelect();
-    }
-
-    private boolean testIsHit(CellGUI cell) {
-        //adat küldés szerverre kliensen át.
-        //szerver megkapja és ott a gamelogic feldolgozza:
-        //tesztGameLogic.setBoard();
-        if (tesztBoard.getCellstatus()[cell.getI()][cell.getJ()] == CellStatus.Ship) {
-            return true;
-        }
-        return false;
     }
 }

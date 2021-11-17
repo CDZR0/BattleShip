@@ -1,11 +1,13 @@
 package battleship;
 
+import battleship.Utils.Settings;
 import java.io.IOException;
 import battleship.gui.MenuGUI;
 import battleship.Networking.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import battleship.DataPackage.*;
+import java.util.List;
 
 public class BattleShip extends Application {
     
@@ -19,8 +21,6 @@ public class BattleShip extends Application {
     public static void main(String[] args) throws IOException{
         Settings settings = Settings.getInstance();
         ServerManager serverManager = ServerManager.getInstance();
-        
-        DataConverter.decode("1$CHAT$CIGÁNY VAGYOL");
         
         launch(args);
         BattleShip.quit = true;
