@@ -3,7 +3,6 @@ package battleship.Networking;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.Logic.GameLogic;
-//import battleship.Logic.GameLogicVili;
 import java.net.*;
 import java.io.*;
 import java.util.Enumeration;
