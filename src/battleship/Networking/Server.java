@@ -7,7 +7,6 @@ import battleship.Logic.GameLogic;
 import java.net.*;
 import java.io.*;
 import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.Vector;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,11 +35,10 @@ public class Server implements Runnable{
     {
         try 
         {
-            //queueArray = new Vector[2];
-            queueArray = new LinkedList[2];
+            queueArray = new Vector[2];
             for (int i = 0; i < 2; ++i) 
             {
-                queueArray[i] = new LinkedList<>();
+                queueArray[i] = new Vector<>();
             }
             sSocket = new ServerSocket(port);
         } 

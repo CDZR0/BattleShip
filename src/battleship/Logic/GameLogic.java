@@ -7,13 +7,15 @@ import battleship.DataPackage.PlaceShipsData;
 import battleship.DataPackage.ShotData;
 import battleship.DataPackage.TurnData;
 import battleship.Logic.Player;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
 public class GameLogic {
 
-    public List<String> messageQueue = new Vector<>();
+    //public List<String> messageQueue = new Vector<>();
+    public List<String> messageQueue = new LinkedList<>();
     Random rnd = new Random();
     Player player1;
     Player player2;
