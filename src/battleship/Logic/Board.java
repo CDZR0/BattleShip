@@ -231,14 +231,14 @@ public class Board {
             if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
                 if (cellstatus[si][sj] == CellStatus.Ship) {
                     for (Point nearShipPoint : nearShipPoints(si, sj)) {
-                        //if (!points.contains(nearShipPoint)) {
+                        if (!points.contains(nearShipPoint)) {
                             points.add(nearShipPoint);
-                        //}
+                        }
                     }
                 } else {
-                    //if (!points.contains(new Point(si, sj))) {
+                    if (!points.contains(new Point(si, sj))) {
                         points.add(new Point(si, sj));
-                    //}
+                    }
                 }
             }
         }

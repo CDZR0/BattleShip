@@ -75,13 +75,13 @@ public class GameLogic {
         if (players[masik].board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
             players[masik].board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
             System.out.println("Tts a hit!");
+            if (players[masik].board.isSunk(data.getI(), data.getJ())) {
+                hitNear(egyik, masik, data.getI(), data.getJ());
+            }
             if (isWin(players[masik])) {
                 messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, egyik)));
                 messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, masik)));
             } else {
-                if (players[masik].board.isSunk(data.getI(), data.getJ())) {
-                    hitNear(egyik, masik, data.getI(), data.getJ());
-                }
                 messageQueue.add(DataConverter.encode(new TurnData(egyik)));
             }
         } else {
@@ -154,7 +154,6 @@ public class GameLogic {
             cd.setRecipientID(egyik);
             messageQueue.add(DataConverter.encode(cd));
         }
-
     }
 
     private void setPlayerBoard(PlaceShipsData data) {
