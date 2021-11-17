@@ -91,10 +91,11 @@ public class GameLogic {
         if (data.getClientID() == 0) {
             player1.identifier = data.getClientID();
             player1.board = data.getBoard();
-            player2.board = data.getBoard();
+            player1.ready = true;
         } else {
             player2.identifier = data.getClientID();
             player2.board = data.getBoard();
+            player2.ready = true;
         }
         
         if (player1.ready == true && player2.ready == true) {
