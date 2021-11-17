@@ -10,6 +10,7 @@ import battleship.DataPackage.PlaceShipsData;
 public class Player {
 
     int identifier;
+    boolean ready = false;
     Board board;
 
     public Player() {

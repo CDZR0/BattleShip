@@ -8,12 +8,13 @@ import battleship.DataPackage.ShotData;
 import battleship.DataPackage.TurnData;
 import battleship.Logic.Player;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 public class GameLogic {
 
     public List<String> messageQueue = new Vector<>();
-
+    Random rnd = new Random();
     Player player1;
     Player player2;
     private Player[] players;
@@ -90,9 +91,14 @@ public class GameLogic {
         if (data.getClientID() == 0) {
             player1.identifier = data.getClientID();
             player1.board = data.getBoard();
+            player2.board = data.getBoard();
         } else {
             player2.identifier = data.getClientID();
             player2.board = data.getBoard();
+        }
+        
+        if (player1.ready == true && player2.ready == true) {
+            messageQueue.add(DataConverter.encode(new TurnData(rnd.nextInt(1))));
         }
     }
 }

@@ -161,7 +161,7 @@ public class GameGUI extends JPanel {
                 client.sendMessage(new PlaceShipsData(client.ID, ownBoardGUI.getBoard()));
 
                 //TESZT
-                enemyBoardGUI.setEnabled(true);
+                //enemyBoardGUI.setEnabled(true);
             }
         });
         this.add(selecter);

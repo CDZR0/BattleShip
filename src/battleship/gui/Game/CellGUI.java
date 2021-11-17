@@ -60,6 +60,7 @@ public class CellGUI extends JPanel {
             default:
                 throw new AssertionError();
         }
+        repaint();
     }
 
     private void placeShip() {
