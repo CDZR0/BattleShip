@@ -1,10 +1,7 @@
 package battleship.Networking;
 
-import battleship.DataPackage.ChatData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
-import battleship.DataPackage.PlaceShipsData;
-import battleship.DataPackage.ShotData;
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -42,7 +39,7 @@ public class Client implements Runnable {
         close = true;
     }
     
-    public void addMessageEventListener(ClientEvent cEvent)
+    public void addClientEventListener(ClientEvent cEvent)
     {
         listeners.add(cEvent);
     }
