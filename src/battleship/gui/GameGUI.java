@@ -2,8 +2,10 @@
 package battleship.gui;
 
 import battleship.DataPackage.PlaceShipsData;
+import battleship.DataPackage.ShotData;
 import battleship.Events.ShipPlaceEvent;
 import battleship.Events.ShipSelectorEvent;
+import battleship.Events.ShotEvent;
 import battleship.gui.Game.ShipSelecterGUI;
 import battleship.Logic.Board;
 import battleship.Networking.Client;
@@ -87,6 +89,12 @@ public class GameGUI extends JPanel {
 
         enemyBoardGUI.setLocation(450, 250);
         enemyBoardGUI.setEnabled(false);
+        enemyBoardGUI.addShotListener(new ShotEvent() {
+            @Override
+            public void onShot(int i, int j) {
+                client.sendMessage(new ShotData(client.ID, i, j));
+            }
+        });
         this.add(enemyBoardGUI);
 
         selecter.setLocation(50, 100);
@@ -126,10 +134,10 @@ public class GameGUI extends JPanel {
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
                 System.out.println(ownBoardGUI.getBoard().toString());
+                client.sendMessage(new PlaceShipsData(client.ID, ownBoardGUI.getBoard()));
 
+                //TESZT
                 enemyBoardGUI.setEnabled(true);
-                //#### TESZT ####
-                client.sendMessage("Done");
             }
         });
         this.add(selecter);
