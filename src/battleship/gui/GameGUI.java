@@ -16,6 +16,7 @@ import battleship.Networking.Server;
 import battleship.Resources.Resources;
 import battleship.Utils.Settings;
 import battleship.gui.Game.EnemyBoardGUI;
+import battleship.gui.Game.InfoPanelGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -35,6 +36,7 @@ public class GameGUI extends JPanel {
     private Client client;
     private Thread clientThread, serverThread;
     private Server server;
+    private InfoPanelGUI infoPanel;
 
     public GameGUI() {
         this(Settings.getIP(), Settings.getPort());
@@ -55,17 +57,32 @@ public class GameGUI extends JPanel {
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
 
+        infoPanel = new InfoPanelGUI();
+        infoPanel.setSize(size().width, 190);
+        infoPanel.setLocation(0, 50);
+        this.add(infoPanel);
+
+        JLabel title = new JLabel();
+        title.setText("Game IP: " + ip + ":" + port);
+        title.setSize(300, 35);
+        title.setLocation((this.size().width - title.size().width) / 2, 10);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setVerticalTextPosition(JLabel.CENTER);
+        title.setHorizontalTextPosition(JLabel.CENTER);
+        this.add(title);
+
         client = new Client(ip, port);
         client.addClientEventListener(new ClientEvent() {
             @Override
             public void onMessageReceived(String message) {
-                System.out.println("Chat nincs kész");
+                System.out.println("Chat nincs kész" + message);
             }
 
             @Override
             public void onYourTurn() {
                 //System.out.println("Its me turn.");
                 enemyBoardGUI.setTurnEnabled(true);
+                infoPanel.setTurnText(true);
             }
 
             @Override
@@ -98,14 +115,7 @@ public class GameGUI extends JPanel {
         clientThread = new Thread(client);
         clientThread.start();
 
-        JLabel title = new JLabel();
         JButton exitButton = new JButton();
-
-        title.setText("Game infos" + ip + ":" + port);
-        title.setSize(300, 35);
-        title.setLocation((this.size().width - title.size().width) / 2, 10);
-        this.add(title);
-
         exitButton.setText("Exit game");
         exitButton.setSize(100, 35);
         exitButton.setLocation(10, 10);
@@ -134,7 +144,8 @@ public class GameGUI extends JPanel {
         enemyBoardGUI.setEnabled(false);
         enemyBoardGUI.addShotListener(new ShotEvent() {
             @Override
-            public void onShot(int i, int j) {
+            public void onShot(int i, int j) {                
+                infoPanel.setTurnText(false);
                 client.sendMessage(new ShotData(client.ID, i, j));
             }
         });

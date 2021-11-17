@@ -70,51 +70,53 @@ public class Client implements Runnable {
                         //A lenti rész a ChatData lesz.
                         //#####################################################
 
-                        Data data = DataConverter.decode(inMsg);
+                        if (inMsg != null) {
+                            Data data = DataConverter.decode(inMsg);
 
-                        switch (data.getClass().getSimpleName()) {
-                            case "ChatData":
-                                //System.out.println("Create event: ChatData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onMessageReceived(inMsg);
-                                }
-                                break;
-                            case "PlaceShipsData":
-                                //System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
-                                break;
-                            case "ConnectionData":
-                                //System.out.println("Create event: ConnectionData");
-                                break;
-                            case "ShotData":
-                                //System.out.println("Create event: ShotData");
-                                if (((ShotData) data).getRecipientID() == ID) {
+                            switch (data.getClass().getSimpleName()) {
+                                case "ChatData":
+                                    //System.out.println("Create event: ChatData");
                                     for (ClientEvent listener : listeners) {
-                                        listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
+                                        listener.onMessageReceived(inMsg);
                                     }
-                                }
-                                break;
-                            case "CellData":
-                                //System.out.println("Create event: CellData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onMyHit(((CellData) data).getI(), ((CellData) data).getJ(), ((CellData) data).getStatus());
-                                }
-                                break;
-                            case "TurnData":
-                                //System.out.println("Create event: TurnData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onYourTurn();
-                                }
-                                break;
-                            case "GameEndedData":
-                                //System.out.println("Create event: GameEndedData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onGameEnded(((GameEndedData) data).getStatus());
-                                }
-                                break;
-                            default:
-                                System.out.println("########## ISMERETLEN OSZTÁLY #########");
-                                System.out.println("Nincs implementálva a Client-ben az alábbi osztály: " + data.getClass().getSimpleName());
-                                break;
+                                    break;
+                                case "PlaceShipsData":
+                                    //System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
+                                    break;
+                                case "ConnectionData":
+                                    //System.out.println("Create event: ConnectionData");
+                                    break;
+                                case "ShotData":
+                                    //System.out.println("Create event: ShotData");
+                                    if (((ShotData) data).getRecipientID() == ID) {
+                                        for (ClientEvent listener : listeners) {
+                                            listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
+                                        }
+                                    }
+                                    break;
+                                case "CellData":
+                                    //System.out.println("Create event: CellData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onMyHit(((CellData) data).getI(), ((CellData) data).getJ(), ((CellData) data).getStatus());
+                                    }
+                                    break;
+                                case "TurnData":
+                                    //System.out.println("Create event: TurnData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onYourTurn();
+                                    }
+                                    break;
+                                case "GameEndedData":
+                                    //System.out.println("Create event: GameEndedData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onGameEnded(((GameEndedData) data).getStatus());
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("########## ISMERETLEN OSZTÁLY #########");
+                                    System.out.println("Nincs implementálva a Client-ben az alábbi osztály: " + data.getClass().getSimpleName());
+                                    break;
+                            }
                         }
 
                         //System.out.println(inMsg);
