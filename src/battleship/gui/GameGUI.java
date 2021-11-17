@@ -3,6 +3,7 @@ package battleship.gui;
 
 import battleship.DataPackage.PlaceShipsData;
 import battleship.DataPackage.ShotData;
+import battleship.Events.ClientEvent;
 import battleship.Events.ShipPlaceEvent;
 import battleship.Events.ShipSelectorEvent;
 import battleship.Events.ShotEvent;
@@ -46,17 +47,40 @@ public class GameGUI extends JPanel {
         this.setSize(800, 600);
         setBackground(Resources.BackgroundColor);
 
-        client = new Client(ip, port);
-        clientThread = new Thread(client);
-        clientThread.start();
-
-        JLabel title = new JLabel();
-        JButton exitButton = new JButton();
         ownBoard = new Board();
         enemyBoard = new Board();
         PlayerBoardGUI ownBoardGUI = new PlayerBoardGUI(ownBoard);
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
+
+        client = new Client(ip, port);
+        client.addClientEventListener(new ClientEvent() {
+            @Override
+            public void onMessageReceived(String message) {
+                System.out.println("Chat nincs kész");
+            }
+
+            @Override
+            public void onYourTurn() {
+                enemyBoardGUI.setTurnEnabled(true);
+            }
+
+            @Override
+            public void onGameEnded(boolean win) {
+                enemyBoardGUI.setTurnEnabled(false);
+                System.out.println("Ki kéne írni hogy nyert or vesztett");
+            }
+
+            @Override
+            public void onEnemyHitMe(int x, int y) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        clientThread = new Thread(client);
+        clientThread.start();
+
+        JLabel title = new JLabel();
+        JButton exitButton = new JButton();
 
         title.setText("Game infos" + ip + ":" + port);
         title.setSize(300, 35);

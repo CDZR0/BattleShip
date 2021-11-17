@@ -61,6 +61,11 @@ public class EnemyBoardGUI extends BoardGUI {
         }
     }
 
+    public void setTurnEnabled(boolean value) {
+        canTip = value;
+        setEnabled(value);
+    }
+
     public void addShotListener(ShotEvent listener) {
         listeners.add(listener);
     }
@@ -69,8 +74,7 @@ public class EnemyBoardGUI extends BoardGUI {
         for (ShotEvent listener : listeners) {
             listener.onShot(cell.getI(), cell.getJ());
         }
-        canTip = false;
-        setEnabled(false);
+        setTurnEnabled(false);
         cellExited(cell);
     }
 
