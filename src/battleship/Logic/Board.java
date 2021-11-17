@@ -33,6 +33,17 @@ public class Board {
         }
     }
 
+    public Board(String a) {
+        String[] row = a.split(";");
+        for (int i = 0; i < 10; i++) {
+            String[] column = row[i].split(":");
+            for (int j = 0; j < 10; j++) {
+                cellstatus[i][j] = CellStatus.valueOf(column[j]);
+            }
+        }
+        System.out.println(this);
+    }
+
     public void setCell(int i, int j, CellStatus status) {
         cellstatus[i][j] = status;
     }
@@ -43,6 +54,17 @@ public class Board {
 
     public CellStatus[][] getCellstatus() {
         return cellstatus;
+    }
+
+    public String convertToString() {
+        String re = "";
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                re += cellstatus[i][j] + ":";
+            }
+            re += ";";
+        }
+        return re;
     }
 
     @Override
