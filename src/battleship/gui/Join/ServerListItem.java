@@ -1,6 +1,7 @@
 //Csaba
 package battleship.gui.Join;
 
+import battleship.Networking.Server;
 import battleship.Networking.ServerAddress;
 import battleship.Resources.Resources;
 import java.awt.Color;
@@ -13,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -22,6 +24,7 @@ public class ServerListItem extends JPanel {
 
     private ServerAddress serverAddress;
     private JLabel name, ipPort;
+    private SwingWorker sWorker;
 
     public ServerListItem(ServerAddress serverAddress) {
         this.setLayout(null);
@@ -60,6 +63,10 @@ public class ServerListItem extends JPanel {
 //        ipPort.setLocation((this.size().width - ipPort.size().width) / 2, 30);
         ipPort.setLocation(0, 30);
         this.add(ipPort);
+
+//        if (Server.isServerAvailable(serverAddress.getIP(), serverAddress.getPort())) {
+//            ipPort.setForeground(Color.GREEN);
+//        }
     }
 
     public ServerAddress getServerAddress() {

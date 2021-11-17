@@ -217,6 +217,8 @@ public class Board {
             if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
                 if (cellstatus[si][sj] == CellStatus.Ship) {
                     return false;
+                } else if (cellstatus[si][sj] == CellStatus.ShipHit) {
+                    isSunk(si, sj);
                 }
             }
         }
