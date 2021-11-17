@@ -212,8 +212,12 @@ public class Board {
     public boolean isSunk(int i, int j) {
 
         for (Point relativeCoord : relativeCoords) {
-            if (cellstatus[i + relativeCoord.x][j + relativeCoord.y] == CellStatus.Ship) {
-                return false;
+            int si = i + relativeCoord.x;
+            int sj = j + relativeCoord.y;
+            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
+                if (cellstatus[si][sj] == CellStatus.Ship) {
+                    return false;
+                }
             }
         }
         return true;
@@ -221,7 +225,23 @@ public class Board {
 
     public List<Point> nearShipPoints(int i, int j) {
         List<Point> points = new ArrayList<>();
-        
+        for (Point relativeCoord : relativeCoords) {
+            int si = i + relativeCoord.x;
+            int sj = j + relativeCoord.y;
+            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
+                if (cellstatus[si][sj] == CellStatus.Ship) {
+                    for (Point nearShipPoint : nearShipPoints(si, sj)) {
+                        //if (!points.contains(nearShipPoint)) {
+                            points.add(nearShipPoint);
+                        //}
+                    }
+                } else {
+                    //if (!points.contains(new Point(si, sj))) {
+                        points.add(new Point(si, sj));
+                    //}
+                }
+            }
+        }
         return points;
     }
 

@@ -79,6 +79,9 @@ public class GameLogic {
                 messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, egyik)));
                 messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, masik)));
             } else {
+                if (players[masik].board.isSunk(data.getI(), data.getJ())) {
+                    hitNear(egyik, masik, data.getI(), data.getJ());
+                }
                 messageQueue.add(DataConverter.encode(new TurnData(egyik)));
             }
         } else {
@@ -144,7 +147,13 @@ public class GameLogic {
         return true;
     }
 
-    private void hitNear(int i, int j) {
+    private void hitNear(int egyik, int masik, int i, int j) {
+        for (Point nearShipPoint : players[masik].board.nearShipPoints(i, j)) {
+            System.out.println(nearShipPoint);
+            CellData cd = new CellData(-1, nearShipPoint.x, nearShipPoint.y, players[masik].board.cellstatus[nearShipPoint.x][nearShipPoint.y]);
+            cd.setRecipientID(egyik);
+            messageQueue.add(DataConverter.encode(cd));
+        }
 
     }
 
