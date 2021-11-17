@@ -14,8 +14,7 @@ import java.util.Vector;
 
 public class GameLogic {
 
-    //public List<String> messageQueue = new Vector<>();
-    public List<String> messageQueue = new LinkedList<>();
+    public List<String> messageQueue = new Vector<>();
     Random rnd = new Random();
     Player player1;
     Player player2;

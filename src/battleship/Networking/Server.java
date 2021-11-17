@@ -41,7 +41,10 @@ public class Server implements Runnable{
                 queueArray[i] = new Vector<>();
             }
             sSocket = new ServerSocket(port);
-        } 
+            
+            
+            
+        }
         catch (IOException ex) 
         {
             System.out.println(ex.getMessage());
@@ -67,7 +70,18 @@ public class Server implements Runnable{
                     
                     bfw.write(ID.toString());
                     bfw.newLine();
-                    bfw.flush();                    
+                    bfw.flush();
+                    
+                    Thread threadQueuePoll = new Thread(() -> {
+                        while (!gameLogic.messageQueue.isEmpty()) {
+                            String BroadcastMessage = gameLogic.messageQueue.get(0);
+                            gameLogic.messageQueue.remove(0);
+                            Data decoded = DataConverter.decode(BroadcastMessage);
+                            int recipient = decoded.getRecipientID();
+                            addMessageToQueue(BroadcastMessage, recipient);
+                        }
+                    });
+                    threadQueuePoll.start();
                     
                     Thread threadReader = new Thread(() -> {
                         while (!close) 
@@ -99,14 +113,14 @@ public class Server implements Runnable{
                             bfw.flush();
                         }
                         
-                        while (!gameLogic.messageQueue.isEmpty()) 
-                        {
-                            String BroadcastMessage = gameLogic.messageQueue.get(0);
-                            gameLogic.messageQueue.remove(0);
-                            Data decoded = DataConverter.decode(BroadcastMessage);
-                            int recipient = decoded.getRecipientID();
-                            addMessageToQueue(BroadcastMessage, recipient);
-                        }
+//                        while (!gameLogic.messageQueue.isEmpty()) 
+//                        {
+//                            String BroadcastMessage = gameLogic.messageQueue.get(0);
+//                            gameLogic.messageQueue.remove(0);
+//                            Data decoded = DataConverter.decode(BroadcastMessage);
+//                            int recipient = decoded.getRecipientID();
+//                            addMessageToQueue(BroadcastMessage, recipient);
+//                        }
                     }  
                 } 
                 catch (IOException ex) 
