@@ -131,7 +131,7 @@ public class Server implements Runnable{
         thread.start();
     }
     
-    public String getLocalIP()
+    public static String getLocalIP()
     {
         try {
             Enumeration e = NetworkInterface.getNetworkInterfaces();
