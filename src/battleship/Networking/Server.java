@@ -47,7 +47,6 @@ public class Server implements Runnable{
             gameLogic = new GameLogic();
             
             Thread threadQueuePoll = new Thread(() -> {
-                System.out.println("cigàny vok, futok");
                 while (!close) {
                     while (!gameLogic.messageQueue.isEmpty()) {
                         System.out.println("picsafüst");
