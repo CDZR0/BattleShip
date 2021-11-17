@@ -1,9 +1,11 @@
 package battleship.Logic;
 
+import battleship.DataPackage.ChatData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.DataPackage.PlaceShipsData;
 import battleship.DataPackage.ShotData;
+import battleship.DataPackage.TurnData;
 import battleship.Logic.Player;
 import java.util.List;
 import java.util.Vector;
@@ -24,36 +26,30 @@ public class GameLogic {
 
     }
 
-    public void processMessage(String message) {
-        List<String> asd = DataConverter.decode(message);
-//        System.out.println("Üzi hossza: " + asd.size());
-//        for (String string : asd) {
-//            System.out.println(string);
-//        }
-//        System.out.println("Vége.");
-        int id = Integer.parseInt(asd.get(0));
-        String dataType = asd.get(1);
-        String data = asd.get(2);
-        
-        switch (dataType) {
+    public void processMessage(Data data) {
+        System.out.println("//////////////////////////////////\nGAMELOGICBA LÉPÉS\n///////////////////////////////////////");
+        switch (data.getClass().getSimpleName()) {
             case "ChatData":
-                messageQueue.add(DataConverter.encode(id, "Chat", data, 0));
-                messageQueue.add(DataConverter.encode(id, "Chat", data, 1));
+                data.setRecipientID(0);
+                messageQueue.add(DataConverter.encode((ChatData) data));
+                data.setRecipientID(1);
+                messageQueue.add(DataConverter.encode((ChatData) data));
+//                messageQueue.add(DataConverter.encode(id, "Chat", dataMessage, 0));
+//                messageQueue.add(DataConverter.encode(id, "Chat", dataMessage, 1));
                 break;
             case "PlaceShipsData":
-
+                setPlayerBoard((PlaceShipsData) data);
                 break;
             case "ConnectionData":
                 break;
-            case "Tip":
-                int i = Integer.parseInt(data.split(";")[0]);
-                int j = Integer.parseInt(data.split(";")[1]);
-                calcShot(new ShotData(id, i, j));
+            case "ShotData":
+                calcShot((ShotData) data);
                 break;
-            case "0":
+            case "":
                 break;
             default:
-                System.out.println("Ismeretlen");
+                System.out.println("########## ISMERETLEN OSZTÁLY #########");
+                System.out.println("Nincs implementálva a GameLogicban az alábbi osztály: " + data.getClass().getSimpleName());
                 throw new AssertionError();
         }
     }
@@ -64,24 +60,33 @@ public class GameLogic {
     }
 
     private void calcShot(ShotData data) {
-        if (player1.identifier.equals(data.getClientID())) {
-            //Ez majd itt switch lesz
+        if (player1.identifier == data.getClientID()) {
             if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
-                messageQueue.add("Turn$0");
+                messageQueue.add(DataConverter.encode(new TurnData(0)));
             } else {
                 System.out.println("Its not a hit!");
-                messageQueue.add("Turn$1");
+                messageQueue.add(DataConverter.encode(new TurnData(1)));
             }
         } else {
-            //Ez majd itt switch lesz
             if (player1.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
-                messageQueue.add("Turn$1");
+                messageQueue.add(DataConverter.encode(new TurnData(1)));
             } else {
                 System.out.println("Its not a hit!");
-                messageQueue.add("Turn$0");
+                messageQueue.add(DataConverter.encode(new TurnData(0)));
             }
+        }        
+        System.out.println("//////////////////////////////////\nEXIT\n///////////////////////////////////////");
+    }
+
+    private void setPlayerBoard(PlaceShipsData data) {
+        if (data.getClientID() == 0) {
+            player1.identifier = data.getClientID();
+            player1.board = data.getBoard();
+        } else {
+            player2.identifier = data.getClientID();
+            player2.board = data.getBoard();
         }
     }
 }

@@ -61,14 +61,17 @@ public class EnemyBoardGUI extends BoardGUI {
         }
     }
 
-        public void addShotListener(ShotEvent listener) {
+    public void addShotListener(ShotEvent listener) {
         listeners.add(listener);
     }
-    
+
     private void cellClick(CellGUI cell) {
         for (ShotEvent listener : listeners) {
             listener.onShot(cell.getI(), cell.getJ());
         }
+        canTip = false;
+        setEnabled(false);
+        cellExited(cell);
     }
 
     private void cellEntered(CellGUI cell) {
