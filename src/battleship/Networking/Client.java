@@ -19,11 +19,17 @@ public class Client implements Runnable {
     private int port;
     private boolean close = false;
     private List<ClientEvent> listeners = new ArrayList<>();
+    private boolean timedout = false;
     public Integer ID;
 
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
+    }
+    
+    public boolean isTimeout()
+    {
+        return timedout;
     }
 
     public void sendMessage(String message) {
@@ -138,6 +144,7 @@ public class Client implements Runnable {
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+            timedout = true;
         }
     }
 }
