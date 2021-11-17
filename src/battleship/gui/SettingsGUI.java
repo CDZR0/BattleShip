@@ -13,19 +13,7 @@ import javax.swing.JTextField;
 
 
 public class SettingsGUI extends JPanel {
-        private JLabel labelSaved;
-    
-//        TimerTask task = new TimerTask() 
-//        {
-//            @Override
-//            public void run() 
-//            {
-//                labelSaved.setVisible(false);
-//            }
-//        };
-        
-        //Timer timer = new Timer("Timer");
-        //timer.schedule(task, 1000);
+    private JLabel labelSaved;
 
     public SettingsGUI() {
         setLayout(null);

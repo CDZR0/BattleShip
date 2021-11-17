@@ -152,6 +152,25 @@ public class Server implements Runnable{
         return "NO IP FOUND";
     }
     
+    public static boolean isServerAvailable(String ip, int port)
+    {
+        boolean isAvailable;
+        try 
+        {
+            InetAddress server = InetAddress.getByName(ip);
+            isAvailable = server.isReachable(port);
+        } 
+        catch (UnknownHostException ex) 
+        {
+            isAvailable = false;
+        } 
+        catch (IOException ex) 
+        {
+            isAvailable = false;
+        }
+        return isAvailable;
+    }
+    
     @Override
     public void run() 
     {
