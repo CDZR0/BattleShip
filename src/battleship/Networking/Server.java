@@ -119,7 +119,7 @@ public class Server implements Runnable{
         thread.start();
     }
     
-    private String getLocalIP()
+    public String getLocalIP()
     {
         try {
             Enumeration e = NetworkInterface.getNetworkInterfaces();
