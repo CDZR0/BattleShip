@@ -26,9 +26,8 @@ public class Client implements Runnable {
         this.ip = ip;
         this.port = port;
     }
-    
-    public boolean isTimeout()
-    {
+
+    public boolean isTimeout() {
         return timedout;
     }
 
@@ -75,19 +74,19 @@ public class Client implements Runnable {
 
                         switch (data.getClass().getSimpleName()) {
                             case "ChatData":
-                                System.out.println("Create event: ChatData");
+                                //System.out.println("Create event: ChatData");
                                 for (ClientEvent listener : listeners) {
                                     listener.onMessageReceived(inMsg);
                                 }
                                 break;
                             case "PlaceShipsData":
-                                System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
+                                //System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
                                 break;
                             case "ConnectionData":
-                                System.out.println("Create event: ConnectionData");
+                                //System.out.println("Create event: ConnectionData");
                                 break;
                             case "ShotData":
-                                System.out.println("Create event: ShotData");
+                                //System.out.println("Create event: ShotData");
                                 if (((ShotData) data).getRecipientID() == ID) {
                                     for (ClientEvent listener : listeners) {
                                         listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
@@ -95,19 +94,19 @@ public class Client implements Runnable {
                                 }
                                 break;
                             case "CellData":
-                                System.out.println("Create event: CellData");
+                                //System.out.println("Create event: CellData");
                                 for (ClientEvent listener : listeners) {
                                     listener.onMyHit(((CellData) data).getI(), ((CellData) data).getJ(), ((CellData) data).getStatus());
                                 }
                                 break;
                             case "TurnData":
-                                System.out.println("Create event: TurnData");
+                                //System.out.println("Create event: TurnData");
                                 for (ClientEvent listener : listeners) {
                                     listener.onYourTurn();
                                 }
                                 break;
                             case "GameEndedData":
-                                System.out.println("Create event: GameEndedData");
+                                //System.out.println("Create event: GameEndedData");
                                 for (ClientEvent listener : listeners) {
                                     listener.onGameEnded(((GameEndedData) data).getStatus());
                                 }
@@ -118,10 +117,10 @@ public class Client implements Runnable {
                                 break;
                         }
 
-                        System.out.println(inMsg);
+                        //System.out.println(inMsg);
                     }
                 } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
+                    System.out.println("Hiba: " + ex.getMessage());
                 }
             });
             thread.start();

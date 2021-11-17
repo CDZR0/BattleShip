@@ -17,10 +17,6 @@ public class Player {
         board = new Board();
     }
 
-    public void setBoard(PlaceShipsData ships) {
-
-    }
-
     public int getIdentifier() {
         return identifier;
     }

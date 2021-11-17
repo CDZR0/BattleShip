@@ -101,7 +101,7 @@ public class DataConverter {
                 encoded += data.clientID + "$PlaceShipsData$" + ((PlaceShipsData) data).getBoard().convertToString();
                 break;
             case "ConnectionData":
-                System.out.println("Encoding ConnectionData");
+                //System.out.println("Encoding ConnectionData");
                 break;
             case "ShotData":
                 //System.out.println("Encoding ShotData");
