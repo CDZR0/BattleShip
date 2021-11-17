@@ -22,7 +22,10 @@ public class Server implements Runnable{
     
     public void addMessageToQueue(String message, int ID)
     {
-        queueArray[ID].add(message);
+        if (ID != -1)
+        {
+            queueArray[ID].add(message);
+        }
     }
     
     public void close() throws IOException
@@ -116,15 +119,6 @@ public class Server implements Runnable{
                             bfw.newLine();
                             bfw.flush();
                         }
-                        
-//                        while (!gameLogic.messageQueue.isEmpty()) 
-//                        {
-//                            String BroadcastMessage = gameLogic.messageQueue.get(0);
-//                            gameLogic.messageQueue.remove(0);
-//                            Data decoded = DataConverter.decode(BroadcastMessage);
-//                            int recipient = decoded.getRecipientID();
-//                            addMessageToQueue(BroadcastMessage, recipient);
-//                        }
                     }  
                 } 
                 catch (IOException ex) 
