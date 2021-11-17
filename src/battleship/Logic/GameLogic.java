@@ -63,13 +63,13 @@ public class GameLogic {
             if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(0)));
-                ShotData sd = data;
+                ShotData sd = new ShotData(-1, ((ShotData) data).getI(), ((ShotData) data).getJ());
                 sd.setRecipientID(1);
                 messageQueue.add(DataConverter.encode(sd));
             } else {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
-                ShotData sd = data;
+                ShotData sd = new ShotData(-1, ((ShotData) data).getI(), ((ShotData) data).getJ());
                 sd.setRecipientID(0);
                 messageQueue.add(DataConverter.encode(sd));
             }
@@ -77,13 +77,13 @@ public class GameLogic {
             if (player1.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
                 System.out.println("Tts a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
-                ShotData sd = data;
+                ShotData sd = new ShotData(-1, ((ShotData) data).getI(), ((ShotData) data).getJ());
                 sd.setRecipientID(0);
                 messageQueue.add(DataConverter.encode(sd));
             } else {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(0)));
-                ShotData sd = data;
+                ShotData sd = new ShotData(-1, ((ShotData) data).getI(), ((ShotData) data).getJ());
                 sd.setRecipientID(1);
                 messageQueue.add(DataConverter.encode(sd));
             }
