@@ -9,29 +9,29 @@ import java.util.Vector;
 public class GameLogicVili {
     public List<String> messageQueue = new Vector<>();
     
-    public void processMessage(String message) {
-        List<String> decodedMsg = DataConverter.decode(message);
-        
-        
-        String messageToBeSent;
-
-        int senderID = Integer.parseInt(decodedMsg.get(0));
-        String type = decodedMsg.get(1);
-        String data = decodedMsg.get(2);
-        int recipientID = Integer.parseInt(decodedMsg.get(3));
-        
-        switch(type)
-        {
-            case "Chat":
-                messageToBeSent = chat(senderID, type, data, recipientID);
-                break;
-            default:
-                messageToBeSent = "UNRECOGNIZED DATA TYPE";
-                break;
-        }
-        
-        addMessageToQueue(messageToBeSent);
-    }
+//    public void processMessage(String message) {
+//        List<String> decodedMsg = DataConverter.decode(message);
+//        
+//        
+//        String messageToBeSent;
+//
+//        int senderID = Integer.parseInt(decodedMsg.get(0));
+//        String type = decodedMsg.get(1);
+//        String data = decodedMsg.get(2);
+//        int recipientID = Integer.parseInt(decodedMsg.get(3));
+//        
+//        switch(type)
+//        {
+//            case "Chat":
+//                messageToBeSent = chat(senderID, type, data, recipientID);
+//                break;
+//            default:
+//                messageToBeSent = "UNRECOGNIZED DATA TYPE";
+//                break;
+//        }
+//        
+//        addMessageToQueue(messageToBeSent);
+//    }
     
     private void placeShips()
     {
