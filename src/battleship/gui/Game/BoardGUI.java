@@ -49,8 +49,7 @@ public class BoardGUI extends JPanel {
     }
 
     public void Hit(int i, int j, CellStatus status) {
-        System.out.println("-------SET CELL TO: " + cells[i][j].getStatus());
-        switch (cells[i][j].getStatus()) {
+        switch (status) {
             case Empty:
                 cells[i][j].setCell(CellStatus.EmptyHit);
                 break;

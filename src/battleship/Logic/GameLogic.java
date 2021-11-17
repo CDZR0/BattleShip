@@ -74,7 +74,7 @@ public class GameLogic {
                 System.out.println("Its not a hit!");
                 messageQueue.add(DataConverter.encode(new TurnData(1)));
             }
-        } else {
+        } else {            
             ShotData sd = new ShotData(data.getClientID(), data.getI(), data.getJ());
             sd.setRecipientID(0);
             messageQueue.add(DataConverter.encode(sd));
@@ -105,6 +105,9 @@ public class GameLogic {
         }
 
         if (player1.ready == true && player2.ready == true) {
+            System.out.println(player1.board);
+            System.out.println("");
+            System.out.println(player2.board);
             System.out.println("Most dölt el:");
             messageQueue.add(DataConverter.encode(new TurnData(rnd.nextInt(2))));
         }
