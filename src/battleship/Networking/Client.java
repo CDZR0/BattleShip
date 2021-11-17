@@ -1,7 +1,10 @@
 package battleship.Networking;
 
+import battleship.DataPackage.ChatData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
+import battleship.DataPackage.PlaceShipsData;
+import battleship.DataPackage.ShotData;
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -71,10 +74,38 @@ public class Client implements Runnable {
                         //és hogy utána milye nevent történjen.
                         //A lenti rész a ChatData lesz.
                         //#####################################################
-                        for (ClientEvent listener : listeners) 
-                        {
-                            listener.onMessageReceived(inMsg);
+                        
+                        Data data = DataConverter.decode(inMsg);
+                        
+                        switch (data.getClass().getSimpleName()) {
+                            case "ChatData":
+                                System.out.println("Create event: ChatData");
+                                for (ClientEvent listener : listeners) {
+                                    listener.onMessageReceived(inMsg);
+                                }
+                                break;
+                            case "PlaceShipsData":
+                                System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
+                                break;
+                            case "ConnectionData":
+                                System.out.println("Create event: ConnectionData");
+                                break;
+                            case "ShotData":
+                                System.out.println("Create event: ShotData");
+                                break;
+                            case "TurnData":
+                                System.out.println("Create event: TurnData");
+                                for (ClientEvent listener : listeners) {
+                                    listener.onYourTurn();
+                                }
+                                break;
+                            default:
+                                System.out.println("########## ISMERETLEN OSZTÁLY #########");
+                                System.out.println("Nincs implementálva a Client-ben az alábbi osztály: " + data.getClass().getSimpleName());
+                                break;
                         }
+                        
+                        
                         System.out.println(inMsg);
                     }
                 }
