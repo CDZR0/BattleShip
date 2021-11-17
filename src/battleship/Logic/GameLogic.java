@@ -110,20 +110,14 @@ public class GameLogic {
     }
 
     private boolean isWin(Player player) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (player.board.cellstatus[i][j] == CellStatus.Ship) {
-                    return false;
-                }
-            }
+        if (player.board.hasCellStatus(CellStatus.Ship)) {
+            return false;
         }
         return true;
     }
 
-    private List<Point> isSunk(int i, int j) {
-        List<Point> ij = new ArrayList<>();
-
-        return ij;
+    private void hitNear(int i, int j) {
+        
     }
 
     private void setPlayerBoard(PlaceShipsData data) {

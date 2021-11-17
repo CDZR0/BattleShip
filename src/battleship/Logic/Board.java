@@ -3,6 +3,7 @@ package battleship.Logic;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -195,6 +196,33 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public boolean hasCellStatus(CellStatus status) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (cellstatus[i][j] == status) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isSunk(int i, int j) {
+
+        for (Point relativeCoord : relativeCoords) {
+            if (cellstatus[i + relativeCoord.x][j + relativeCoord.y] == CellStatus.Ship) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<Point> nearShipPoints(int i, int j) {
+        List<Point> points = new ArrayList<>();
+        
+        return points;
     }
 
 }
