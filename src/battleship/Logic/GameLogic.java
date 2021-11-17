@@ -48,7 +48,7 @@ public class GameLogic {
             case "ConnectionData":
                 break;
             case "ShotData":
-                calcShot((ShotData) data);
+                calcShot2((ShotData) data);
                 break;
             case "":
                 break;
@@ -56,6 +56,34 @@ public class GameLogic {
                 System.out.println("########## ISMERETLEN OSZTÁLY #########");
                 System.out.println("Nincs implementálva a GameLogicban az alábbi osztály: " + data.getClass().getSimpleName());
                 throw new AssertionError();
+        }
+    }
+
+    private void calcShot2(ShotData data) {
+
+        int egyik = data.getClientID();
+        int masik = egyik == 1 ? 0 : 1;
+
+        ShotData sd = new ShotData(data.getClientID(), data.getI(), data.getJ());
+        sd.setRecipientID(masik);
+        messageQueue.add(DataConverter.encode(sd));
+
+        CellData cd = new CellData(-1, data.getI(), data.getJ(), players[masik].board.cellstatus[data.getI()][data.getJ()]);
+        cd.setRecipientID(egyik);
+        messageQueue.add(DataConverter.encode(cd));
+
+        if (players[masik].board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
+            players[masik].board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
+            System.out.println("Tts a hit!");
+            if (isWin(players[masik])) {
+                messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, egyik)));
+                messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, masik)));
+            } else {
+                messageQueue.add(DataConverter.encode(new TurnData(egyik)));
+            }
+        } else {
+            System.out.println("Its not a hit!");
+            messageQueue.add(DataConverter.encode(new TurnData(masik)));
         }
     }
 
@@ -117,7 +145,7 @@ public class GameLogic {
     }
 
     private void hitNear(int i, int j) {
-        
+
     }
 
     private void setPlayerBoard(PlaceShipsData data) {
@@ -125,10 +153,16 @@ public class GameLogic {
             player1.identifier = data.getClientID();
             player1.board = data.getBoard();
             player1.ready = true;
+            players[0].identifier = data.getClientID();
+            players[0].ready = true;
+            players[0].board = data.getBoard();
         } else {
             player2.identifier = data.getClientID();
             player2.board = data.getBoard();
             player2.ready = true;
+            players[1].identifier = data.getClientID();
+            players[1].ready = true;
+            players[1].board = data.getBoard();
         }
 
         if (player1.ready == true && player2.ready == true) {
