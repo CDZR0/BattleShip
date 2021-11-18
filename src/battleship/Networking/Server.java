@@ -109,7 +109,7 @@ public class Server implements Runnable {
                         }
                     }
                 } catch (IOException ex) {
-                    System.out.println("Secondary player disconnected.");
+                    System.out.println("Player disconnected");
                     --clientID;
                 }
             }
