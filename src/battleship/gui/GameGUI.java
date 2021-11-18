@@ -101,6 +101,10 @@ public class GameGUI extends JPanel {
                         System.out.println("VESZTETTÉL");
                         infoPanel.setGameEndedText(status);
                         break;
+                    case Unknown:
+                        System.out.println("Unknown game ended status");
+                        infoPanel.setGameEndedText(status);
+                        break;
                     default:
                         break;
                 }
@@ -149,7 +153,7 @@ public class GameGUI extends JPanel {
         enemyBoardGUI.setEnabled(false);
         enemyBoardGUI.addShotListener(new ShotEvent() {
             @Override
-            public void onShot(int i, int j) {                
+            public void onShot(int i, int j) {
                 infoPanel.setTurnText(false);
                 client.sendMessage(new ShotData(client.ID, i, j));
             }
