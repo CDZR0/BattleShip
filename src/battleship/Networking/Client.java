@@ -55,6 +55,10 @@ public class Client implements Runnable {
 
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            
+            bfw.write("CLIENT");
+            bfw.newLine();
+            bfw.flush();
 
             Thread thread = new Thread(() -> {
                 try {

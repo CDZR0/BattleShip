@@ -66,17 +66,19 @@ public class Server implements Runnable {
                 try {
                     Socket socket = sSocket.accept();
                     Integer ID = clientID++;
-                    if (ID > 1){
-                        socket.close();
-                        --clientID;
-                        continue;
-                    }
 
                     System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
                     int ownQueueID = (ID == 0) ? 0 : 1;
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    
+                    if (bfr.readLine().equals("PING")){
+                        socket.close();
+                        --clientID;
+                        continue;
+                    }
+
 
                     bfw.write(ID.toString());
                     bfw.newLine();
@@ -140,9 +142,14 @@ public class Server implements Runnable {
         boolean isAvailable;
         
         try {
-            try (Socket socket = new Socket(ip, port)) {
-                isAvailable = true;
-            }
+            Socket socket = new Socket(ip, port);
+            isAvailable = true;
+            BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            
+            bfw.write("PING");
+            bfw.newLine();
+            bfw.flush();
+            socket.close();
         } 
         catch (IOException ex) {
             isAvailable = false;
