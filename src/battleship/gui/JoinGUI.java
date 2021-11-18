@@ -28,7 +28,7 @@ public class JoinGUI extends JPanel {
 
     private ServerListItem selectedServer;
     private JPanel listPanel, segedServersListPanel;
-    JButton connectButton, addButton, editButton, deleteButton;
+    JButton connectButton, addButton, editButton, deleteButton, refreshButton;
     private List<JoinGUIEvent> listeners;
 
     public JoinGUI() {
