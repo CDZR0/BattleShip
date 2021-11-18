@@ -211,6 +211,14 @@ public class Board {
 
     private List<Point> shipCoords(int i, int j) {
         List<Point> shipsCoords = new ArrayList<>();
+        Point[] relativeCoordsVertical = {
+            new Point(-1, 0),
+            new Point(1, 0)
+        };
+        Point[] relativeCoordsHorizontal = {
+            new Point(0, -1),
+            new Point(0, 1)
+        };
         
         
         
