@@ -37,6 +37,8 @@ public class ServerListItem extends JPanel {
                 } else {
                     ipPort.setForeground(Color.RED);
                 }
+                //sWorker.cancel(true);
+
                 return Color.GREEN;
             }
         };
