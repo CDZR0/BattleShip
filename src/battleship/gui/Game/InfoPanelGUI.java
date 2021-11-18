@@ -18,7 +18,7 @@ public class InfoPanelGUI extends JPanel {
     public InfoPanelGUI() {
         setLayout(null);
         setBackground(Resources.BackgroundColor);
-        setBackground(Color.yellow);
+        //setBackground(Color.yellow);
         turn = new JLabel();
         turn.setText("");
         turn.setSize(800, 50);

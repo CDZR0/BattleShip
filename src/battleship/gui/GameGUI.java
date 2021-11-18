@@ -19,6 +19,8 @@ import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.InfoPanelGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -60,6 +62,7 @@ public class GameGUI extends JPanel {
         infoPanel = new InfoPanelGUI();
         infoPanel.setSize(size().width, 190);
         infoPanel.setLocation(0, 50);
+        infoPanel.setVisible(false);
         this.add(infoPanel);
 
         JLabel title = new JLabel();
@@ -152,6 +155,11 @@ public class GameGUI extends JPanel {
         this.add(enemyBoardGUI);
 
         selecter.setLocation(50, 100);
+        selecter.addComponentListener(new ComponentAdapter() {
+            public void componentHidden(ComponentEvent e) {
+                infoPanel.setVisible(true);
+            }
+        });
         selecter.addShipSelectorListener(new ShipSelectorEvent() {
 
             @Override

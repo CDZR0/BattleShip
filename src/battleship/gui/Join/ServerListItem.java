@@ -29,6 +29,19 @@ public class ServerListItem extends JPanel {
     public ServerListItem(ServerAddress serverAddress) {
         this.setLayout(null);
         this.serverAddress = serverAddress;
+        sWorker = new SwingWorker() {
+            @Override
+            protected Color doInBackground() throws Exception {
+                if (Server.isServerAvailable(serverAddress.getIP(), serverAddress.getPort())) {
+                    ipPort.setForeground(Color.GREEN);
+                } else {
+                    ipPort.setForeground(Color.RED);
+                }
+                return Color.GREEN;
+            }
+        };
+        sWorker.execute();
+
         setBackground(Resources.BackgroundColor);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         addMouseListener(new MouseAdapter() {

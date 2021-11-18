@@ -209,7 +209,27 @@ public class Board {
         return false;
     }
 
+    private List<Point> shipCoords(int i, int j) {
+        List<Point> shipsCoords = new ArrayList<>();
+        
+        
+        
+        return shipsCoords;
+    }
+
     public boolean isSunk(int i, int j) {
+//HAJÓKON VÉGIGMENÉS, MAJD AZON LISTÁKON A RELATÍVKOORDINÁTÁT
+        List<Point> shipsCoords = new ArrayList<>();
+
+        for (int a = 0; a < relativeCoords.length; a++) {
+            int si = i + relativeCoords[a].x;
+            int sj = j + relativeCoords[a].y;
+            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
+                if (cellstatus[si][sj] == CellStatus.Ship) {
+                    shipsCoords.add(new Point(si, sj));
+                }
+            }
+        }
 
         for (Point relativeCoord : relativeCoords) {
             int si = i + relativeCoord.x;
@@ -217,8 +237,6 @@ public class Board {
             if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
                 if (cellstatus[si][sj] == CellStatus.Ship) {
                     return false;
-                } else if (cellstatus[si][sj] == CellStatus.ShipHit) {
-                    isSunk(si, sj);
                 }
             }
         }
