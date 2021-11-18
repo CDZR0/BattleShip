@@ -66,6 +66,11 @@ public class Server implements Runnable {
                 try {
                     Socket socket = sSocket.accept();
                     Integer ID = clientID++;
+                    if (ID > 1){
+                        socket.close();
+                        --clientID;
+                        continue;
+                    }
 
                     System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
@@ -128,24 +133,27 @@ public class Server implements Runnable {
         } catch (SocketException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "NO IP FOUND";
+        return "NO LOCAL IP FOUND";
     }
-
-    public static boolean isServerAvailable(String ip, int port) {
+    
+    public static boolean isServerAvailable(String ip, int port){
         boolean isAvailable;
+        
         try {
-            InetAddress server = InetAddress.getByName(ip);
-            isAvailable = server.isReachable(port);
-        } catch (UnknownHostException ex) {
-            isAvailable = false;
-        } catch (IOException ex) {
+            try (Socket socket = new Socket(ip, port)) {
+                isAvailable = true;
+            }
+        } 
+        catch (IOException ex) {
             isAvailable = false;
         }
+        
         return isAvailable;
     }
 
     @Override
     public void run() {
+        ServeClient();
         ServeClient();
         ServeClient();
 
