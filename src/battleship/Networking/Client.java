@@ -60,7 +60,7 @@ public class Client implements Runnable {
                 try {
                     while (!close) {
                         String inMsg = bfr.readLine();
-                        if (inMsg.equals("0") || inMsg.equals("1")) {
+                        if (inMsg.equals("0") || inMsg.equals("1") || inMsg.equals("2")) {
                             ID = Integer.parseInt(inMsg);
                             continue;
                         }
