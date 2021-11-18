@@ -95,9 +95,11 @@ public class GameGUI extends JPanel {
                 switch (status) {
                     case Win:
                         System.out.println("NYERTÉL");
+                        infoPanel.setGameEndedText(status);
                         break;
                     case Defeat:
                         System.out.println("VESZTETTÉL");
+                        infoPanel.setGameEndedText(status);
                         break;
                     default:
                         break;
