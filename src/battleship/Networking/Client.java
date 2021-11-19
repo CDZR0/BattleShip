@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Vector;
 import battleship.Events.ClientEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client implements Runnable {
 
@@ -132,6 +134,7 @@ public class Client implements Runnable {
             thread.start();
 
             while (!close) {
+                Thread.sleep(10);
                 while (!messageQueue.isEmpty()) {
                     String message = messageQueue.get(0);
                     messageQueue.remove(0);
@@ -150,6 +153,8 @@ public class Client implements Runnable {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             timedout = true;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

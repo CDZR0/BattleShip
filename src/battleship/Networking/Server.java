@@ -46,14 +46,19 @@ public class Server implements Runnable {
 
             Thread threadQueuePoll = new Thread(() -> {
                 while (!close) {
-                    while (!gameLogic.messageQueue.isEmpty()) {
-                        String BroadcastMessage = gameLogic.messageQueue.get(0);
-                        gameLogic.messageQueue.remove(0);
-                        if (BroadcastMessage != null) {
-                            Data decoded = DataConverter.decode(BroadcastMessage);
-                            int recipient = decoded.getRecipientID();
-                            addMessageToQueue(BroadcastMessage, recipient);
+                    try {
+                        Thread.sleep(10);
+                        while (!gameLogic.messageQueue.isEmpty()) {
+                            String BroadcastMessage = gameLogic.messageQueue.get(0);
+                            gameLogic.messageQueue.remove(0);
+                            if (BroadcastMessage != null) {
+                                Data decoded = DataConverter.decode(BroadcastMessage);
+                                int recipient = decoded.getRecipientID();
+                                addMessageToQueue(BroadcastMessage, recipient);
+                            }
                         }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -105,8 +110,8 @@ public class Server implements Runnable {
                     threadReader.start();
 
                     while (!close) {
+                        Thread.sleep(10);
                         while (!queueArray[ownQueueID].isEmpty()) {
-
                             String message = queueArray[ownQueueID].get(0);
                             queueArray[ownQueueID].remove(0);
                             bfw.write(message);
@@ -117,6 +122,8 @@ public class Server implements Runnable {
                 } catch (IOException ex) {
                     System.out.println("Player disconnected");
                     --clientID;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
