@@ -20,7 +20,7 @@ public class Client implements Runnable {
     private String ip;
     private int port;
     private boolean close = false;
-    private List<ClientEvent> listeners = new ArrayList<>();
+    private final List<ClientEvent> listeners = new ArrayList<>();
     private boolean timedout = false;
     public Integer ID;
 
