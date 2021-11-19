@@ -23,7 +23,7 @@ import javax.swing.SwingWorker;
 public class ServerListItem extends JPanel {
 
     private ServerAddress serverAddress;
-    private JLabel name, ipPort;
+    public JLabel name, ipPort;
     private SwingWorker sWorker;
 
     public ServerListItem(ServerAddress serverAddress) {
