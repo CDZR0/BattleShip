@@ -73,11 +73,13 @@ public class EnemyBoardGUI extends BoardGUI {
     }
 
     private void cellClick(CellGUI cell) {
-        for (ShotEvent listener : listeners) {
-            listener.onShot(cell.getI(), cell.getJ());
+        if (cell.getStatus() == CellStatus.Empty) {
+            for (ShotEvent listener : listeners) {
+                listener.onShot(cell.getI(), cell.getJ());
+            }
+            setTurnEnabled(false);
+            cellExited(cell);
         }
-        setTurnEnabled(false);
-        cellExited(cell);
     }
 
     private void cellEntered(CellGUI cell) {
