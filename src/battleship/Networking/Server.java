@@ -153,7 +153,8 @@ public class Server implements Runnable {
         boolean isAvailable;
         
         try {
-            Socket socket = new Socket(ip, port);
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(ip, port), 1000);
             isAvailable = true;
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             
