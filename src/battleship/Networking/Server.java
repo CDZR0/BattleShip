@@ -26,9 +26,13 @@ public class Server implements Runnable {
         }
     }
 
-    public void close() throws IOException {
+    public void close(){
         close = true;
-        sSocket.close();
+        try {
+            sSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Server(int port) {
