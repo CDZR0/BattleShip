@@ -39,6 +39,7 @@ public class GameGUI extends JPanel {
     private Thread clientThread, serverThread;
     private Server server;
     private InfoPanelGUI infoPanel;
+    private JLabel title;
 
     public GameGUI() {
         this(Settings.getIP(), Settings.getPort());
@@ -46,6 +47,7 @@ public class GameGUI extends JPanel {
         serverThread = new Thread(server);
         serverThread.start();
         System.out.println("szerver itt");
+        title.setText("Game IP: " + Server.getLocalIP() + ":" + Settings.getPort());
     }
 
     public GameGUI(String ip, int port) {
@@ -63,9 +65,9 @@ public class GameGUI extends JPanel {
         infoPanel.setSize(size().width, 190);
         infoPanel.setLocation(0, 50);
         infoPanel.setVisible(false);
-        this.add(infoPanel);
-
-        JLabel title = new JLabel();
+        this.add(infoPanel);      
+        
+        title = new JLabel();
         title.setText("Game IP: " + ip + ":" + port);
         title.setSize(300, 35);
         title.setLocation((this.size().width - title.size().width) / 2, 10);
@@ -73,7 +75,7 @@ public class GameGUI extends JPanel {
         title.setVerticalTextPosition(JLabel.CENTER);
         title.setHorizontalTextPosition(JLabel.CENTER);
         this.add(title);
-
+        
         client = new Client(ip, port);
         client.addClientEventListener(new ClientEvent() {
             @Override
@@ -123,7 +125,7 @@ public class GameGUI extends JPanel {
         });
         clientThread = new Thread(client);
         clientThread.start();
-
+        
         JButton exitButton = new JButton();
         exitButton.setText("Exit game");
         exitButton.setSize(100, 35);
