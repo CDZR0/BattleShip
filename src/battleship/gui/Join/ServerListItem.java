@@ -1,6 +1,7 @@
 //Csaba
 package battleship.gui.Join;
 
+import battleship.Networking.Server;
 import battleship.Networking.ServerAddress;
 import battleship.Resources.Resources;
 import java.awt.Color;
@@ -13,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -21,11 +23,27 @@ import javax.swing.SwingConstants;
 public class ServerListItem extends JPanel {
 
     private ServerAddress serverAddress;
-    private JLabel name, ipPort;
+    public JLabel name, ipPort;
+    private SwingWorker sWorker;
 
     public ServerListItem(ServerAddress serverAddress) {
         this.setLayout(null);
         this.serverAddress = serverAddress;
+        sWorker = new SwingWorker() {
+            @Override
+            protected Color doInBackground() throws Exception {
+                if (Server.isServerAvailable(serverAddress.getIP(), serverAddress.getPort())) {
+                    ipPort.setForeground(Color.GREEN);
+                } else {
+                    ipPort.setForeground(Color.RED);
+                }
+                //sWorker.cancel(true);
+
+                return Color.GREEN;
+            }
+        };
+        sWorker.execute();
+
         setBackground(Resources.BackgroundColor);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         addMouseListener(new MouseAdapter() {
@@ -60,6 +78,10 @@ public class ServerListItem extends JPanel {
 //        ipPort.setLocation((this.size().width - ipPort.size().width) / 2, 30);
         ipPort.setLocation(0, 30);
         this.add(ipPort);
+
+//        if (Server.isServerAvailable(serverAddress.getIP(), serverAddress.getPort())) {
+//            ipPort.setForeground(Color.GREEN);
+//        }
     }
 
     public ServerAddress getServerAddress() {

@@ -73,7 +73,8 @@ public class Board {
         String a = "";
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                a += cellstatus[i][j] + " ";
+                //a += cellstatus[j][i].toString().charAt(0) == 'S' ? 1 + " " : 0 + " ";
+                a += cellstatus[j][i].toString().charAt(0) == 'S' ? "▓ " : "░ ";
             }
             a += "\n";
         }
@@ -209,40 +210,159 @@ public class Board {
         return false;
     }
 
-    public boolean isSunk(int i, int j) {
-
-        for (Point relativeCoord : relativeCoords) {
-            int si = i + relativeCoord.x;
-            int sj = j + relativeCoord.y;
-            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
-                if (cellstatus[si][sj] == CellStatus.Ship) {
-                    return false;
+    //Egy hajó részének koordinátáját megadva kiszámolja az összes olyan koordinátát, ahol az a hajó van.
+    private List<Point> shipCoords(int i, int j) {
+        List<Point> shipsCoords = new ArrayList<>();
+        Point[] relativeCoordsVertical = {
+            new Point(-1, 0),
+            new Point(1, 0)
+        };
+        Point[] relativeCoordsHorizontal = {
+            new Point(0, -1),
+            new Point(0, 1)
+        };
+        //eldöntés melyik irányban kell ellenőriznie
+        boolean horizontal = false;
+        for (Point point : relativeCoordsHorizontal) {
+            int x = i + point.x;
+            int y = j + point.y;
+            if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                CellStatus cs = cellstatus[x][y];
+                if (cs == CellStatus.Ship || cs == CellStatus.ShipHit || cs == CellStatus.ShipSunk) {
+                    horizontal = true;
                 }
             }
         }
+
+        //hajó koordináták hozzáadása a listához
+        shipsCoords.add(new Point(i, j));
+
+        //Eddig jó a kód
+        if (horizontal) {
+            //System.out.println("HORIZONTAL SHIP");
+            CellStatus cs;
+            int x, y;
+            boolean existShip;
+
+            for (Point point : relativeCoordsHorizontal) {
+                x = i;
+                y = j;
+                existShip = true;
+                do {
+                    x += point.x;
+                    y += point.y;
+                    if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                        cs = cellstatus[x][y];
+                        //System.out.print("Ellenőrzés: " + cellstatus[x][y]);
+                        if (cs == CellStatus.Ship || cs == CellStatus.ShipHit || cs == CellStatus.ShipSunk) {
+                            //System.out.println(" ez jó");
+                            Point p = new Point(x, y);
+                            if (!shipsCoords.contains(p)) {
+                                //System.out.println(" és hozzáadtuk.");
+                                shipsCoords.add(p);
+                            } else {
+                                //System.out.println(" de már létezik");
+                            }
+                        } else {
+                            //System.out.println(" nem jó");
+                            existShip = false;
+                        }
+                    } else {
+                        //System.out.println(" nem jó");
+                        existShip = false;
+                    }
+                } while (existShip);
+            }
+        } else {
+            //System.out.println("VERTICAL SHIP");
+            CellStatus cs;
+            int x, y;
+            boolean existShip;
+
+            for (Point point : relativeCoordsVertical) {
+                x = i;
+                y = j;
+                existShip = true;
+                do {
+                    x += point.x;
+                    y += point.y;
+                    if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                        cs = cellstatus[x][y];
+                        //System.out.print("Ellenőrzés: " + cellstatus[x][y]);
+                        if (cs == CellStatus.Ship || cs == CellStatus.ShipHit || cs == CellStatus.ShipSunk) {
+                            //System.out.println(" ez jó");
+                            Point p = new Point(x, y);
+                            if (!shipsCoords.contains(p)) {
+                                //System.out.println(" és hozzáadtuk.");
+                                shipsCoords.add(p);
+                            } else {
+                                //System.out.println(" de már létezik");
+                            }
+                        } else {
+                            //System.out.println(" nem jó");
+                            existShip = false;
+                        }
+                    } else {
+                        //System.out.println(" nem jó");
+                        existShip = false;
+                    }
+                } while (existShip);
+            }
+        }
+//        System.out.println("######### EGÉSZ HAJÓ:");
+//        for (Point shipsCoord : shipsCoords) {
+//            System.out.println("I: " + shipsCoord.x + " J: " + shipsCoord.y);
+//        }
+//        System.out.println("######## END");
+        return shipsCoords;
+    }
+
+    public boolean isSunk(int i, int j) {
+        List<Point> shipCoords = shipCoords(i, j);
+
+        for (Point shipCoord : shipCoords) {
+            if (cellstatus[shipCoord.x][shipCoord.y] == CellStatus.Ship) {
+                return false;
+            }
+        }
+
+//        for (Point shipCoord : shipCoords) {
+//            for (Point relativeCoord : relativeCoords) {
+//                int x = shipCoord.x + relativeCoord.x;
+//                int y = shipCoord.x + relativeCoord.y;
+//                if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+//                    if (cellstatus[x][y] == CellStatus.Ship) {
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
         return true;
     }
 
     public List<Point> nearShipPoints(int i, int j) {
-        List<Point> points = new ArrayList<>();
-        for (Point relativeCoord : relativeCoords) {
-            int si = i + relativeCoord.x;
-            int sj = j + relativeCoord.y;
-            if (si >= 0 && si < 10 && sj >= 0 && sj < 10) {
-                if (cellstatus[si][sj] == CellStatus.Ship) {
-                    for (Point nearShipPoint : nearShipPoints(si, sj)) {
-                        if (!points.contains(nearShipPoint)) {
-                            points.add(nearShipPoint);
+        List<Point> nearShipPoints = new ArrayList<>();
+
+        for (Point shipCoord : shipCoords(i, j)) {
+            for (Point relativeCoord : relativeCoords) {
+                int x = shipCoord.x + relativeCoord.x;
+                int y = shipCoord.y + relativeCoord.y;
+                if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                    if (cellstatus[x][y] == CellStatus.Empty) {
+                        Point p = new Point(x, y);
+                        if (!nearShipPoints.contains(p)) {
+                            nearShipPoints.add(p);
                         }
-                    }
-                } else {
-                    if (!points.contains(new Point(si, sj))) {
-                        points.add(new Point(si, sj));
                     }
                 }
             }
         }
-        return points;
+//        System.out.println("######### HAJÓ KÖRÜLÖTTI COORD:");
+//        for (Point nearShipPoint : nearShipPoints) {
+//            System.out.println("I: " + nearShipPoint.x + " J: " + nearShipPoint.y);
+//        }
+//        System.out.println("######## END");
+        return nearShipPoints;
     }
 
 }

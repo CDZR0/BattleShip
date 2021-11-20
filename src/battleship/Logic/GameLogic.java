@@ -33,6 +33,7 @@ public class GameLogic {
     }
 
     public void processMessage(Data data) {
+        System.out.println("\n\n\n");
         switch (data.getClass().getSimpleName()) {
             case "ChatData":
                 data.setRecipientID(0);
@@ -76,6 +77,7 @@ public class GameLogic {
             players[masik].board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
             System.out.println("Tts a hit!");
             if (players[masik].board.isSunk(data.getI(), data.getJ())) {
+                System.out.println("Elvileg sunk");
                 hitNear(egyik, masik, data.getI(), data.getJ());
             }
             if (isWin(players[masik])) {
@@ -149,7 +151,6 @@ public class GameLogic {
 
     private void hitNear(int egyik, int masik, int i, int j) {
         for (Point nearShipPoint : players[masik].board.nearShipPoints(i, j)) {
-            System.out.println(nearShipPoint);
             CellData cd = new CellData(-1, nearShipPoint.x, nearShipPoint.y, players[masik].board.cellstatus[nearShipPoint.x][nearShipPoint.y]);
             cd.setRecipientID(egyik);
             messageQueue.add(DataConverter.encode(cd));

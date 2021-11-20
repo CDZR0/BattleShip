@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Vector;
 import battleship.Events.ClientEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client implements Runnable {
 
@@ -18,7 +20,7 @@ public class Client implements Runnable {
     private String ip;
     private int port;
     private boolean close = false;
-    private List<ClientEvent> listeners = new ArrayList<>();
+    private final List<ClientEvent> listeners = new ArrayList<>();
     private boolean timedout = false;
     public Integer ID;
 
@@ -55,12 +57,16 @@ public class Client implements Runnable {
 
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            
+            bfw.write("CLIENT");
+            bfw.newLine();
+            bfw.flush();
 
             Thread thread = new Thread(() -> {
                 try {
                     while (!close) {
                         String inMsg = bfr.readLine();
-                        if (inMsg.equals("0") || inMsg.equals("1")) {
+                        if (inMsg.equals("0") || inMsg.equals("1") || inMsg.equals("2")) {
                             ID = Integer.parseInt(inMsg);
                             continue;
                         }
@@ -70,51 +76,53 @@ public class Client implements Runnable {
                         //A lenti rész a ChatData lesz.
                         //#####################################################
 
-                        Data data = DataConverter.decode(inMsg);
+                        if (inMsg != null) {
+                            Data data = DataConverter.decode(inMsg);
 
-                        switch (data.getClass().getSimpleName()) {
-                            case "ChatData":
-                                //System.out.println("Create event: ChatData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onMessageReceived(inMsg);
-                                }
-                                break;
-                            case "PlaceShipsData":
-                                //System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
-                                break;
-                            case "ConnectionData":
-                                //System.out.println("Create event: ConnectionData");
-                                break;
-                            case "ShotData":
-                                //System.out.println("Create event: ShotData");
-                                if (((ShotData) data).getRecipientID() == ID) {
+                            switch (data.getClass().getSimpleName()) {
+                                case "ChatData":
+                                    //System.out.println("Create event: ChatData");
                                     for (ClientEvent listener : listeners) {
-                                        listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
+                                        listener.onMessageReceived(inMsg);
                                     }
-                                }
-                                break;
-                            case "CellData":
-                                //System.out.println("Create event: CellData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onMyHit(((CellData) data).getI(), ((CellData) data).getJ(), ((CellData) data).getStatus());
-                                }
-                                break;
-                            case "TurnData":
-                                //System.out.println("Create event: TurnData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onYourTurn();
-                                }
-                                break;
-                            case "GameEndedData":
-                                //System.out.println("Create event: GameEndedData");
-                                for (ClientEvent listener : listeners) {
-                                    listener.onGameEnded(((GameEndedData) data).getStatus());
-                                }
-                                break;
-                            default:
-                                System.out.println("########## ISMERETLEN OSZTÁLY #########");
-                                System.out.println("Nincs implementálva a Client-ben az alábbi osztály: " + data.getClass().getSimpleName());
-                                break;
+                                    break;
+                                case "PlaceShipsData":
+                                    //System.out.println("SERVER EVENT RECEIVED IN CLIENT: PlaceShipsData");
+                                    break;
+                                case "ConnectionData":
+                                    //System.out.println("Create event: ConnectionData");
+                                    break;
+                                case "ShotData":
+                                    //System.out.println("Create event: ShotData");
+                                    if (((ShotData) data).getRecipientID() == ID) {
+                                        for (ClientEvent listener : listeners) {
+                                            listener.onEnemyHitMe(((ShotData) data).getI(), ((ShotData) data).getJ());
+                                        }
+                                    }
+                                    break;
+                                case "CellData":
+                                    //System.out.println("Create event: CellData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onMyHit(((CellData) data).getI(), ((CellData) data).getJ(), ((CellData) data).getStatus());
+                                    }
+                                    break;
+                                case "TurnData":
+                                    //System.out.println("Create event: TurnData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onYourTurn();
+                                    }
+                                    break;
+                                case "GameEndedData":
+                                    //System.out.println("Create event: GameEndedData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onGameEnded(((GameEndedData) data).getStatus());
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("########## ISMERETLEN OSZTÁLY #########");
+                                    System.out.println("Nincs implementálva a Client-ben az alábbi osztály: " + data.getClass().getSimpleName());
+                                    break;
+                            }
                         }
 
                         //System.out.println(inMsg);
@@ -126,6 +134,7 @@ public class Client implements Runnable {
             thread.start();
 
             while (!close) {
+                Thread.sleep(10);
                 while (!messageQueue.isEmpty()) {
                     String message = messageQueue.get(0);
                     messageQueue.remove(0);
@@ -144,6 +153,8 @@ public class Client implements Runnable {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             timedout = true;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

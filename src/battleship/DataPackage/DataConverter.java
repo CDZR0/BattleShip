@@ -10,9 +10,6 @@ public class DataConverter {
 //        return Arrays.asList(message.split("\\$"));
 //    }
     public static Data decode(String message) {
-        if (message == null) {
-            return new ChatData(-1, "NULL MESSAGE IN DECODE METHOD; THIS IS AN EXCEPTION");
-        }
         Data data;
         String[] tordelt = (message.split("\\$"));
 //        System.out.println("#####################\nDECODE");

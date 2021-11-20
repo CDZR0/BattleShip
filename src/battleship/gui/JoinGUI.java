@@ -17,8 +17,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import battleship.Events.JoinGUIEvent;
+import battleship.Networking.Server;
 import battleship.Networking.ServerManager;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import battleship.BattleShip;
 
 /**
  *
@@ -28,8 +33,9 @@ public class JoinGUI extends JPanel {
 
     private ServerListItem selectedServer;
     private JPanel listPanel, segedServersListPanel;
-    JButton connectButton, addButton, editButton, deleteButton;
+    JButton connectButton, addButton, editButton, deleteButton, refreshButton;
     private List<JoinGUIEvent> listeners;
+    private boolean checkList = true;
 
     public JoinGUI() {
         //zöld 50, 168, 82
@@ -56,6 +62,29 @@ public class JoinGUI extends JPanel {
         listPanel.setLayout(null);
         listPanel.setBackground(Resources.BackgroundColor);
         listPanel.setBounds(0, 55, this.size().width, this.size().height - 55);
+        Thread refreshThread = new Thread(() -> {
+            try {
+                Thread.sleep(500);
+                while (!BattleShip.quit){
+                    for (Component component : segedServersListPanel.getComponents()) {
+                        if (component instanceof ServerListItem){
+                            String splitArr[] = ((ServerListItem)component).ipPort.getText().split("\\:");
+                            String ip = splitArr[0];
+                            int port = Integer.parseInt(splitArr[1]);
+                            if (Server.isServerAvailable(ip, port)) {
+                                ((ServerListItem)component).ipPort.setForeground(Color.GREEN);
+                            } else {
+                                ((ServerListItem)component).ipPort.setForeground(Color.RED);
+                            }
+                        }
+                    }
+                    Thread.sleep(3000);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JoinGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        refreshThread.start();
         listPanel.addComponentListener(new ComponentAdapter() {
             public void componentShow(ComponentEvent e) {
                 loadList();

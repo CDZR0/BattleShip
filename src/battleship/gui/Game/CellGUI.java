@@ -16,8 +16,8 @@ import javax.swing.JPanel;
  */
 public class CellGUI extends JPanel {
 
-    private final Color backgroundColor = new Color(82,137,200);
-    private final Color shipColor = new Color(18,73,136);
+    private final Color backgroundColor = new Color(82, 137, 200);
+    private final Color shipColor = new Color(18, 73, 136);
     private final Color waterColor = new Color(0, 0, 0);
     private final int i;
     private final int j;
@@ -155,6 +155,8 @@ public class CellGUI extends JPanel {
             case Ship:
                 break;
             case ShipHit:
+                g2.setColor(shipColor);
+                g2.fillRect(0, 0, size().width, size().height);
                 g2.setColor(Color.RED);
                 g2.setStroke(new BasicStroke(5));
                 g2.draw(new Line2D.Float(0, 0, 30, 30));
