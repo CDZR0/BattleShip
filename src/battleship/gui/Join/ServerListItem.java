@@ -1,7 +1,6 @@
 //Csaba
 package battleship.gui.Join;
 
-import battleship.Networking.Server;
 import battleship.Networking.ServerAddress;
 import battleship.Resources.Resources;
 import java.awt.Color;
@@ -14,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
 
 /**
  *
@@ -22,27 +20,13 @@ import javax.swing.SwingWorker;
  */
 public class ServerListItem extends JPanel {
 
-    private ServerAddress serverAddress;
+    public ServerAddress serverAddress;
     public JLabel name, ipPort;
-    private SwingWorker sWorker;
+    public boolean available = false;
 
     public ServerListItem(ServerAddress serverAddress) {
         this.setLayout(null);
         this.serverAddress = serverAddress;
-        sWorker = new SwingWorker() {
-            @Override
-            protected Color doInBackground() throws Exception {
-                if (Server.isServerAvailable(serverAddress.getIP(), serverAddress.getPort())) {
-                    ipPort.setForeground(Color.GREEN);
-                } else {
-                    ipPort.setForeground(Color.RED);
-                }
-                //sWorker.cancel(true);
-
-                return Color.GREEN;
-            }
-        };
-        sWorker.execute();
 
         setBackground(Resources.BackgroundColor);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -61,27 +45,29 @@ public class ServerListItem extends JPanel {
             public void componentResized(ComponentEvent componentEvent) {
                 name.setSize(size().width, 35);
                 ipPort.setSize(size().width, 35);
-//                name.setLocation((size().width - name.size().width) / 2, 0);
-//                ipPort.setLocation((size().width - ipPort.size().width) / 2, 30);
             }
         });
 
         name = new JLabel(serverAddress.getName(), SwingConstants.CENTER);
         name.setSize(100, 35);
-//        name.setLocation((this.size().width + name.size().width) / 2, 0);
         name.setLocation(0, 0);
         name.setFont(new Font("Dialog", Font.BOLD, 20));
         this.add(name);
 
         ipPort = new JLabel(serverAddress.getIP() + ":" + serverAddress.getPort(), SwingConstants.CENTER);
         ipPort.setSize(100, 35);
-//        ipPort.setLocation((this.size().width - ipPort.size().width) / 2, 30);
         ipPort.setLocation(0, 30);
         this.add(ipPort);
+    }
 
-//        if (Server.isServerAvailable(serverAddress.getIP(), serverAddress.getPort())) {
-//            ipPort.setForeground(Color.GREEN);
-//        }
+    public void setAvailable(boolean value) {
+        if (value) {
+            ipPort.setForeground(Color.GREEN);
+        } else {
+            ipPort.setForeground(Color.RED);
+        }
+        available = value;
+        System.out.println("Available = " + value);
     }
 
     public ServerAddress getServerAddress() {
