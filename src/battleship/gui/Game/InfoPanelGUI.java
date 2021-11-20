@@ -22,7 +22,7 @@ public class InfoPanelGUI extends JPanel {
         //setBackground(Color.yellow);
         infoText = new JLabel();
         infoText.setText("");
-        infoText.setSize(800, 50);
+        infoText.setSize(350, 50);
         infoText.setFont(new Font("Dialog", Font.BOLD, 30));
         infoText.setLocation(0, 140);
         infoText.setHorizontalAlignment(JLabel.CENTER);

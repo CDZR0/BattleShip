@@ -116,7 +116,7 @@ public class TesztGUI extends JPanel {
                         client = new Client(ipTextBox.getText(), Integer.parseInt(portTextBox.getText()));
                         client.addClientEventListener(new ClientEvent() {
                             @Override
-                            public void onMessageReceived(String message) {
+                            public void onMessageReceived(int sender, String message) {
                                 //System.out.println("get message: " + message);
                                 send(message, "client event");
                             }

@@ -1,10 +1,12 @@
 package battleship.Networking;
 
 import battleship.DataPackage.CellData;
+import battleship.DataPackage.ChatData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.DataPackage.GameEndedData;
 import battleship.DataPackage.ShotData;
+import battleship.Events.ChatGUIEvent;
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -57,7 +59,7 @@ public class Client implements Runnable {
 
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            
+
             bfw.write("CLIENT");
             bfw.newLine();
             bfw.flush();
@@ -83,7 +85,7 @@ public class Client implements Runnable {
                                 case "ChatData":
                                     //System.out.println("Create event: ChatData");
                                     for (ClientEvent listener : listeners) {
-                                        listener.onMessageReceived(inMsg);
+                                        listener.onMessageReceived(((ChatData) data).getClientID(), ((ChatData) data).getMessage());
                                     }
                                     break;
                                 case "PlaceShipsData":

@@ -1,9 +1,11 @@
 //Csaba
 package battleship.gui;
 
+import battleship.DataPackage.ChatData;
 import battleship.DataPackage.GameEndedStatus;
 import battleship.DataPackage.PlaceShipsData;
 import battleship.DataPackage.ShotData;
+import battleship.Events.ChatGUIEvent;
 import battleship.Events.ClientEvent;
 import battleship.Events.ShipPlaceEvent;
 import battleship.Events.ShipSelectorEvent;
@@ -18,6 +20,8 @@ import battleship.Utils.Settings;
 import battleship.gui.Game.EnemyBoardGUI;
 import battleship.gui.Game.InfoPanelGUI;
 import battleship.gui.Game.PlayerBoardGUI;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -40,6 +44,7 @@ public class GameGUI extends JPanel {
     private Server server;
     private InfoPanelGUI infoPanel;
     private JLabel title;
+    private ChatGUI chatGUI;
 
     public GameGUI() {
         this(Settings.getIP(), Settings.getPort());
@@ -61,12 +66,24 @@ public class GameGUI extends JPanel {
         EnemyBoardGUI enemyBoardGUI = new EnemyBoardGUI(enemyBoard);
         selecter = new ShipSelecterGUI();
 
+        chatGUI = new ChatGUI();
+        chatGUI.setSize((size().width - 100) / 2, 185);
+        chatGUI.setLocation(50, 50);
+        chatGUI.setVisible(false);
+        chatGUI.addSendMessageListener(new ChatGUIEvent() {
+            @Override
+            public void onSendMessage(String message) {
+                client.sendMessage(new ChatData(client.ID, message));
+            }
+        });
+        this.add(chatGUI);
+
         infoPanel = new InfoPanelGUI();
-        infoPanel.setSize(size().width, 190);
-        infoPanel.setLocation(0, 50);
+        infoPanel.setSize((size().width - 100) / 2, 190);
+        infoPanel.setLocation((size().width / 2), 50);
         infoPanel.setVisible(false);
-        this.add(infoPanel);      
-        
+        this.add(infoPanel);
+
         title = new JLabel();
         title.setText("Game IP: " + ip + ":" + port);
         title.setSize(300, 35);
@@ -75,12 +92,18 @@ public class GameGUI extends JPanel {
         title.setVerticalTextPosition(JLabel.CENTER);
         title.setHorizontalTextPosition(JLabel.CENTER);
         this.add(title);
-        
+
         client = new Client(ip, port);
         client.addClientEventListener(new ClientEvent() {
             @Override
-            public void onMessageReceived(String message) {
-                System.out.println("Chat nincs kész" + message);
+            public void onMessageReceived(int senderID, String message) {
+                if (senderID == -1) {
+                    chatGUI.addMessage("System", message);
+                } else if (senderID == client.ID) {
+                    chatGUI.addMessage("Me", message);
+                } else {
+                    chatGUI.addMessage("Opponent", message);
+                }
             }
 
             @Override
@@ -96,11 +119,9 @@ public class GameGUI extends JPanel {
                 System.out.println("Ki kéne írni hogy nyert or vesztett");
                 switch (status) {
                     case Win:
-                        System.out.println("NYERTÉL");
                         infoPanel.setGameEndedText(status);
                         break;
                     case Defeat:
-                        System.out.println("VESZTETTÉL");
                         infoPanel.setGameEndedText(status);
                         break;
                     case Unknown:
@@ -124,13 +145,14 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onJoinedEnemy() {
-                
+                enemyBoardGUI.setVisible(true);
+                ownBoardGUI.setVisible(true);
+                selecter.setVisible(true);
             }
-
         });
         clientThread = new Thread(client);
         clientThread.start();
-        
+
         JButton exitButton = new JButton();
         exitButton.setText("Exit game");
         exitButton.setSize(100, 35);
@@ -208,6 +230,7 @@ public class GameGUI extends JPanel {
             @Override
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
+                chatGUI.setVisible(true);
                 //System.out.println(ownBoardGUI.getBoard().toString());
                 client.sendMessage(new PlaceShipsData(client.ID, ownBoardGUI.getBoard()));
 
@@ -232,9 +255,4 @@ public class GameGUI extends JPanel {
         });
         repaint();
     }
-
-    private void sendReady(Board board) {
-        client.sendMessage(new PlaceShipsData(client.ID, board));
-    }
-
 }
