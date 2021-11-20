@@ -67,7 +67,6 @@ public class ServerListItem extends JPanel {
             ipPort.setForeground(Color.RED);
         }
         available = value;
-        System.out.println("Available = " + value);
     }
 
     public ServerAddress getServerAddress() {
