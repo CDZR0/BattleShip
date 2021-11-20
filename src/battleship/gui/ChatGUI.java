@@ -42,7 +42,7 @@ public class ChatGUI extends JPanel {
         chatTextBox.setBackground(Resources.BackgroundColor);
         chatTextBox.setForeground(Color.WHITE);
         chatTextBox.setEditable(false);
-        chatTextBox.setAutoscrolls(true);
+        //chatTextBox.setAutoscrolls(true);
         chatTextBox.setSize(350, 150);
         chatTextBox.setPreferredSize(new Dimension(330, prefferedHeight));
         chatTextBox.setLocation(0, 0);
@@ -85,6 +85,7 @@ public class ChatGUI extends JPanel {
         //chatTextBox.append("[" + LocalTime.now() + "] [" + sender + "] : " + message + "\n");
         prefferedHeight += prefferedHeight;
         chatTextBox.setPreferredSize(new Dimension(330, prefferedHeight));
+        chatTextBox.setCaretPosition(chatTextBox.getDocument().getLength());
     }
 
     public void addSendMessageListener(ChatGUIEvent listener) {
