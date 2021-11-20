@@ -122,6 +122,11 @@ public class GameGUI extends JPanel {
                 enemyBoardGUI.Hit(i, j, status);
             }
 
+            @Override
+            public void onJoinedEnemy() {
+                
+            }
+
         });
         clientThread = new Thread(client);
         clientThread.start();

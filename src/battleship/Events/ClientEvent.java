@@ -14,4 +14,6 @@ public interface ClientEvent {
     void onEnemyHitMe(int i, int j);
 
     void onMyHit(int i, int j, CellStatus status);
+    
+    void onJoinedEnemy();
 }

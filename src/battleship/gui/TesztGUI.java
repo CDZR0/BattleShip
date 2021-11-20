@@ -140,6 +140,11 @@ public class TesztGUI extends JPanel {
                             public void onGameEnded(GameEndedStatus status) {
                                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                             }
+
+                            @Override
+                            public void onJoinedEnemy() {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
                         });
                         clientThread = new Thread(client);
                         clientThread.start();
