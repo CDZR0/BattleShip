@@ -22,6 +22,7 @@ import battleship.gui.Game.InfoPanelGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -50,6 +51,7 @@ public class GameGUI extends JPanel {
     private InfoPanelGUI infoPanel;
     private JLabel title;
     private ChatGUI chatGUI;
+    private JLabel waitingTitle;
 
     public GameGUI() {
         this(Settings.getIP(), Settings.getPort());
@@ -69,8 +71,18 @@ public class GameGUI extends JPanel {
 
     public GameGUI(String ip, int port) {
         setLayout(null);
-        this.setSize(800, 600);
+        this.setSize(800, 600 - MenuGUI.WindowInsets);
         setBackground(Resources.BackgroundColor);
+
+        waitingTitle = new JLabel();
+        waitingTitle.setText("Waiting for opponent...");
+        waitingTitle.setFont(new Font("Dialog", Font.BOLD, 30));
+        waitingTitle.setHorizontalAlignment(JLabel.CENTER);
+        waitingTitle.setVerticalTextPosition(JLabel.CENTER);
+        waitingTitle.setHorizontalTextPosition(JLabel.CENTER);
+        waitingTitle.setSize(800, 100);
+        waitingTitle.setLocation(0, (size().height - waitingTitle.size().height) / 2);
+        this.add(waitingTitle);
 
         ownBoard = new Board();
         enemyBoard = new Board();
@@ -161,6 +173,7 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onJoinedEnemy() {
+                waitingTitle.setVisible(false);
                 enemyBoardGUI.setVisible(true);
                 ownBoardGUI.setVisible(true);
                 selecter.setVisible(true);
@@ -191,9 +204,11 @@ public class GameGUI extends JPanel {
         });
         this.add(exitButton);
 
+        ownBoardGUI.setVisible(false);
         ownBoardGUI.setLocation(50, 250);
         this.add(ownBoardGUI);
 
+        enemyBoardGUI.setVisible(false);
         enemyBoardGUI.setLocation(450, 250);
         enemyBoardGUI.setEnabled(false);
         enemyBoardGUI.addShotListener(new ShotEvent() {
@@ -205,6 +220,7 @@ public class GameGUI extends JPanel {
         });
         this.add(enemyBoardGUI);
 
+        selecter.setVisible(false);
         selecter.setLocation(50, 100);
         selecter.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
