@@ -69,14 +69,6 @@ public class Client implements Runnable {
                         String inMsg = bfr.readLine();
                         if (inMsg.equals("0") || inMsg.equals("1") || inMsg.equals("2")) {
                             ID = Integer.parseInt(inMsg);
-                            if (ID.equals(1)){
-                                bfw.write(ID+"$ConnectionData$$0");
-                                bfw.newLine();
-                                bfw.flush();
-                                bfw.write(ID+"$ConnectionData$$1");
-                                bfw.newLine();
-                                bfw.flush();
-                            }
                             continue;
                         }
                         //#####################################################
