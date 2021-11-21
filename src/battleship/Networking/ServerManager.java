@@ -55,7 +55,7 @@ public class ServerManager {
                         String line = reader.nextLine();
                         if (line.contains("}")) 
                             break;
-                        String strArr[] = line.replaceAll("\\s+", "").split(":");
+                        String strArr[] = line.replaceAll("\\s+", "").split("\\$");
                         ServerAddress sAddress = new ServerAddress(strArr[0], strArr[1], Integer.parseInt(strArr[2]));
                         serverList.add(sAddress);
                     }
