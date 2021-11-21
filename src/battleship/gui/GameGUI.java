@@ -31,6 +31,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -191,6 +193,11 @@ public class GameGUI extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Warning", 0) == JOptionPane.YES_OPTION) {
                     client.close();
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     if (server != null) {
                         try {
                             server.close();
