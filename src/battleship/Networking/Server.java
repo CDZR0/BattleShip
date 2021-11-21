@@ -77,7 +77,7 @@ public class Server implements Runnable {
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
-                    if (bfr.readLine().equals("PING")){
+                    if (!bfr.readLine().equals("CLIENT")){
                         socket.close();
                         continue;
                     }

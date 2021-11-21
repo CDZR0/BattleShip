@@ -6,18 +6,9 @@ import java.util.List;
 
 public class DataConverter {
 
-//    public static List<String> decode(String message) {
-//        return Arrays.asList(message.split("\\$"));
-//    }
     public static Data decode(String message) {
         Data data;
         String[] tordelt = (message.split("\\$"));
-//        System.out.println("#####################\nDECODE");
-////        System.out.println("Üzi hossza: " + tordelt.length);
-//        for (String string : tordelt) {
-//            System.out.println(string);
-//        }
-//        System.out.println("Vége.");
 
         int id = Integer.parseInt(tordelt[0]);
         String dataType = tordelt[1];
