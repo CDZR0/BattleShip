@@ -60,9 +60,7 @@ public class MenuGUI extends JFrame {
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //System.out.println("new");
                 menu.setVisible(false);
-                //gameGUI.setVisible(true);
                 createGameGUI(null);
             }
         });
@@ -82,7 +80,6 @@ public class MenuGUI extends JFrame {
         joinGUI.AddConnectListener(new JoinGUIEvent() {
             @Override
             public void onConnect(ServerAddress serverAddress) {
-                System.out.println("Join");
                 joinGUI.setVisible(false);
                 dontShowMenu = true;
                 createGameGUI(serverAddress);
@@ -97,7 +94,6 @@ public class MenuGUI extends JFrame {
         joinGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //System.out.println("join");
                 dontShowMenu = false;
                 menu.setVisible(false);
                 joinGUI.setVisible(true);
@@ -137,7 +133,6 @@ public class MenuGUI extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //System.out.println("exitButton");
                 System.exit(0);
             }
         });
@@ -162,7 +157,6 @@ public class MenuGUI extends JFrame {
         tesztButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //System.out.println("tesztButton lenyomva");
                 menu.setVisible(false);
                 t.setVisible(true);
             }
@@ -179,7 +173,6 @@ public class MenuGUI extends JFrame {
             gameGUI = new GameGUI();
         }
         gameGUI.setBounds(0, 0, this.size().width, this.size().height);
-        //gameGUI.setVisible(false);
         gameGUI.addComponentListener(new ComponentAdapter() {
             public void componentShown(ComponentEvent e) {
                 menu.setVisible(false);

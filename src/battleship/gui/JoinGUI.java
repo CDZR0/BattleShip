@@ -63,17 +63,18 @@ public class JoinGUI extends JPanel {
         listPanel.setBounds(0, 55, this.size().width, this.size().height - 55);
         Thread refreshThread = new Thread(() -> {
             try {
-                while (segedServersListPanel == null) {}
+                while (segedServersListPanel == null) {
+                }
                 while (!BattleShip.quit) {
                     if (isVisible) {
                         for (Component component : segedServersListPanel.getComponents()) {
                             if (component instanceof ServerListItem) {
-                                String ip = ((ServerListItem)component).serverAddress.getIP();
-                                int port = ((ServerListItem)component).serverAddress.getPort();
+                                String ip = ((ServerListItem) component).serverAddress.getIP();
+                                int port = ((ServerListItem) component).serverAddress.getPort();
                                 if (Server.isServerAvailable(ip, port)) {
-                                    ((ServerListItem)component).setAvailable(true);
+                                    ((ServerListItem) component).setAvailable(true);
                                 } else {
-                                    ((ServerListItem)component).setAvailable(false);
+                                    ((ServerListItem) component).setAvailable(false);
                                 }
                                 if (selectedServer != null) {
                                     connectButton.setEnabled(selectedServer.available);
@@ -125,7 +126,7 @@ public class JoinGUI extends JPanel {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 setVisible(false);
-                ConnectServer();
+                ConnectServer(false);
             }
         });
         sp.add(connectButton);
@@ -173,13 +174,13 @@ public class JoinGUI extends JPanel {
 
         loadList();
     }
-    
+
     @Override
-    public void setVisible(boolean value){
+    public void setVisible(boolean value) {
         super.setVisible(value);
         isVisible = value;
     }
-    
+
     private void ShowAddEdit() {
         ShowAddEdit(null);
     }
@@ -202,8 +203,8 @@ public class JoinGUI extends JPanel {
         this.add(addEditServer);
     }
 
-    private void ConnectServer() {
-        if (selectedServer.available) {
+    private void ConnectServer(boolean value) {
+        if (selectedServer.available || value) {
             System.out.println("Connecting to server: " + selectedServer.getServerAddress().getName());
             for (JoinGUIEvent listener : listeners) {
                 listener.onConnect(selectedServer.getServerAddress());
@@ -246,7 +247,10 @@ public class JoinGUI extends JPanel {
                     deleteButton.setEnabled(true);
                     sli.Select();
                     if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                        ConnectServer();
+                        ConnectServer(false);
+                    }
+                    if (e.getClickCount() == 5 && e.getButton() == MouseEvent.BUTTON1) {
+                        ConnectServer(true);
                     }
                 }
             });

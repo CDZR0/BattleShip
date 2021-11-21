@@ -60,7 +60,6 @@ public class GameGUI extends JPanel {
         server = new Server(Settings.getPort());
         serverThread = new Thread(server);
         serverThread.start();
-        System.out.println("szerver itt");
         title.setText("Game IP: " + Server.getLocalIP() + ":" + Settings.getPort() + " Click to copy IP");
         title.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -134,7 +133,6 @@ public class GameGUI extends JPanel {
 
             @Override
             public void onYourTurn() {
-                //System.out.println("Its me turn.");
                 enemyBoardGUI.setTurnEnabled(true);
                 infoPanel.setTurnText(true);
             }
@@ -142,7 +140,6 @@ public class GameGUI extends JPanel {
             @Override
             public void onGameEnded(GameEndedStatus status) {
                 enemyBoardGUI.setTurnEnabled(false);
-                System.out.println("Ki kéne írni hogy nyert or vesztett");
                 String endMessage = "";
                 switch (status) {
                     case Win:
@@ -270,11 +267,7 @@ public class GameGUI extends JPanel {
             public void onDone() {
                 ownBoardGUI.setEnabled(false);
                 chatGUI.setVisible(true);
-                //System.out.println(ownBoardGUI.getBoard().toString());
                 client.sendMessage(new PlaceShipsData(client.ID, ownBoardGUI.getBoard()));
-
-                //TESZT
-                //enemyBoardGUI.setEnabled(true);
             }
         });
         this.add(selecter);
