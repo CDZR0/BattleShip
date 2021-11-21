@@ -87,10 +87,6 @@ public class Server implements Runnable {
                     System.out.println("Someone joined the server with ID: " + ID);
                     int otherQueueID = (ID == 0) ? 1 : 0;
                     int ownQueueID = (ID == 0) ? 0 : 1;
-                    
-                    
-                    
-
 
                     bfw.write(ID.toString());
                     bfw.newLine();

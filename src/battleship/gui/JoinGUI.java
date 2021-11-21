@@ -67,13 +67,12 @@ public class JoinGUI extends JPanel {
                 while (!BattleShip.quit) {
                     for (Component component : segedServersListPanel.getComponents()) {
                         if (component instanceof ServerListItem) {
-                            String splitArr[] = ((ServerListItem) component).ipPort.getText().split("\\:");
-                            String ip = splitArr[0];
-                            int port = Integer.parseInt(splitArr[1]);
+                            String ip = ((ServerListItem)component).serverAddress.getIP();
+                            int port = ((ServerListItem)component).serverAddress.getPort();
                             if (Server.isServerAvailable(ip, port)) {
-                                ((ServerListItem) component).setAvailable(true);
+                                ((ServerListItem)component).setAvailable(true);
                             } else {
-                                ((ServerListItem) component).setAvailable(false);
+                                ((ServerListItem)component).setAvailable(false);
                             }
                             if (selectedServer != null) {
                                 connectButton.setEnabled(selectedServer.available);
