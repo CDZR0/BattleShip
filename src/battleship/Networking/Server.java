@@ -97,6 +97,10 @@ public class Server implements Runnable {
                             try {
                                 String inMsg = bfr.readLine();
                                 if (inMsg != null) {
+                                    if (inMsg.equals("$DisconnectData$$-1")){
+                                        int recipient = (ID == 0) ? 1 : 0;
+                                        inMsg = "-1$ChatData$The other player has left the game.$" + recipient;
+                                    }
                                     gameLogic.processMessage(DataConverter.decode(inMsg));
                                 }
                             } catch (IOException ex) {
