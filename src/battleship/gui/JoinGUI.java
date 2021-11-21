@@ -173,10 +173,6 @@ public class JoinGUI extends JPanel {
 
         loadList();
     }
-
-    public void setVisibility(boolean value){
-        isVisible = value;
-    }
     
     @Override
     public void setVisible(boolean value){
