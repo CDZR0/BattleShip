@@ -33,15 +33,12 @@ public class GameLogic {
     }
 
     public void processMessage(Data data) {
-        System.out.println("\n\n\n");
         switch (data.getClass().getSimpleName()) {
             case "ChatData":
                 data.setRecipientID(0);
                 messageQueue.add(DataConverter.encode((ChatData) data));
                 data.setRecipientID(1);
                 messageQueue.add(DataConverter.encode((ChatData) data));
-//                messageQueue.add(DataConverter.encode(id, "Chat", dataMessage, 0));
-//                messageQueue.add(DataConverter.encode(id, "Chat", dataMessage, 1));
                 break;
             case "PlaceShipsData":
                 setPlayerBoard((PlaceShipsData) data);
@@ -75,9 +72,7 @@ public class GameLogic {
 
         if (players[masik].board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
             players[masik].board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
-            System.out.println("Tts a hit!");
             if (players[masik].board.isSunk(data.getI(), data.getJ())) {
-                System.out.println("Elvileg sunk");
                 hitNear(egyik, masik, data.getI(), data.getJ());
             }
             if (isWin(players[masik])) {
@@ -87,7 +82,6 @@ public class GameLogic {
                 messageQueue.add(DataConverter.encode(new TurnData(egyik)));
             }
         } else {
-            System.out.println("Its not a hit!");
             messageQueue.add(DataConverter.encode(new TurnData(masik)));
         }
     }
@@ -175,10 +169,6 @@ public class GameLogic {
         }
 
         if (player1.ready == true && player2.ready == true) {
-            System.out.println(player1.board);
-            System.out.println("");
-            System.out.println(player2.board);
-            System.out.println("Most dölt el:");
             messageQueue.add(DataConverter.encode(new TurnData(rnd.nextInt(2))));
         }
     }

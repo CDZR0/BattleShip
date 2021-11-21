@@ -36,7 +36,6 @@ public class EnemyBoardGUI extends BoardGUI {
                     @Override
                     public void mousePressed(MouseEvent e) {
                         if (isEnabled() && canTip) {
-                            System.out.println("cell clicked");
                             cellClick(seged);
                         }
                     }
@@ -65,7 +64,6 @@ public class EnemyBoardGUI extends BoardGUI {
     public void setTurnEnabled(boolean value) {
         canTip = value;
         setEnabled(value);
-        System.out.println("Enemy board now: " + value);
     }
 
     public void addShotListener(ShotEvent listener) {

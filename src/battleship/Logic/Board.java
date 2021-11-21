@@ -42,7 +42,6 @@ public class Board {
                 cellstatus[i][j] = CellStatus.valueOf(column[j]);
             }
         }
-        System.out.println(this);
     }
 
     public void setCell(int i, int j, CellStatus status) {
