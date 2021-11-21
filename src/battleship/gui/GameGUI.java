@@ -22,9 +22,14 @@ import battleship.gui.Game.InfoPanelGUI;
 import battleship.gui.Game.PlayerBoardGUI;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -52,7 +57,14 @@ public class GameGUI extends JPanel {
         serverThread = new Thread(server);
         serverThread.start();
         System.out.println("szerver itt");
-        title.setText("Game IP: " + Server.getLocalIP() + ":" + Settings.getPort());
+        title.setText("Game IP: " + Server.getLocalIP() + ":" + Settings.getPort() + " Click to copy IP");
+        title.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                StringSelection selection = new StringSelection(Server.getLocalIP() + ":" + Settings.getPort());
+                Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
+                c.setContents(selection, selection);
+            }
+        });
     }
 
     public GameGUI(String ip, int port) {
