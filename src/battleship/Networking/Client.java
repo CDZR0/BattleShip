@@ -6,7 +6,6 @@ import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.DataPackage.GameEndedData;
 import battleship.DataPackage.ShotData;
-import battleship.Events.ChatGUIEvent;
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -146,6 +145,10 @@ public class Client implements Runnable {
                 }
             }
             try {
+                bfw.write("$DisconnectData$$-1" );
+                bfw.newLine();
+                bfw.flush();
+                
                 socket.close();
                 bfr.close();
                 bfw.close();
