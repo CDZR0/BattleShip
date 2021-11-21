@@ -148,6 +148,9 @@ public class GameLogic {
             CellData cd = new CellData(-1, nearShipPoint.x, nearShipPoint.y, players[masik].board.cellstatus[nearShipPoint.x][nearShipPoint.y]);
             cd.setRecipientID(egyik);
             messageQueue.add(DataConverter.encode(cd));
+            ShotData sd = new ShotData(egyik, nearShipPoint.x, nearShipPoint.y);
+            sd.setRecipientID(masik);
+            messageQueue.add(DataConverter.encode(sd));
         }
     }
 
