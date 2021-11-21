@@ -62,13 +62,21 @@ public class Client implements Runnable {
             bfw.write("CLIENT");
             bfw.newLine();
             bfw.flush();
-
+                        
             Thread thread = new Thread(() -> {
                 try {
                     while (!close) {
                         String inMsg = bfr.readLine();
                         if (inMsg.equals("0") || inMsg.equals("1") || inMsg.equals("2")) {
                             ID = Integer.parseInt(inMsg);
+                            if (ID.equals(1)){
+                                bfw.write(ID+"$ConnectionData$$0");
+                                bfw.newLine();
+                                bfw.flush();
+                                bfw.write(ID+"$ConnectionData$$1");
+                                bfw.newLine();
+                                bfw.flush();
+                            }
                             continue;
                         }
                         //#####################################################
@@ -92,6 +100,9 @@ public class Client implements Runnable {
                                     break;
                                 case "ConnectionData":
                                     //System.out.println("Create event: ConnectionData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onJoinedEnemy();
+                                    }
                                     break;
                                 case "ShotData":
                                     //System.out.println("Create event: ShotData");
