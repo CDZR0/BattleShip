@@ -34,7 +34,7 @@ public class JoinGUI extends JPanel {
     private JPanel listPanel, segedServersListPanel;
     JButton connectButton, addButton, editButton, deleteButton, refreshButton;
     private List<JoinGUIEvent> listeners;
-    private boolean checkList = true;
+    private boolean isVisible = false;
 
     public JoinGUI() {
         //zöld 50, 168, 82
@@ -63,19 +63,21 @@ public class JoinGUI extends JPanel {
         listPanel.setBounds(0, 55, this.size().width, this.size().height - 55);
         Thread refreshThread = new Thread(() -> {
             try {
-                Thread.sleep(500);
+                while (segedServersListPanel == null) {}
                 while (!BattleShip.quit) {
-                    for (Component component : segedServersListPanel.getComponents()) {
-                        if (component instanceof ServerListItem) {
-                            String ip = ((ServerListItem)component).serverAddress.getIP();
-                            int port = ((ServerListItem)component).serverAddress.getPort();
-                            if (Server.isServerAvailable(ip, port)) {
-                                ((ServerListItem)component).setAvailable(true);
-                            } else {
-                                ((ServerListItem)component).setAvailable(false);
-                            }
-                            if (selectedServer != null) {
-                                connectButton.setEnabled(selectedServer.available);
+                    if (isVisible) {
+                        for (Component component : segedServersListPanel.getComponents()) {
+                            if (component instanceof ServerListItem) {
+                                String ip = ((ServerListItem)component).serverAddress.getIP();
+                                int port = ((ServerListItem)component).serverAddress.getPort();
+                                if (Server.isServerAvailable(ip, port)) {
+                                    ((ServerListItem)component).setAvailable(true);
+                                } else {
+                                    ((ServerListItem)component).setAvailable(false);
+                                }
+                                if (selectedServer != null) {
+                                    connectButton.setEnabled(selectedServer.available);
+                                }
                             }
                         }
                     }
@@ -172,6 +174,16 @@ public class JoinGUI extends JPanel {
         loadList();
     }
 
+    public void setVisibility(boolean value){
+        isVisible = value;
+    }
+    
+    @Override
+    public void setVisible(boolean value){
+        super.setVisible(value);
+        isVisible = value;
+    }
+    
     private void ShowAddEdit() {
         ShowAddEdit(null);
     }
