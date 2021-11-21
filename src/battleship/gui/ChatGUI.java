@@ -43,8 +43,8 @@ public class ChatGUI extends JPanel {
         chatTextBox.setForeground(Color.WHITE);
         chatTextBox.setEditable(false);
         //chatTextBox.setAutoscrolls(true);
-        chatTextBox.setSize(350, 150);
-        chatTextBox.setPreferredSize(new Dimension(330, prefferedHeight));
+        chatTextBox.setSize(700, 150);
+        chatTextBox.setPreferredSize(new Dimension(700, prefferedHeight));
         chatTextBox.setLocation(0, 0);
         this.add(chatTextBox);
 
@@ -55,7 +55,7 @@ public class ChatGUI extends JPanel {
 
         sendTextBox = new JTextField();
         sendTextBox.setLayout(new FlowLayout(FlowLayout.LEADING));
-        sendTextBox.setSize(350, 35);
+        sendTextBox.setSize(700, 35);
         sendTextBox.setLocation(0, 150);
         sendTextBox.addActionListener(new ActionListener() {
             @Override
@@ -84,7 +84,7 @@ public class ChatGUI extends JPanel {
         chatTextBox.setText(chatMessage);
         //chatTextBox.append("[" + LocalTime.now() + "] [" + sender + "] : " + message + "\n");
         prefferedHeight += prefferedHeight;
-        chatTextBox.setPreferredSize(new Dimension(330, prefferedHeight));
+        chatTextBox.setPreferredSize(new Dimension(700, prefferedHeight));
         chatTextBox.setCaretPosition(chatTextBox.getDocument().getLength());
     }
 

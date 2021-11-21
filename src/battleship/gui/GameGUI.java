@@ -79,7 +79,7 @@ public class GameGUI extends JPanel {
         selecter = new ShipSelecterGUI();
 
         chatGUI = new ChatGUI();
-        chatGUI.setSize((size().width - 100) / 2, 185);
+        chatGUI.setSize((size().width - 100), 185);
         chatGUI.setLocation(50, 50);
         chatGUI.setVisible(false);
         chatGUI.addSendMessageListener(new ChatGUIEvent() {
@@ -91,8 +91,8 @@ public class GameGUI extends JPanel {
         this.add(chatGUI);
 
         infoPanel = new InfoPanelGUI();
-        infoPanel.setSize((size().width - 100) / 2, 190);
-        infoPanel.setLocation((size().width / 2), 50);
+        infoPanel.setSize(60, 60);
+        infoPanel.setLocation((size().width - infoPanel.size().width) / 2, 250 + ((300 - infoPanel.size().height) / 2));
         infoPanel.setVisible(false);
         this.add(infoPanel);
 
@@ -129,20 +129,24 @@ public class GameGUI extends JPanel {
             public void onGameEnded(GameEndedStatus status) {
                 enemyBoardGUI.setTurnEnabled(false);
                 System.out.println("Ki kéne írni hogy nyert or vesztett");
+                String endMessage = "";
                 switch (status) {
                     case Win:
-                        infoPanel.setGameEndedText(status);
+                        endMessage = "You win!";
                         break;
                     case Defeat:
-                        infoPanel.setGameEndedText(status);
+                        endMessage = "Defeat!";
                         break;
                     case Unknown:
                         System.out.println("Unknown game ended status");
-                        infoPanel.setGameEndedText(status);
+                        endMessage = "Unknown game ended status";
                         break;
                     default:
                         break;
                 }
+                infoPanel.setGameEnded();
+                chatGUI.addMessage("System", endMessage);
+
             }
 
             @Override
