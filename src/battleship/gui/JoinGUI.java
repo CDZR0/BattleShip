@@ -19,7 +19,6 @@ import javax.swing.JScrollPane;
 import battleship.Events.JoinGUIEvent;
 import battleship.Networking.Server;
 import battleship.Networking.ServerManager;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +34,7 @@ public class JoinGUI extends JPanel {
     private JPanel listPanel, segedServersListPanel;
     JButton connectButton, addButton, editButton, deleteButton, refreshButton;
     private List<JoinGUIEvent> listeners;
-    private boolean checkList = true;
+    private boolean isVisible = false;
 
     public JoinGUI() {
         //zöld 50, 168, 82
@@ -43,9 +42,9 @@ public class JoinGUI extends JPanel {
         setLayout(null);
         this.setSize(800, 600 - MenuGUI.WindowInsets);
         setBackground(Resources.BackgroundColor);
-        
+
         listeners = new ArrayList<>();
-        
+
         JButton backButton = new JButton();
         backButton.setText("Back to menu");
         backButton.setSize(115, 35);
@@ -64,17 +63,21 @@ public class JoinGUI extends JPanel {
         listPanel.setBounds(0, 55, this.size().width, this.size().height - 55);
         Thread refreshThread = new Thread(() -> {
             try {
-                Thread.sleep(500);
-                while (!BattleShip.quit){
-                    for (Component component : segedServersListPanel.getComponents()) {
-                        if (component instanceof ServerListItem){
-                            String splitArr[] = ((ServerListItem)component).ipPort.getText().split("\\:");
-                            String ip = splitArr[0];
-                            int port = Integer.parseInt(splitArr[1]);
-                            if (Server.isServerAvailable(ip, port)) {
-                                ((ServerListItem)component).ipPort.setForeground(Color.GREEN);
-                            } else {
-                                ((ServerListItem)component).ipPort.setForeground(Color.RED);
+                while (segedServersListPanel == null) {}
+                while (!BattleShip.quit) {
+                    if (isVisible) {
+                        for (Component component : segedServersListPanel.getComponents()) {
+                            if (component instanceof ServerListItem) {
+                                String ip = ((ServerListItem)component).serverAddress.getIP();
+                                int port = ((ServerListItem)component).serverAddress.getPort();
+                                if (Server.isServerAvailable(ip, port)) {
+                                    ((ServerListItem)component).setAvailable(true);
+                                } else {
+                                    ((ServerListItem)component).setAvailable(false);
+                                }
+                                if (selectedServer != null) {
+                                    connectButton.setEnabled(selectedServer.available);
+                                }
                             }
                         }
                     }
@@ -170,7 +173,13 @@ public class JoinGUI extends JPanel {
 
         loadList();
     }
-
+    
+    @Override
+    public void setVisible(boolean value){
+        super.setVisible(value);
+        isVisible = value;
+    }
+    
     private void ShowAddEdit() {
         ShowAddEdit(null);
     }
@@ -194,16 +203,18 @@ public class JoinGUI extends JPanel {
     }
 
     private void ConnectServer() {
-        System.out.println("Connecting to server: " + selectedServer.getServerAddress().getName());
-        for (JoinGUIEvent listener : listeners) {
-            listener.onConnect(selectedServer.getServerAddress());
+        if (selectedServer.available) {
+            System.out.println("Connecting to server: " + selectedServer.getServerAddress().getName());
+            for (JoinGUIEvent listener : listeners) {
+                listener.onConnect(selectedServer.getServerAddress());
+            }
         }
     }
 
-    public void AddConnectListener(JoinGUIEvent listener){
+    public void AddConnectListener(JoinGUIEvent listener) {
         listeners.add(listener);
     }
-    
+
     private void loadList() {
         selectedServer = null;
         connectButton.setEnabled(false);
@@ -226,7 +237,11 @@ public class JoinGUI extends JPanel {
                     }
 
                     selectedServer = sli;
-                    connectButton.setEnabled(true);
+                    if (sli.available) {
+                        connectButton.setEnabled(true);
+                    } else {
+                        connectButton.setEnabled(false);
+                    }
                     editButton.setEnabled(true);
                     deleteButton.setEnabled(true);
                     sli.Select();

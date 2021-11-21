@@ -1,6 +1,7 @@
 package battleship.Networking;
 
 import battleship.DataPackage.CellData;
+import battleship.DataPackage.ChatData;
 import battleship.DataPackage.Data;
 import battleship.DataPackage.DataConverter;
 import battleship.DataPackage.GameEndedData;
@@ -57,11 +58,11 @@ public class Client implements Runnable {
 
             BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            
+
             bfw.write("CLIENT");
             bfw.newLine();
             bfw.flush();
-
+                        
             Thread thread = new Thread(() -> {
                 try {
                     while (!close) {
@@ -83,7 +84,7 @@ public class Client implements Runnable {
                                 case "ChatData":
                                     //System.out.println("Create event: ChatData");
                                     for (ClientEvent listener : listeners) {
-                                        listener.onMessageReceived(inMsg);
+                                        listener.onMessageReceived(((ChatData) data).getClientID(), ((ChatData) data).getMessage());
                                     }
                                     break;
                                 case "PlaceShipsData":
@@ -91,6 +92,9 @@ public class Client implements Runnable {
                                     break;
                                 case "ConnectionData":
                                     //System.out.println("Create event: ConnectionData");
+                                    for (ClientEvent listener : listeners) {
+                                        listener.onJoinedEnemy();
+                                    }
                                     break;
                                 case "ShotData":
                                     //System.out.println("Create event: ShotData");
@@ -144,6 +148,10 @@ public class Client implements Runnable {
                 }
             }
             try {
+                bfw.write("$DisconnectData$$-1" );
+                bfw.newLine();
+                bfw.flush();
+                
                 socket.close();
                 bfr.close();
                 bfw.close();

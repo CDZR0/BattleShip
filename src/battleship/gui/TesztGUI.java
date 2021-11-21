@@ -116,7 +116,7 @@ public class TesztGUI extends JPanel {
                         client = new Client(ipTextBox.getText(), Integer.parseInt(portTextBox.getText()));
                         client.addClientEventListener(new ClientEvent() {
                             @Override
-                            public void onMessageReceived(String message) {
+                            public void onMessageReceived(int sender, String message) {
                                 //System.out.println("get message: " + message);
                                 send(message, "client event");
                             }
@@ -138,6 +138,11 @@ public class TesztGUI extends JPanel {
 
                             @Override
                             public void onGameEnded(GameEndedStatus status) {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            }
+
+                            @Override
+                            public void onJoinedEnemy() {
                                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                             }
                         });

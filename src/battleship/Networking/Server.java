@@ -74,20 +74,20 @@ public class Server implements Runnable {
             while (!close) {
                 try {
                     Socket socket = sSocket.accept();
-                    Integer ID = clientID++;
-
-                    System.out.println("Someone joined the server with ID: " + ID);
-                    int otherQueueID = (ID == 0) ? 1 : 0;
-                    int ownQueueID = (ID == 0) ? 0 : 1;
                     BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     
                     if (bfr.readLine().equals("PING")){
                         socket.close();
-                        --clientID;
                         continue;
                     }
+                    
+                    Integer ID = clientID++;
 
+                    System.out.println("Someone joined the server with ID: " + ID);
+                    int otherQueueID = (ID == 0) ? 1 : 0;
+                    int ownQueueID = (ID == 0) ? 0 : 1;
+                    addMessageToQueue(ID + "$ConnectionData$$" + ((ID.equals(0)) ? 1 : 0), otherQueueID);
 
                     bfw.write(ID.toString());
                     bfw.newLine();
@@ -98,6 +98,10 @@ public class Server implements Runnable {
                             try {
                                 String inMsg = bfr.readLine();
                                 if (inMsg != null) {
+                                    if (inMsg.equals("$DisconnectData$$-1")){
+                                        int recipient = (ID == 0) ? 1 : 0;
+                                        inMsg = "-1$ChatData$The other player has left the game.$" + recipient;
+                                    }
                                     gameLogic.processMessage(DataConverter.decode(inMsg));
                                 }
                             } catch (IOException ex) {

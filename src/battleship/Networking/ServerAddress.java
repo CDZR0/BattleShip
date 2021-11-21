@@ -15,7 +15,7 @@ public class ServerAddress {
     @Override
     public String toString()
     {
-        return name + ": " + ip + ":" + port;
+        return name + "$ " + ip + "$" + port;
     }
 
     public String getName() {
