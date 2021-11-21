@@ -45,6 +45,7 @@ public class InfoPanelGUI extends JPanel {
 
     public void setGameEnded() {
         itsEnd = true;
+        repaint();
     }
 //    public void setGameEndedText(GameEndedStatus status) {
 //        switch (status) {
