@@ -64,6 +64,7 @@ public class JoinGUI extends JPanel {
         Thread refreshThread = new Thread(() -> {
             try {
                 while (segedServersListPanel == null) {
+                    Thread.sleep(10);
                 }
                 while (!BattleShip.quit) {
                     if (isVisible) {
