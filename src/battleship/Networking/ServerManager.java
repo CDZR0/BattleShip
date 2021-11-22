@@ -55,7 +55,7 @@ public class ServerManager {
                         String line = reader.nextLine();
                         if (line.contains("}"))
                             break;
-                        String strArr[] = line.split("\\$");
+                        String strArr[] = line.trim().split("\\$");
                         if  (strArr.length != 3){
                             continue;
                         }
