@@ -46,7 +46,7 @@ public class GameLogic {
             case "ConnectionData":
                 break;
             case "ShotData":
-                calcShot2((ShotData) data);
+                calcShot((ShotData) data);
                 break;
             case "":
                 break;
@@ -57,7 +57,7 @@ public class GameLogic {
         }
     }
 
-    private void calcShot2(ShotData data) {
+    private void calcShot(ShotData data) {
 
         int egyik = data.getClientID();
         int masik = egyik == 1 ? 0 : 1;
@@ -83,56 +83,6 @@ public class GameLogic {
             }
         } else {
             messageQueue.add(DataConverter.encode(new TurnData(masik)));
-        }
-    }
-
-    private void calcShot(ShotData data) {
-//        players[data.getClientID()]
-
-        if (player1.identifier == data.getClientID()) {
-            ShotData sd = new ShotData(data.getClientID(), data.getI(), data.getJ());
-            sd.setRecipientID(1);
-            messageQueue.add(DataConverter.encode(sd));
-
-            CellData cd = new CellData(-1, data.getI(), data.getJ(), player2.board.cellstatus[data.getI()][data.getJ()]);
-            cd.setRecipientID(0);
-            messageQueue.add(DataConverter.encode(cd));
-
-            if (player2.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
-                player2.board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
-                System.out.println("Tts a hit!");
-                if (isWin(player2)) {
-                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, 0)));
-                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, 1)));
-                } else {
-                    messageQueue.add(DataConverter.encode(new TurnData(0)));
-                }
-            } else {
-                System.out.println("Its not a hit!");
-                messageQueue.add(DataConverter.encode(new TurnData(1)));
-            }
-        } else {
-            ShotData sd = new ShotData(data.getClientID(), data.getI(), data.getJ());
-            sd.setRecipientID(0);
-            messageQueue.add(DataConverter.encode(sd));
-
-            CellData cd = new CellData(-1, data.getI(), data.getJ(), player1.board.cellstatus[data.getI()][data.getJ()]);
-            cd.setRecipientID(1);
-            messageQueue.add(DataConverter.encode(cd));
-
-            if (player1.board.cellstatus[data.getI()][data.getJ()] == CellStatus.Ship) {
-                player1.board.cellstatus[data.getI()][data.getJ()] = CellStatus.ShipHit;
-                System.out.println("Tts a hit!");
-                if (isWin(player1)) {
-                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Win, 1)));
-                    messageQueue.add(DataConverter.encode(new GameEndedData(GameEndedStatus.Defeat, 0)));
-                } else {
-                    messageQueue.add(DataConverter.encode(new TurnData(1)));
-                }
-            } else {
-                System.out.println("Its not a hit!");
-                messageQueue.add(DataConverter.encode(new TurnData(0)));
-            }
         }
     }
 
